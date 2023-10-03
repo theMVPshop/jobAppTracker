@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-const routes = require('./server/routes')
 import resumeRouter from "./server/routes/resume.js";
 
 const app = express();
