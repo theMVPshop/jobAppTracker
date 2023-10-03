@@ -1,7 +1,11 @@
 import express from "express";
 import cors from "cors";
+import 'dotenv/config';
+import OpenAI from "openai";
 
 import resumeRouter from "./server/routes/resume.js";
+
+export const openai = new OpenAI();
 
 const app = express();
 
