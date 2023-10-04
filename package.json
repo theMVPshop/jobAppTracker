@@ -11,7 +11,6 @@
     "nodemon": "^3.0.1",
     "openai": "^4.10.0",
     "pdf-text-reader": "^4.0.0",
-    "uuid": "^9.0.1",
     "puppeteer": "^21.3.6",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2"
