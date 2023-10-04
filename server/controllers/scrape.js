@@ -1,30 +1,17 @@
-import puppeteer from 'puppeteer';
 import cheerio from 'cheerio';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 export const scrape = async (req, res) => {
     try {
         const { url } = req.body;
-
-        const browser = await puppeteer.launch({ headless: "true" });
-        const page = await browser.newPage();
-        await page.goto(url, { waitUntil: 'networkidle0' });
-        const content = await page.content();
-
-        await browser.close();
-
-        const $ = cheerio.load(content);
-
-        let jobDescription = "";
-
-        if (url.toLowerCase().includes("linkedin.com")) {
-            jobDescription = parseLinkedIn($);
-        }
-
-        if (jobDescription) {
-            return res.status(200).send(jobDescription);
-        } else {
-            return res.status(404).send("No job description found.");
-        }
+        const domain = new URL(url).hostname.split('.').slice(-2).join('.');  // Extracts the domain from the URL
+        const parser = parsers[domain];
+        const transformer = urlTransformers[domain];
+        if (!parser) return res.status(400).send('Unsupported domain');
+        
+        const jobDescription = await fetchAndParse(url, parser, transformer);
+        return jobDescription ? res.status(200).send(jobDescription) : res.status(404).send('No job description found.');
 
     } catch (error) {
         console.error(error);
@@ -32,20 +19,39 @@ export const scrape = async (req, res) => {
     }
 };
 
+const fetchAndParse = async (url, parser, transformer) => {
+    const browser = await puppeteer.use(StealthPlugin()).launch({ headless: true });
+    const page = await browser.newPage();
+    await page.goto(transformer ? transformer(url) : url, { waitUntil: 'networkidle0' });
+    const content = await page.content();
+    await browser.close();
+    const $ = cheerio.load(content);
+    return parser($);
+};
+
+const transformIndeedUrl = (url) => {
+    const urlObj = new URL(url);
+    const vjkValue = new URLSearchParams(urlObj.search).get('vjk') || urlObj.searchParams.get('jk');
+    return `https://www.indeed.com/viewjob?jk=${vjkValue}`;
+};
+
 const parseLinkedIn = ($) => {
-    if ($('#job-details').length > 0) {
-        return $('#job-details').text().trim();
-    }
+    return $('#job-details').text().trim() || $('.jobs-description').first().text().trim() || $(".show-more-less-html__markup").first().text().trim() || "";
+};
 
-    const jobsDescription = $('.jobs-description').first();
-    if (jobsDescription.length > 0) {
-        return jobsDescription.text().trim();
-    }
+const parseIndeed = ($) => {
+    return $('#jobDescriptionText').text().trim() || $(".jobsearch-jobDescriptionText").text().trim() || "";
+};
 
-    const showMoreLess = $(".show-more-less-html__markup").first();
-    if (showMoreLess.length > 0) {
-        return showMoreLess.text().trim();
-    }
+// const parseZipRecruiter = ($) => { ... }
+// const transformZipRecruiterUrl = (url) => { ... }
 
-    return "";
-}
+const parsers = {
+    'linkedin.com': parseLinkedIn,
+    'indeed.com': parseIndeed,
+    // 'ziprecruiter.com': parseZipRecruiter,
+};
+
+const urlTransformers = {
+    'indeed.com': transformIndeedUrl,
+};
