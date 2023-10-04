@@ -5,7 +5,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 export const scrape = async (req, res) => {
     try {
         const { url } = req.body;
-        const domain = new URL(url).hostname.split(".").slice(-2).join(".");  // Extracts the domain from the URL
+        const domain = new URL(url).hostname.split(".").slice(-2).join(".");
         const parser = parsers[domain];
         const transformer = urlTransformers[domain];
         if (!parser) return res.status(400).send("Website not supported.");
