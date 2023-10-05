@@ -1,5 +1,4 @@
-require('dotenv').config()
-const mysql = require('mysql2')
+import { createPool } from 'mysql2'
 
 
 const host = process.env.HOST
@@ -12,7 +11,7 @@ class Connection {
     constructor() {
         if(!this.pool) {
             console.log("creating connection...")
-            this.pool = mysql.createPool({
+            this.pool = createPool({
                 connectionLimit: 100,
                 host: host,
                 port: port,
@@ -27,4 +26,4 @@ class Connection {
 }
 const instance = new Connection();
 
-module.exports = instance;
+export default instance;
