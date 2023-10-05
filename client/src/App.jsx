@@ -30,10 +30,10 @@ const theme = {
 function App() {
   return (
     <Auth0Provider
-      domain={import.meta.env.VITE_REACT_APP_DOMAIN_ID}
-      clientId={import.meta.env.VITE_REACT_APP_CLIENT_ID}
+      domain="dev-qxzngmucus86xphq.us.auth0.com"
+      clientId="s6f9hSpUxFolZsfQ7sNhD9JIO2s39fYl"
       authorizationParams={{
-        redirect_uri: window.location.origin,
+        redirect_uri: window.location.origin
       }}
     >
       <ThemeProvider theme={theme}>
