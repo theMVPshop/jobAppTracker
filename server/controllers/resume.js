@@ -11,9 +11,7 @@ export const processResume = async (req, res) => {
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
 
-        const message = await rateResume(resumeText);
-
-        return res.status(200).send(message);
+        return res.status(200).send(resumeText);
     } catch (error) {
         return res.status(500).send(error.message);
     }
