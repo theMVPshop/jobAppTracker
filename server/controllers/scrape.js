@@ -4,6 +4,7 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 export const scrape = async (req, res) => {
     try {
+        console.log(req.body)
         const { url } = req.body;
         const domain = new URL(url).hostname.split(".").slice(-2).join(".");
         const parser = parsers[domain];
