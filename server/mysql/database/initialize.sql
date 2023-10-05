@@ -17,3 +17,10 @@ CREATE TABLE applications (
     requested_education VARCHAR(1000),
     FOREIGN KEY(user_id) references users(id)
 );
+
+CREATE TABLE resume (
+    resume_text VARCHAR(3000),
+    resume_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY(resume_id) references users(id)
+);
