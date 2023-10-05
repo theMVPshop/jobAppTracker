@@ -20,7 +20,8 @@ CREATE TABLE applications (
 
 CREATE TABLE resume (
     resume_text VARCHAR(3000),
-    resume_id INT NOT NULL,
+    resume_id INT NOT NULL PRIMARY KEY,
+    resume_user_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY(resume_id) references users(id)
+    FOREIGN KEY(resume_user_id) references users(id)
 );
