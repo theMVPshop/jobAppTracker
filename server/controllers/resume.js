@@ -15,38 +15,40 @@ export const processResume = async (req, res) => {
         const message = await rateResume(resumeText);
 
         if (req.params.resume_id) {
-        const values = [
-            req.params.resume_text
-        ]
-        const user_id = req.params.user_id;
-        const resume_id = req.params.resume_id
-        const sql = "UPDATE resume SET resume_text = ? WHERE user_id = ? AND resume_id = ?"
-        pool.query(sql, [...values,user_id,resume_id], (err,data) => {
-            if(err) return res.json(err)
-            return res.status(200).send(message);
-        })
-    } else {
-        const values = [
-            req.params.resume_text,
-            req.params.resume_id
-        ]
-        const sql = "INSERT INTO resume (`resume_text`, `resume_id`) VALUES(?)"
-        pool.query(sql,[values], (err,data)=> {
-            if(err) return res.json(err)
-            return res.status(200).send(message);
-        })
-    }
-    // If this doesn't work just comment my code and uncomment the next line and it should work like before
-    // return return res.status(200).send(message);
+            const values = [
+                req.params.resume_text
+            ]
+
+            const user_id = req.params.user_id;
+            const resume_id = req.params.resume_id
+            const sql = "UPDATE resume SET resume_text = ? WHERE user_id = ? AND resume_id = ?"
+
+            pool.query(sql, [...values, user_id, resume_id], (err, data) => {
+                if (err) return res.json(err)
+                return res.status(200).send(message);
+            })
+        } else {
+            const values = [
+                req.params.resume_text,
+                req.params.resume_id
+            ]
+            const sql = "INSERT INTO resume (`resume_text`, `resume_id`) VALUES(?)"
+            pool.query(sql, [values], (err, data) => {
+                if (err) return res.json(err)
+                return res.status(200).send(message);
+            })
+        }
+        // If this doesn't work just comment my code and uncomment the next line and it should work like before
+        // return return res.status(200).send(message);
     } catch (error) {
         return res.status(500).send(error.message);
     }
 
-    
+
 
     //Conditional statement that (should) determine whether the upload button will create a new resume entry for a user
     //or if it will update a currently existing resume.
-    
+
 }
 
 export const rateResume = async (req, res) => {
