@@ -6,6 +6,7 @@ function UploadFile() {
     const [jobDesc, setJobDesc] = useState("");
     const [jobUrl, setJobUrl] = useState("");
     const [pdfText, setPdfText] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
     const onFileChange = (e) => {
         setFile(e.target.files[0]);
@@ -35,8 +36,12 @@ function UploadFile() {
             return;
         }
 
+        setIsLoading(true);
+
         const formData = new FormData();
         formData.append("pdfFile", file);
+
+        console.log("Uploading...")
 
         try {
             const response = await ky.post("http://localhost:3000/api/resume/upload", { body: formData });
@@ -44,10 +49,13 @@ function UploadFile() {
         } catch (error) {
             alert("Error uploading file: " + error);
         }
+
+        setIsLoading(false);
     };
 
     return (
         <>
+            {isLoading ? <><progress /> <p>Loading...</p></> : null}
             <div>
                 <input type="file" accept=".pdf" onChange={onFileChange} />
                 <button onClick={uploadResume}>Upload Resume</button> <br />
