@@ -1,5 +1,5 @@
-import { readPdfText } from "pdf-text-reader"
-const pool = require('../mysql/connection')
+import { readPdfText } from "pdf-text-reader" 
+import pool from "../mysql/connection.js";
 import { openai } from "../../server.js";
 
 export const processResume = async (req, res) => {
@@ -19,7 +19,7 @@ export const processResume = async (req, res) => {
             const sql = "UPDATE resume SET resume_text = ? WHERE resume_user_id = ? AND resume_id = ?";
             const values = [resumeText, req.params.resume_user_id, req.params.resume_id];
         
-            pool.query(sql, values, (err, data) => {
+            query(sql, values, (err, data) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send("Error processing the resume");
@@ -27,10 +27,10 @@ export const processResume = async (req, res) => {
                 return res.status(200).send(resumeText);
             });
         } else {
-            const sql = "INSERT INTO resume (`resume_text`, `resume_user_id`, `resume_id`) VALUES (?, ?)";
+            const sql = "INSERT INTO resume (`resume_text`, `resume_user_id`, `resume_id`) VALUES (?, ?,)";
             const values = [resumeText, req.params.resume_user_id, req.params.resume_id];
         
-            pool.query(sql, values, (err, data) => {
+            query(sql, values, (err, data) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send("Error processing the resume");
@@ -39,7 +39,7 @@ export const processResume = async (req, res) => {
             });
         }
         // If this doesn't work just comment my code and uncomment the next line and it should work like before
-        // return return res.status(200).send(message);
+        // return return res.status(200).send(resumeText);
     } catch (error) {
         return res.status(500).send(error.message);
     }
