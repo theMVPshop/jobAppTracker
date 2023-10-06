@@ -33,8 +33,11 @@ function App() {
       domain="dev-qxzngmucus86xphq.us.auth0.com"
       clientId="s6f9hSpUxFolZsfQ7sNhD9JIO2s39fYl"
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: window.location.origin,
+        audience: "https://dev-qxzngmucus86xphq.us.auth0.com/api/v2/",
+        scope: "read:current_user update:current_user_metadata openid profile email",
       }}
+      useRefreshTokens={true}
     >
       <ThemeProvider theme={theme}>
         <LandingDisplay />
