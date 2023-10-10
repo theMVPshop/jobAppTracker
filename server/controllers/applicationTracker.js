@@ -1,4 +1,3 @@
-import mysql from 'mysql2';
 import { query } from '../mysql/connection';
 
 const showApplications = (req,res) => {
