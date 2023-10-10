@@ -12,7 +12,8 @@ CREATE TABLE applications (
     company_name VARCHAR(100),
     position_title VARCHAR(100),
     work_location VARCHAR(100),
-    skills JSON,
+    technical_skills JSON,
+    soft_skills JSON,
     requested_experience JSON,
     requested_education VARCHAR(1000),
     FOREIGN KEY(user_id) references users(id)
