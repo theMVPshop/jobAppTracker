@@ -26,7 +26,10 @@ export const rateResume = async (req, res) => {
             messages: [{
                 role: 'user', content: `Here is my resume: ${resumeText}
         And here is the job description: ${jobInfo}
-        Please give me a rating of 0-100% of how well my resume matches this job, and why. Be concise.` }],
+        Please follow these instructions clearly: Give me a 1-5 star rating of how well my resume matches this job.
+        Then follow that with a CONCISE explanation (1-2 sentence max) of why you gave that rating. Format it like this:
+        3 stars. Looks like you have the right skills for this job but lack the years of experience they're looking for.
+        Directly connect the resume with the job description.` }],
         });
 
         const message = chat.choices[0].message.content;
