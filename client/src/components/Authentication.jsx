@@ -29,6 +29,7 @@ const Authentication = () => {
         const { user_metadata } = await metadataResponse.json();
 
         setUserMetadata(user_metadata);
+        console.log("uuid: " + user.sub)
       } catch (e) {
         console.log(e.message);
       }
