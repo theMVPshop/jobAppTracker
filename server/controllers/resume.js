@@ -12,14 +12,14 @@ export const processResume = async (req, res) => {
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
 
-        const message = await rateResume(resumeText);
+        // const message = await rateResume(resumeText);
         //Conditional statement that (should) determine whether the upload button will create a new resume entry for a user
         //or if it will update a currently existing resume.
         if (req.params.resume_id) {
             const sql = "UPDATE resume SET resume_text = ? WHERE resume_user_id = ? AND resume_id = ?";
             const values = [resumeText, req.params.resume_user_id, req.params.resume_id];
         
-            query(sql, values, (err, data) => {
+            pool.query(sql, values, (err, data) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send("Error processing the resume");
@@ -27,10 +27,10 @@ export const processResume = async (req, res) => {
                 return res.status(200).send(resumeText);
             });
         } else {
-            const sql = "INSERT INTO resume (`resume_text`, `resume_user_id`, `resume_id`) VALUES (?, ?,)";
-            const values = [resumeText, req.params.resume_user_id, req.params.resume_id];
+            const sql = "INSERT INTO resume (`resume_text`, `resume_user_id`) VALUES (?, ?)";
+            const values = [resumeText, 1 ]; // The 1 is a test value, do not use in prod, this will be changed to req.params.id to associate the resume_user_id in the resume table
         
-            query(sql, values, (err, data) => {
+            pool.query(sql, values, (err, data) => {
                 if (err) {
                     console.error(err);
                     return res.status(500).send("Error processing the resume");
@@ -41,6 +41,7 @@ export const processResume = async (req, res) => {
         // If this doesn't work just comment my code and uncomment the next line and it should work like before
         // return return res.status(200).send(resumeText);
     } catch (error) {
+        console.log(error)
         return res.status(500).send(error.message);
     }
 
