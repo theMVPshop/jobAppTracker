@@ -53,14 +53,28 @@ export const rateResume = async (req, res) => {
     try {
         const { jobInfo, resumeText } = req.body;
 
-        const content = `Here is my resume: ${resumeText}
-        And here is the job description: ${jobInfo}
-        Please follow these instructions clearly: Give me a 1-5 star rating of how well my resume matches this job.
-        Then follow that with a CONCISE explanation (1-2 sentence max) of why you gave that rating. Format it like this:
-        3 stars. Looks like you have the right skills for this job but lack the years of experience they're looking for.
-        Directly connect the resume with the job description.`;
+        if (!jobInfo || !resumeText) {
+            return res.status(400).send("Both resume and job info are required.");
+        }
 
-        console.info(content);
+        const charLimit = 10000;
+
+        if (resumeText.length > charLimit) {
+            resumeText = resumeText.substring(0, charLimit);
+        }
+        if (jobInfo.length > charLimit) {
+            jobInfo = jobInfo.substring(0, charLimit);
+        }
+
+        const content = `Here is my resume:
+        ${resumeText}
+        And here is the job description:
+        ${jobInfo}
+        Please follow these instructions clearly: Give me a 1-5 star rating of how well my resume matches this job.
+        Then follow that with a CONCISE explanation (1-2 sentence max) of why you gave that rating.
+        Directly connect the resume with the job description, noting years of experience and skill requirements, etc.
+        Format it like this:
+        3 stars. Looks like you have the right skills for this job but lack the years of experience they're looking for.`;
 
         const chat = await openai.chat.completions.create({
             model: 'gpt-4',
