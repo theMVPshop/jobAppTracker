@@ -53,15 +53,21 @@ export const rateResume = async (req, res) => {
     try {
         const { jobInfo, resumeText } = req.body;
 
-        const chat = await openai.chat.completions.create({
-            model: 'gpt-4',
-            messages: [{
-                role: 'user', content: `Here is my resume: ${resumeText}
+        const content = `Here is my resume: ${resumeText}
         And here is the job description: ${jobInfo}
         Please follow these instructions clearly: Give me a 1-5 star rating of how well my resume matches this job.
         Then follow that with a CONCISE explanation (1-2 sentence max) of why you gave that rating. Format it like this:
         3 stars. Looks like you have the right skills for this job but lack the years of experience they're looking for.
-        Directly connect the resume with the job description.` }],
+        Directly connect the resume with the job description.`;
+
+        console.info(content);
+
+        const chat = await openai.chat.completions.create({
+            model: 'gpt-4',
+            messages: [{
+                role: 'user',
+                content
+            }],
         });
 
         const message = chat.choices[0].message.content;
