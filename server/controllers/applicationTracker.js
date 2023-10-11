@@ -1,13 +1,11 @@
-const mysql = require('mysql2')
-const pool = require('../mysql/connection')
-
+import { query } from '../mysql/connection';
 
 const showApplications = (req,res) => {
     const user_id = req.params.user_id;
 
     const sql = "SELECT * FROM applications WHERE user_id = ?;";
 
-    pool.query(sql,user_id,(err,data) => {
+    query(sql,user_id,(err,data) => {
         if(err) return res.json(err);
         return res.json(data)
     })
@@ -19,7 +17,7 @@ const showApplication = (req,res) => {
 
     const sql = "SELECT * FROM applications WHERE user_id =? AND application_id =?";
 
-    pool.query(sql, [user_id,application_id],(err,data) => {
+    query(sql, [user_id,application_id],(err,data) => {
         if(err) return res.json(err);
         return res.json(data)
     })
@@ -37,7 +35,7 @@ const createApplication = (req,res) => {
         req.body.requested_education
      ]
 
-    pool.query(sql,[values], (err,data)=> {
+    query(sql,[values], (err,data)=> {
         if(err) return res.json(err)
         return res.json(data)
     })
@@ -55,7 +53,7 @@ const updateApplication = (req,res) => {
         req.body.requested_experience,
         req.body.requested_education
     ]
-    pool.query(sql, [...values,user_id,application_id], (err,data) => {
+    query(sql, [...values,user_id,application_id], (err,data) => {
         if(err) return res.json(err)
         return res.json(data)
     })
@@ -70,11 +68,11 @@ const deleteApplication = (req, res) => {
 
   
     // First, execute the DELETE statement
-    pool.query(deleteSQL, [application_id], (deleteErr, deleteResult) => {
+    query(deleteSQL, [application_id], (deleteErr, deleteResult) => {
       if (deleteErr) return res.json(deleteErr);
   
       // Then, execute the ALTER TABLE statement
-        pool.query(alterSQL, [application_id], (alterErr, alterResult) => {
+        query(alterSQL, [application_id], (alterErr, alterResult) => {
             if (alterErr) return res.json(alterErr);
   
         // Both queries have completed successfully
@@ -82,11 +80,8 @@ const deleteApplication = (req, res) => {
       });
     });
   };
-  
 
-
-
-module.exports = {
+export default {
     showApplications,
     showApplication,
     createApplication,
