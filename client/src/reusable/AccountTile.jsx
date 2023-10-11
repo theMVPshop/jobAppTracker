@@ -1,8 +1,9 @@
 import React from "react";
 import { useAuth0 } from "@auth0/auth0-react";
+import styled from "styled-components";
 
 // Basic user information display
-const Profile = () => {
+const AccountTile = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0();
 
   if (isLoading) {
@@ -15,12 +16,25 @@ const Profile = () => {
 
   return (
     isAuthenticated && (
-      <div>
+      <Wrapper>
+        <h3>{user.name}</h3>
         <img src={user.picture} alt={user.name} />
-        <h2>{user.name}</h2>
-      </div>
+      </Wrapper>
     )
   );
 };
 
-export default Profile;
+export default AccountTile;
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  h3 {
+    font-family: ${(props) => props.theme.fonts.main};
+  }
+  img {
+    height: 40px;
+    border-radius: 999px;
+  }
+`;

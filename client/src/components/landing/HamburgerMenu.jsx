@@ -22,9 +22,10 @@ const Menu = styled.div`
   border: 1px solid ${(props) => props.theme.colors.gray2};
   border-radius: ${(props) => props.theme.other.borderRadius};
   width: 350px;
-  margin: 50px 100px;
+  margin: 0px 100px;
   position: absolute;
   right: 0;
+  top: 60px;
   div {
     margin: 0 50px;
   }
@@ -44,6 +45,6 @@ const Menu = styled.div`
   }
   @media only screen and (max-width: 700px) {
     width: 100%;
-    margin: 50px 0;
+    margin: 0px 0;
   }
 `;

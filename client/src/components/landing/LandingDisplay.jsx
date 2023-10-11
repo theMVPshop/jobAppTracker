@@ -4,7 +4,10 @@ import demoPc from "../../assets/demoPc.png";
 import demoIpad from "../../assets/demoIpad.png";
 import demoIphone from "../../assets/demoIphone.png";
 import Authentication from "../Authentication";
+import ButtonEmpty from "../../reusable/ButtonEmpty";
+import { Icon } from "@blueprintjs/core";
 import { useAuth0 } from "@auth0/auth0-react";
+import { Link } from "react-router-dom";
 
 const LandingDisplay = () => {
   const { isAuthenticated } = useAuth0();
@@ -23,11 +26,25 @@ const LandingDisplay = () => {
                 detail about your job opportunities regardless of where you
                 found them.
               </h4>
-              <ButtonWrapper toggle={isAuthenticated}>
-                <ButtonContainer>
-                  <Authentication />
-                </ButtonContainer>
-              </ButtonWrapper>
+              {!isAuthenticated && (
+                <Wrapper>
+                  <ButtonContainer>
+                    <Authentication />
+                  </ButtonContainer>
+                </Wrapper>
+              )}
+              <Wrapper>
+                <ul>
+                  <li>
+                    <StyledIcon icon="small-tick" size={30} /> Efficient and
+                    straightforward application file submissions.
+                  </li>
+                  <li>
+                    <StyledIcon icon="small-tick" size={30} /> Artificial
+                    intelligence-powered resume evaluation.
+                  </li>
+                </ul>
+              </Wrapper>
             </div>
           </Text>
           <ImageStack>
@@ -69,7 +86,7 @@ const Display = styled.div`
   @media only screen and (max-width: 2134px) {
     background-position: top 100px left calc(50vw + 150px);
     background-size: 900px, auto, contain;
-    padding: 200px 100px;
+    padding: 150px 100px;
     gap: 0;
   }
   @media only screen and (max-width: 1160px) {
@@ -145,25 +162,36 @@ const Text = styled.div`
       /* width: 100%; */
     }
   }
-`;
-const ButtonWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  ${(props) => {
-    if (!props.toggle) {
-      return `
-    display: none;
-    `;
-    } else {
-      return `
-        display: flex;
-        width: 100%;
-        @media only screen and (max-width: 1160px) {
-          align-items: center;
-        }
-      `;
+  ul {
+    list-style: none;
+    width: fit-content;
+    margin: 20px 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    @media only screen and (max-width: 700px) {
+      width: 100%;
     }
-  }}
+    li {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin: 5px 0;
+    }
+  }
+`;
+const Wrapper = styled.div`
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  @media only screen and (max-width: 1160px) {
+    align-items: center;
+  }
+  @media only screen and (max-width: 700px) {
+    flex-direction: column !important;
+    gap: 0;
+  }
 `;
 
 const ButtonContainer = styled.div`
@@ -177,4 +205,10 @@ const ButtonContainer = styled.div`
     width: 100%;
     height: 50px;
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.primaryBlue};
+  display: flex;
+  align-items: center;
 `;
