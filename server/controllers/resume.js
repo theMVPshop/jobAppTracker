@@ -1,4 +1,4 @@
-import { readPdfText } from "pdf-text-reader" 
+import { readPdfText } from "pdf-text-reader"
 import pool from "../mysql/connection.js";
 import { openai } from "../../server.js";
 
@@ -12,43 +12,41 @@ export const processResume = async (req, res) => {
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
 
-        // const message = await rateResume(resumeText);
-        //Conditional statement that (should) determine whether the upload button will create a new resume entry for a user
-        //or if it will update a currently existing resume.
-        if (req.params.resume_id) {
-            const sql = "UPDATE resume SET resume_text = ? WHERE resume_user_id = ? AND resume_id = ?";
-            const values = [resumeText, req.params.resume_user_id, req.params.resume_id];
-        
-            pool.query(sql, values, (err, data) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send("Error processing the resume");
-                }
+        console.log(req.body);
+
+        if (req.body.resume_id) {
+            const sql = "UPDATE resume SET resume_text = ? WHERE user_id = ? AND resume_id = ?";
+            const values = [resumeText, req.body.user_id, req.body.resume_id];
+
+            console.log("Updating resume...");
+            try {
+                const [result] = await pool.execute(sql, values);
+                console.log(result);
                 return res.status(200).send(resumeText);
-            });
+            } catch (err) {
+                console.error(err);
+                return res.status(500).send("Error processing the resume");
+            }
         } else {
-            const sql = "INSERT INTO resume (`resume_text`, `resume_user_id`) VALUES (?, ?)";
-            const values = [resumeText, 1 ]; // The 1 is a test value, do not use in prod, this will be changed to req.params.id to associate the resume_user_id in the resume table
-        
-            pool.query(sql, values, (err, data) => {
-                if (err) {
-                    console.error(err);
-                    return res.status(500).send("Error processing the resume");
-                }
+            const sql = "INSERT INTO resume (`resume_text`, `user_id`) VALUES (?, ?)";
+            const values = [resumeText, 1]; /* The 1 is a test value, do not use in prod, 
+                                            this will be changed to req.body.resume_id
+                                            to associate the user_id in the resume table */
+
+            console.log("Resume id not found, adding resume...");
+            try {
+                const [result] = await pool.execute(sql, values);
+                console.log(result);
                 return res.status(200).send(resumeText);
-            });
+            } catch (err) {
+                console.error(err);
+                return res.status(500).send("Error processing the resume");
+            }
         }
-        // If this doesn't work just comment my code and uncomment the next line and it should work like before
-        // return return res.status(200).send(resumeText);
     } catch (error) {
-        console.log(error)
+        console.log(error);
         return res.status(500).send(error.message);
     }
-
-
-
-    
-
 }
 
 export const rateResume = async (req, res) => {

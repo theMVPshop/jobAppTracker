@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import ky from "ky";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function UploadFile() {
+    const { user, isAuthenticated } = useAuth0();
     const [file, setFile] = useState(null);
     const [jobInfo, setjobInfo] = useState("");
     const [jobUrl, setJobUrl] = useState("");
@@ -21,9 +23,20 @@ function UploadFile() {
     }
 
     const fetchjobInfo = async () => {
-        const body = { url: jobUrl };
-        const response = await ky.post("http://localhost:3000/api/scrape", { json: body });
-        setjobInfo(await response.text());
+        setIsLoading(true);
+        try {
+            const body = { url: jobUrl };
+            const response = await ky.post("http://localhost:3000/api/scrape", { json: body });
+            if (response) {
+                setjobInfo(await response.text());
+            } else {
+                console.error('Response is undefined');
+            }
+        } catch (error) {
+            alert("Error: " + error);
+        } finally {
+            setIsLoading(false);
+        }
     }
 
     const uploadResume = async () => {
@@ -35,11 +48,21 @@ function UploadFile() {
             alert("Please enter a job description.");
             return;
         }
+        if (!isAuthenticated) {
+            alert("Please log in first.");
+            return;
+        }
+        if (!user.sub) {
+            alert("Error getting user ID.");
+            return;
+        }
 
         setIsLoading(true);
 
         const formData = new FormData();
         formData.append("pdfFile", file);
+        formData.append("user_id", user.sub);
+        formData.append("resume_id", 1)
 
         console.log("Uploading...")
 
@@ -47,7 +70,7 @@ function UploadFile() {
             const resumeText = await ky.post("http://localhost:3000/api/resume/upload", { body: formData }).text();
             const rating = await ky.post("http://localhost:3000/api/resume/rate", { json: { resumeText, jobInfo } }).text();
             setGptRating(rating);
-            
+
         } catch (error) {
             alert("Error: " + error);
         }
@@ -58,6 +81,7 @@ function UploadFile() {
     return (
         <>
             {isLoading ? <><progress /> <p>Loading...</p></> : null}
+            <p>{gptRating}</p>
             <div>
                 <input type="file" accept=".pdf" onChange={onFileChange} />
                 <button onClick={uploadResume}>Upload Resume</button> <br />
@@ -74,7 +98,6 @@ function UploadFile() {
                     value={jobInfo}
                 />
             </div>
-            <p>{gptRating}</p>
         </>
     );
 }
