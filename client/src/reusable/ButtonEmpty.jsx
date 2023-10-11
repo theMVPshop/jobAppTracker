@@ -3,7 +3,7 @@ import styled from "styled-components";
 const ButtonEmpty = (props) => {
   const { content } = props;
   return (
-    <StyledButton onClick={() => props.handleClick()}>
+    <StyledButton onClick={props.handleClick}>
       <p>{props.content}</p>
     </StyledButton>
   );
@@ -13,7 +13,8 @@ export default ButtonEmpty;
 
 const StyledButton = styled.button`
   position: relative;
-  width: 180px;
+  min-width: 180px;
+  width: 100%;
   height: 40px;
   border-radius: ${(props) => props.theme.other.borderRadius};
   background-color: ${(props) => props.theme.colors.primaryWhite} !important;

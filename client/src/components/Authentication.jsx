@@ -1,9 +1,16 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { useState, useEffect } from "react";
+import ButtonFilled from "../reusable/ButtonFilled";
 
 const Authentication = () => {
   // React hook to bring login, logout, and authentication checking capabilities.
-  const { loginWithRedirect, logout, user, isAuthenticated, getAccessTokenSilently } = useAuth0();
+  const {
+    loginWithRedirect,
+    logout,
+    user,
+    isAuthenticated,
+    getAccessTokenSilently,
+  } = useAuth0();
   const [userMetadata, setUserMetadata] = useState(null);
 
   useEffect(() => {
@@ -29,7 +36,7 @@ const Authentication = () => {
         const { user_metadata } = await metadataResponse.json();
 
         setUserMetadata(user_metadata);
-        console.log("uuid: " + user.sub)
+        console.log("uuid: " + user.sub);
       } catch (e) {
         console.log(e.message);
       }
@@ -42,15 +49,19 @@ const Authentication = () => {
     <>
       {
         // Checks if logged in to display logout button
-        isAuthenticated ?
+        isAuthenticated ? (
           <div>
-            <button onClick={() => logout({ logoutParams: { returnTo: window.location.origin } })}>
-              Log Out
-            </button>
-            <p>User Metadata: {JSON.stringify(userMetadata)}</p>
+            <ButtonFilled
+              content={"Log out"}
+              handleClick={() =>
+                logout({ logoutParams: { returnTo: window.location.origin } })
+              }
+            />
+            {/* <p>User Metadata: {JSON.stringify(userMetadata)}</p> */}
           </div>
-          :
-          <button onClick={loginWithRedirect}>Log In</button>
+        ) : (
+          <ButtonFilled content={"Sign in"} handleClick={loginWithRedirect} />
+        )
       }
     </>
   );

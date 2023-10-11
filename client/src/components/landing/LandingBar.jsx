@@ -1,27 +1,40 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Icon } from "@blueprintjs/core";
-import ButtonFilled from "../../reusable/ButtonFilled";
-import ButtonEmpty from "../../reusable/ButtonEmpty";
 import HamburgerMenu from "./HamburgerMenu";
+import Authentication from "../Authentication";
+import AccountTile from "../../reusable/AccountTile";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingBar = () => {
   const [open, setOpen] = useState(false);
+  const { isAuthenticated } = useAuth0();
 
   return (
     <Nav>
       <Container>
         <h1>Job App Tracker</h1>
-        <ButtonContainer>
-          <ButtonFilled content={"Create Account"} />
-          <ButtonEmpty content={"Sign in"} />
-        </ButtonContainer>
-        <DropDown>
-          <HamburgerMenu open={open} setOpen={setOpen} />
-          <MenuButton open={open} onClick={() => setOpen(!open)}>
-            <StyledIcon icon="menu" size={30} />
-          </MenuButton>
-        </DropDown>
+        {!isAuthenticated && (
+          <>
+            <ButtonContainer>
+              <Authentication />
+            </ButtonContainer>
+            <DropDown>
+              <HamburgerMenu open={open} setOpen={setOpen} />
+              <MenuButton open={open} onClick={() => setOpen(!open)}>
+                <StyledIcon icon="menu" size={30} />
+              </MenuButton>
+            </DropDown>
+          </>
+        )}
+        {isAuthenticated && (
+          <ProfileDropdown>
+            <HamburgerMenu open={open} setOpen={setOpen} />
+            <MenuButton open={open} onClick={() => setOpen(!open)}>
+              <AccountTile />
+            </MenuButton>
+          </ProfileDropdown>
+        )}
       </Container>
     </Nav>
   );
@@ -49,28 +62,28 @@ const Container = styled.div`
   align-items: center;
   background-color: transparent;
   h1 {
-    @media only screen and (max-width: 960px) {
+    @media only screen and (max-width: 1160px) {
       font-size: 25px;
     }
   }
-  @media only screen and (max-width: 960px) {
+  @media only screen and (max-width: 700px) {
     padding: 0 50px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 15px;
-  @media only screen and (max-width: 960px) {
-    display: none;
   }
 `;
 
 const DropDown = styled.div`
   display: none;
-  margin: 0 50px;
-  @media only screen and (max-width: 960px) {
+  @media only screen and (max-width: 1160px) {
     display: flex;
+  }
+`;
+
+const ProfileDropdown = styled.div`
+  display: flex;
+  border-radius: ${(props) => props.theme.other.borderRadius};
+  &:hover {
+    background-color: ${(props) => props.theme.colors.gray1} !important;
+    cursor: pointer;
   }
 `;
 
@@ -84,4 +97,13 @@ const StyledIcon = styled(Icon)`
   fill: ${(props) => props.theme.colors.primaryBlue};
   display: flex;
   align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  position: relative;
+  width: 180px;
+  height: 40px;
+  @media only screen and (max-width: 1160px) {
+    display: none;
+  }
 `;
