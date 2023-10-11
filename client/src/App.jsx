@@ -2,7 +2,7 @@ import { ThemeProvider } from "styled-components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingDisplay from "./components/landing/LandingDisplay";
 import { Auth0Provider } from "@auth0/auth0-react";
-import DashboardPlaceholder from "./components/dashboard/DashboardPlaceholder";
+import Dashboard from "./components/dashboard/Dashboard";
 import LandingBar from "./components/landing/LandingBar";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 
@@ -48,7 +48,7 @@ function App() {
             <Route path="/" element={<LandingDisplay />} />
             <Route
               path="/dashboard"
-              element={<AuthenticationGuard component={DashboardPlaceholder} />}
+              element={<AuthenticationGuard component={Dashboard} />}
             />
           </Routes>
         </Router>
