@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { Icon } from "@blueprintjs/core";
-import ButtonFilled from "../../reusable/ButtonFilled";
-import ButtonEmpty from "../../reusable/ButtonEmpty";
 import HamburgerMenu from "./HamburgerMenu";
+import Authentication from "../Authentication";
 
 const LandingBar = () => {
   const [open, setOpen] = useState(false);
@@ -12,9 +11,9 @@ const LandingBar = () => {
     <Nav>
       <Container>
         <h1>Job App Tracker</h1>
+        <a href={`/dashboard`}>Protected Route Test</a>
         <ButtonContainer>
-          <ButtonFilled content={"Create Account"} />
-          <ButtonEmpty content={"Sign in"} />
+          <Authentication />
         </ButtonContainer>
         <DropDown>
           <HamburgerMenu open={open} setOpen={setOpen} />
@@ -49,27 +48,18 @@ const Container = styled.div`
   align-items: center;
   background-color: transparent;
   h1 {
-    @media only screen and (max-width: 960px) {
+    @media only screen and (max-width: 1160px) {
       font-size: 25px;
     }
   }
-  @media only screen and (max-width: 960px) {
+  @media only screen and (max-width: 700px) {
     padding: 0 50px;
-  }
-`;
-
-const ButtonContainer = styled.div`
-  display: flex;
-  gap: 15px;
-  @media only screen and (max-width: 960px) {
-    display: none;
   }
 `;
 
 const DropDown = styled.div`
   display: none;
-  margin: 0 50px;
-  @media only screen and (max-width: 960px) {
+  @media only screen and (max-width: 1160px) {
     display: flex;
   }
 `;
@@ -84,4 +74,13 @@ const StyledIcon = styled(Icon)`
   fill: ${(props) => props.theme.colors.primaryBlue};
   display: flex;
   align-items: center;
+`;
+
+const ButtonContainer = styled.div`
+  position: relative;
+  width: 180px;
+  height: 40px;
+  @media only screen and (max-width: 1160px) {
+    display: none;
+  }
 `;

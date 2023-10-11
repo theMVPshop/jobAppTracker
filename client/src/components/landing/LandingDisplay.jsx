@@ -1,38 +1,41 @@
 import React from "react";
 import styled from "styled-components";
-import LandingBar from "./LandingBar";
-import demo from "../../assets/demo.png";
-import background from "../../assets/background.png";
+import demoPc from "../../assets/demoPc.png";
+import demoIpad from "../../assets/demoIpad.png";
+import demoIphone from "../../assets/demoIphone.png";
+import Authentication from "../Authentication";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingDisplay = () => {
+  const { isAuthenticated } = useAuth0();
+
   return (
     <ContentWrapper>
-      <LandingBar />
-      <Display>
-        <Text>
-          <div>
-            <h1>
-              Track, Edit, and manage your job applications all in one place.
-            </h1>
-            <h4>
-              No more unruly job search spreadsheets. Keep track of every detail
-              about your job opportunities regardless of where you found them.
-            </h4>
-            <ButtonFilled>
-              <p>Create Account</p>
-            </ButtonFilled>
-            <p>
-              Already using Job App Tracker? <LinkButton>Sign in</LinkButton>
-            </p>
-          </div>
-        </Text>
-        <ImageStack>
-          <div>
-            <DemoImg1 src={demo}></DemoImg1>
-            <DemoImg2 src={demo}></DemoImg2>
-          </div>
-        </ImageStack>
-      </Display>
+      <LandingPage>
+        <Display>
+          <Text>
+            <div>
+              <h1>
+                Track, edit, and manage your job applications all in one place.
+              </h1>
+              <h4>
+                No more unruly job search spreadsheets. Keep track of every
+                detail about your job opportunities regardless of where you
+                found them.
+              </h4>
+              <ButtonWrapper toggle={isAuthenticated}>
+                <ButtonContainer>
+                  <Authentication />
+                </ButtonContainer>
+              </ButtonWrapper>
+            </div>
+          </Text>
+          <ImageStack>
+            <DemoIpad src={demoIpad}></DemoIpad>
+            <DemoIphone src={demoIphone}></DemoIphone>
+          </ImageStack>
+        </Display>
+      </LandingPage>
     </ContentWrapper>
   );
 };
@@ -40,70 +43,73 @@ const LandingDisplay = () => {
 export default LandingDisplay;
 
 const ContentWrapper = styled.div`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   font-family: ${(props) => props.theme.fonts.main};
   align-items: center;
-  /* background-image: url(${background});
-  background-repeat: no-repeat;
-  background-position: right;
-  background-size: contain; */
-  @media only screen and (max-width: 2134px) {
-    height: initial;
-  }
+`;
+
+const LandingPage = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
 `;
 
 const Display = styled.div`
   display: flex;
   max-width: 1920px;
-  margin: 300px 100px;
+  width: 100%;
+  height: 100%;
+  padding: 300px 100px;
+  background-image: url(${demoPc});
+  background-repeat: no-repeat;
+  background-position: top 150px right 0px;
+  background-size: 1100px, auto, contain;
   @media only screen and (max-width: 2134px) {
-    flex-direction: column;
-    margin: 200px 100px;
-    gap: 50px;
-    align-items: center;
+    background-position: top 100px left calc(50vw + 150px);
+    background-size: 900px, auto, contain;
+    padding: 200px 100px;
+    gap: 0;
   }
   @media only screen and (max-width: 1160px) {
-    margin: 100px 100px;
-    align-items: initial;
+    background-image: none;
+    padding: 100px 100px;
+    flex-direction: column;
+    gap: 50px;
   }
-  @media only screen and (max-width: 960px) {
-    margin: 50px 50px;
+  @media only screen and (max-width: 700px) {
+    padding: 50px 50px;
   }
 `;
 
 const ImageStack = styled.div`
-  div {
-    width: 960px;
-    /* height: 600px; */
-    aspect-ratio: 5/3;
-    position: relative;
-    @media only screen and (max-width: 1160px) {
-      width: 100%;
-    }
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  @media only screen and (max-width: 1160px) {
+    position: initial;
+    width: initial;
+    height: initial;
   }
 `;
 
-const DemoImg1 = styled.img`
+const DemoIpad = styled.img`
   width: 80%;
-  position: absolute;
-  top: 0;
-  right: 0;
-  box-shadow: -5px 5px 5px 5px ${(props) => props.theme.colors.shadowColor};
-  &:hover {
-    z-index: 2;
+  display: none;
+  @media only screen and (max-width: 1160px) {
+    display: block;
+  }
+  @media only screen and (max-width: 700px) {
+    display: none;
   }
 `;
 
-const DemoImg2 = styled.img`
+const DemoIphone = styled.img`
   width: 80%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  box-shadow: -5px 5px 5px 5px ${(props) => props.theme.colors.shadowColor};
-  &:hover {
-    z-index: 2;
+  display: none;
+  @media only screen and (max-width: 700px) {
+    display: block;
   }
 `;
 
@@ -128,67 +134,46 @@ const Text = styled.div`
   p {
     margin: 0;
     font-size: 18px;
+    @media only screen and (max-width: 1160px) {
+      text-align: center;
+    }
   }
   div {
     @media only screen and (max-width: 2134px) {
       display: flex;
       flex-direction: column;
-      width: fit-content;
+      /* width: 100%; */
     }
   }
 `;
-
-const LinkButton = styled.button`
-  background-color: transparent;
-  border: none;
-  font-size: 18px;
-  color: ${(props) => props.theme.colors.primaryBlue};
-  text-decoration: underline;
-  &:hover {
-    color: ${(props) => props.theme.colors.secondaryBlue};
-    cursor: pointer;
-  }
+const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  ${(props) => {
+    if (!props.toggle) {
+      return `
+    display: none;
+    `;
+    } else {
+      return `
+        display: flex;
+        width: 100%;
+        @media only screen and (max-width: 1160px) {
+          align-items: center;
+        }
+      `;
+    }
+  }}
 `;
 
-const ButtonFilled = styled.button`
+const ButtonContainer = styled.div`
   position: relative;
   width: 180px;
   height: 40px;
-  margin: 0 0 24px;
-  border-radius: ${(props) => props.theme.other.borderRadius};
-  background-color: ${(props) => props.theme.colors.primaryBlue} !important;
-  border: 1px solid ${(props) => props.theme.colors.primaryBlue};
-  background-color: transparent;
-  p {
-    position: relative;
-    z-index: 2;
-    margin: 0px;
-    font-size: 18px !important;
-    color: ${(props) => props.theme.colors.primaryWhite};
-  }
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    background-color: ${(props) => props.theme.colors.secondaryBlue};
-    width: 0px;
-    height: 100%;
-    transition: all 0.3s;
-  }
-  &:hover {
-    &:before {
-      width: 100%;
-    }
-    border: 1px solid ${(props) => props.theme.colors.secondaryBlue};
-    color: ${(props) => props.theme.colors.primaryWhite} !important;
-    cursor: pointer;
-  }
-  @media only screen and (max-width: 2134px) {
+  @media only screen and (max-width: 1160px) {
     width: 480px;
-    height: 50px;
   }
-  @media only screen and (max-width: 960px) {
+  @media only screen and (max-width: 700px) {
     width: 100%;
     height: 50px;
   }
