@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
+import Sidebar from "./Sidebar";
 
 const DashboardWrapper = styled.div`
   display: flex;
@@ -73,70 +74,77 @@ const Dashboard = () => {
   };
 
   return (
-    <DashboardWrapper>
-      <StyledTable>
-        <TableHead>
-          <tr>
-            <TableCell>
-              <div>Rejected</div>
-              <div>
-                <PlusButton onClick={handlePlusClick}>+</PlusButton>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div>Applied</div>
-              <div>
-                <PlusButton onClick={handlePlusClick}>+</PlusButton>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div>Phone</div>
-              <div>
-                <PlusButton onClick={handlePlusClick}>+</PlusButton>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div>On Site</div>
-              <div>
-                <PlusButton onClick={handlePlusClick}>+</PlusButton>
-              </div>
-            </TableCell>
-            <TableCell>
-              <div>Offer</div>
-              <div>
-                <PlusButton onClick={handlePlusClick}>+</PlusButton>
-              </div>
-            </TableCell>
-          </tr>
-        </TableHead>
-        <tbody>
-          <TableRow>
-            <TableCell>
-              <InfoCard>Info Card 1</InfoCard>
-            </TableCell>
-            <TableCell>
-              <InfoCard>Info Card 3</InfoCard>
-            </TableCell>
-            <TableCell>
-              <InfoCard>Info Card 5</InfoCard>
-            </TableCell>
-            <TableCell>
-              <InfoCard>Info Card 7</InfoCard>
-            </TableCell>
-            <TableCell>
-              <InfoCard>Info Card 9</InfoCard>
-            </TableCell>
-          </TableRow>
-        </tbody>
-      </StyledTable>
-      <ModalOverlay isVisible={isCardVisible}>
-        <StandardCard
-          isVisible={isCardVisible}
-          setCardVisibility={setCardVisibility}
-        />
-      </ModalOverlay>
-    </DashboardWrapper>
+    <HorizontalWrapper>
+      <Sidebar />
+      <DashboardWrapper>
+        <StyledTable>
+          <TableHead>
+            <tr>
+              <TableCell>
+                <div>Rejected</div>
+                <div>
+                  <PlusButton onClick={handlePlusClick}>+</PlusButton>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>Applied</div>
+                <div>
+                  <PlusButton onClick={handlePlusClick}>+</PlusButton>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>Phone</div>
+                <div>
+                  <PlusButton onClick={handlePlusClick}>+</PlusButton>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>On Site</div>
+                <div>
+                  <PlusButton onClick={handlePlusClick}>+</PlusButton>
+                </div>
+              </TableCell>
+              <TableCell>
+                <div>Offer</div>
+                <div>
+                  <PlusButton onClick={handlePlusClick}>+</PlusButton>
+                </div>
+              </TableCell>
+            </tr>
+          </TableHead>
+          <tbody>
+            <TableRow>
+              <TableCell>
+                <InfoCard>Info Card 1</InfoCard>
+              </TableCell>
+              <TableCell>
+                <InfoCard>Info Card 3</InfoCard>
+              </TableCell>
+              <TableCell>
+                <InfoCard>Info Card 5</InfoCard>
+              </TableCell>
+              <TableCell>
+                <InfoCard>Info Card 7</InfoCard>
+              </TableCell>
+              <TableCell>
+                <InfoCard>Info Card 9</InfoCard>
+              </TableCell>
+            </TableRow>
+          </tbody>
+        </StyledTable>
+        <ModalOverlay isVisible={isCardVisible}>
+          <StandardCard
+            isVisible={isCardVisible}
+            setCardVisibility={setCardVisibility}
+          />
+        </ModalOverlay>
+      </DashboardWrapper>
+    </HorizontalWrapper>
   );
 };
 
 export default Dashboard;
+
+const HorizontalWrapper = styled.div`
+  display: flex;
+`;
