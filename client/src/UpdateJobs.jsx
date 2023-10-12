@@ -17,14 +17,37 @@ const UpdateJobs = () => {
 
     const application_id = null;
 
+    useEffect(() => {
+        fetchApplications();
+    }, []);
+
     const fetchApplications = async () => {
         try {
             const data = await ky(`http://localhost:3000/api/jobs/users/${"test"}/applications`).json();
             setApplications(data);
+            console.log(data)
         } catch (error) {
             console.error('Error fetching applications:', error);
         }
     };
+
+    const deleteApplication = async (application_id) => {
+        try {
+            await ky.delete(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`);
+            fetchApplications();
+        } catch (error) {
+            console.error('Error deleting application:', error);
+        }
+    }
+
+    const updateApplication = async (application_id) => {
+        try {
+            await ky.put(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`, { json: formData });
+            fetchApplications();
+        } catch (error) {
+            console.error('Error deleting application:', error);
+        }
+    }
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -36,17 +59,10 @@ const UpdateJobs = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+
         try {
-            if (application_id) {
-                // Update existing application
-                await ky.put(`http://localhost:3000/api/jobs/users/${user?.sub}/applications/${1}`, { json: formData });
-            } else {
-                // Create new application
-                console.log("Sending application")
-                await ky.post(`http://localhost:3000/api/jobs/users/${"test"}/applications`, { json: formData });
-            }
-            //fetchApplications();  // Refresh the applications list
+            await ky.post(`http://localhost:3000/api/jobs/users/${"test"}/applications`, { json: formData });
+            fetchApplications();
         } catch (error) {
             console.error('Error submitting application:', error);
         }
@@ -132,13 +148,18 @@ const UpdateJobs = () => {
                 <button onClick={fetchApplications}>Fetch Applications</button>
                 {applications.map(app => (
                     <div key={app.application_id}>
-                        <p>GPT Rating: {app.gpt_rating}</p>
-                        <p>Status: {app.status}</p>
-                        <p>Company Name: {app.company_name}</p>
-                        <p>Position Title: {app.position_title}</p>
-                        <p>Work Location: {app.work_location}</p>
-                        <p>Requested Experience: {app.requested_experience}</p>
-                        <p>Requested Education: {app.requested_education}</p>
+                        <h2>Job #{app.application_id}</h2>
+                        <button onClick={() => deleteApplication(app.application_id)}>Delete</button>
+                        <button onClick={() => updateApplication(app.application_id)}>Update (with info from form at top)</button>
+                        <ul>
+                            <li>GPT Rating: {app.gpt_rating}</li>
+                            <li>Status: {app.status}</li>
+                            <li>Company Name: {app.company_name}</li>
+                            <li>Position Title: {app.position_title}</li>
+                            <li>Work Location: {app.work_location}</li>
+                            <li>Requested Experience: {app.requested_experience}</li>
+                            <li>Requested Education: {app.requested_education}</li>
+                        </ul>
                     </div>
                 ))}
             </div>
