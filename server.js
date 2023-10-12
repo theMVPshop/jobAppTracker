@@ -4,6 +4,7 @@ import 'dotenv/config';
 import OpenAI from "openai";
 import resumeRouter from "./server/routes/resume.js";
 import scrapeRouter from "./server/routes/scrape.js";
+import applicationRouter from "./server/routes/applicationTracker.js";
 
 export const openai = new OpenAI();
 
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use("/api/resume", resumeRouter);
 app.use("/api/scrape", scrapeRouter);
+app.use("/api/jobs", applicationRouter);
 
 const PORT = 3000;
 app.listen(PORT, () => {
