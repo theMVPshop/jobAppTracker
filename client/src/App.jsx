@@ -5,6 +5,7 @@ import { Auth0Provider } from "@auth0/auth0-react";
 import DashboardPlaceholder from "./components/dashboard/DashboardPlaceholder";
 import LandingBar from "./components/landing/LandingBar";
 import AuthenticationGuard from "./components/AuthenticationGuard";
+import UpdateJobs from "./UpdateJobs";
 
 //Theme Use Example:
 //font-family: ${(props) => props.theme.fonts.main}
@@ -48,6 +49,11 @@ function App() {
             <Route
               path="/dashboard"
               element={<AuthenticationGuard component={DashboardPlaceholder} />}
+            />
+
+            <Route
+              path="/jobs"
+              element={<UpdateJobs />}
             />
           </Routes>
         </Router>
