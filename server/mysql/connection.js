@@ -26,11 +26,27 @@ console.log(`[MySQL] Connection to ${database} established.`);
 console.log("[MySQL] Initializing database...");
 
 async function initializeDatabase() {
+
+    // If you need to drop tables to start fresh, uncomment this code:
+
+    // const dropTableStatements = [
+    //     `DROP TABLE IF EXISTS applications;`,
+    //     `DROP TABLE IF EXISTS users;`,
+    //     `DROP TABLE IF EXISTS resume;`
+    // ];
+    // try {
+    //     console.log('[MySQL] Deleting tables...');
+    //     for (let statement of dropTableStatements) {
+    //         await con.execute(statement);
+    //     }
+    //     console.log('[MySQL] Deleted tables.');
+    // } catch (error) {
+    //     console.error('[MySQL] Error deleting tables:', error);
+    // }
+
     const createStatements = [
         `CREATE TABLE IF NOT EXISTS users (
             id VARCHAR(30) NOT NULL PRIMARY KEY,
-            email VARCHAR(50) UNIQUE KEY,
-            password VARCHAR(50),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
@@ -38,19 +54,20 @@ async function initializeDatabase() {
             user_id VARCHAR(30) NOT NULL,
             gpt_rating INT,
             status VARCHAR(20),
+            description TEXT,
             date_applied TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             company_name VARCHAR(100),
             position_title VARCHAR(100),
-            work_location VARCHAR(100),
+            location VARCHAR(100),
             skills VARCHAR(1000),
-            requested_experience VARCHAR(1000),
-            requested_education VARCHAR(1000),
+            experience VARCHAR(1000),
+            salary INT,
             FOREIGN KEY(user_id) references users(id)
         );`,
         `CREATE TABLE IF NOT EXISTS resume (
-            resume_text LONGTEXT,
+            resume_text TEXT,
             resume_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            user_id VARCHAR(30) NOT NULL DEFAULT '1',
+            user_id VARCHAR(30) NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`
     ];
