@@ -19,8 +19,8 @@ const UpdateJobs = () => {
 
     const fetchApplications = async () => {
         try {
-            const response = await ky(`http://localhost:3000/api/jobs/users/${user.sub}/applications`);
-            setApplications(response.data);
+            const data = await ky(`http://localhost:3000/api/jobs/users/${"test"}/applications`).json();
+            setApplications(data);
         } catch (error) {
             console.error('Error fetching applications:', error);
         }
@@ -129,6 +129,7 @@ const UpdateJobs = () => {
             </form>
             <div>
                 <h2>Applications</h2>
+                <button onClick={fetchApplications}>Fetch Applications</button>
                 {applications.map(app => (
                     <div key={app.application_id}>
                         <p>GPT Rating: {app.gpt_rating}</p>
