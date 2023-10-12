@@ -45,8 +45,9 @@ export const getUserApplications = async (req, res) => {
 
     try {
         const [rows, fields] = await pool.execute(sql, [userId]);
-        return res.json(rows);
+        return res.status(200).json(rows);
     } catch (err) {
+        console.log(err);
         return res.status(500).send(err);
     }
 };
