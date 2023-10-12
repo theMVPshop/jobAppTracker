@@ -20,7 +20,6 @@ const pool = mysql.createPool({
 
 const con = await pool.getConnection();
 
-
 console.log(`[MySQL] Connection to ${database} established.`);
 
 console.log("[MySQL] Initializing database...");
