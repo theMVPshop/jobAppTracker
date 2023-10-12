@@ -72,13 +72,16 @@ export const updateApplication = async (req, res) => {
     ];
 
     try {
-        const [rows, fields] = await pool.execute(sql, values);
-        return res.json(rows);
+        console.log("Executing...");
+        const formattedSql = con.format(sql, values);
+        const [rows] = await con.execute(formattedSql);
+        console.log("Result:", rows);
+        return res.status(200).json(rows);
     } catch (err) {
+        console.error(err);
         return res.status(500).send(err);
     }
 };
-
 
 // // const updateApplication = (req, res) => {
 // //     const sql = "UPDATE applications SET company_name = ?, position_title = ?, work_location = ?, requested_experience = ?, requested_education = ?  WHERE user_id = ? AND application_id =?"
