@@ -12,7 +12,7 @@ const LandingBar = () => {
 
   return (
     <Nav>
-      <Container>
+      <Container className={isAuthenticated ? "expanded" : "collapsed"}>
         <h1>Job App Tracker</h1>
         {!isAuthenticated && (
           <>
@@ -50,6 +50,13 @@ const Nav = styled.div`
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  .collapsed {
+    max-width: 1920px;
+  }
+  .expanded {
+    max-width: 100%;
+    padding: 25px;
+  }
 `;
 
 const Container = styled.div`
@@ -62,9 +69,7 @@ const Container = styled.div`
   align-items: center;
   background-color: transparent;
   h1 {
-    @media only screen and (max-width: 1160px) {
-      font-size: 25px;
-    }
+    font-size: 25px;
   }
   @media only screen and (max-width: 700px) {
     padding: 0 50px;

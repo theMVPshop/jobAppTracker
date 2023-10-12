@@ -21,5 +21,5 @@ const SidebarWrapper = styled.div`
 
 const SidebarContent = styled.div`
   width: 200px;
-  margin: 20px;
+  margin: 25px;
 `;

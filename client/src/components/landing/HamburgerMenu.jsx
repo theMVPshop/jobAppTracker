@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import Authentication from "../Authentication";
+import { useAuth0 } from "@auth0/auth0-react";
 
 const HamburgerMenu = ({ open }) => {
+  const { isAuthenticated } = useAuth0();
   return (
     <Wrapper>
-      <SubWrapper>
+      <SubWrapper className={isAuthenticated ? "expanded" : "collapsed"}>
         <Menu open={open}>
           <div>
             <ul>
@@ -27,13 +29,26 @@ const Wrapper = styled.div`
   justify-content: center;
   top: 60px;
   left: 0;
+  z-index: 5;
+  .collapsed {
+    max-width: 1920px;
+  }
+  .expanded {
+    max-width: 100%;
+    margin: 0 40px;
+    padding: 0;
+  }
 `;
 
 const SubWrapper = styled.div`
   max-width: 1920px;
   width: 100%;
+  margin: 0 100px;
   display: flex;
   justify-content: flex-end;
+  @media only screen and (max-width: 700px) {
+    margin: 0 !important;
+  }
 `;
 
 const Menu = styled.div`
