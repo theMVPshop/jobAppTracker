@@ -35,8 +35,22 @@ const Authentication = () => {
 
         const { user_metadata } = await metadataResponse.json();
 
+        
+
         setUserMetadata(user_metadata);
-        console.log("uuid: " + user.sub);
+        
+        const postUuid = (e) => {
+          const res = {
+            method: 'POST', 
+            headers: {
+                "Content-Type": 'application/json'
+            },
+            body: JSON.stringify({
+                parcel: user.sub
+            })
+          }
+        }
+        // console.log("uuid: " + user.sub);
       } catch (e) {
         console.log(e.message);
       }
