@@ -4,6 +4,7 @@ import { Icon } from "@blueprintjs/core";
 import HamburgerMenu from "./HamburgerMenu";
 import Authentication from "../Authentication";
 import AccountTile from "../../reusable/AccountTile";
+import SearchBar from "../dashboard/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingBar = () => {
@@ -28,12 +29,15 @@ const LandingBar = () => {
           </>
         )}
         {isAuthenticated && (
-          <ProfileDropdown>
-            <HamburgerMenu open={open} setOpen={setOpen} />
-            <MenuButton open={open} onClick={() => setOpen(!open)}>
-              <AccountTile />
-            </MenuButton>
-          </ProfileDropdown>
+          <>
+            <SearchBar />
+            <ProfileDropdown>
+              <HamburgerMenu open={open} setOpen={setOpen} />
+              <MenuButton open={open} onClick={() => setOpen(!open)}>
+                <AccountTile />
+              </MenuButton>
+            </ProfileDropdown>
+          </>
         )}
       </Container>
     </Nav>
