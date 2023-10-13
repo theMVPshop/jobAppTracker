@@ -48,26 +48,25 @@ function UploadFile() {
             alert("Please enter a job description.");
             return;
         }
-        if (!isAuthenticated) {
-            alert("Please log in first.");
-            return;
-        }
-        if (!user.sub) {
-            alert("Error getting user ID.");
-            return;
-        }
+        // if (!isAuthenticated) {
+        //     alert("Please log in first.");
+        //     return;
+        // }
+        // if (!user.sub) {
+        //     alert("Error getting user ID.");
+        //     return;
+        // }
 
         setIsLoading(true);
 
         const formData = new FormData();
         formData.append("pdfFile", file);
-        formData.append("user_id", user.sub);
-        formData.append("resume_id", 1)
 
         console.log("Uploading...")
 
         try {
-            const resumeText = await ky.post("http://localhost:3000/api/resume/upload", { body: formData }).text();
+            await ky.post(`http://localhost:3000/api/resume/users/${"test"}/upload`, { body: formData });
+            const resumeText = await ky(`http://localhost:3000/api/resume/users/${"test"}`).text();
             const rating = await ky.post("http://localhost:3000/api/resume/rate", { json: { resumeText, jobInfo } }).text();
             setGptRating(rating);
 
