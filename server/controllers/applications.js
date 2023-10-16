@@ -27,7 +27,7 @@ export const createApplication = async (req, res) => {
             req.body.location.substring(0, 100),
             req.body.skills.substring(0, 1000),
             req.body.experience.substring(0, 1000),
-            parseInt(req.body.salary)
+            req.body.salary.substring(0, 30)
         ];
 
         const formattedSql = con.format(createApplicationSql, values);
@@ -79,7 +79,7 @@ export const updateApplication = async (req, res) => {
             req.body.location.substring(0, 100),
             req.body.skills.substring(0, 1000),
             req.body.experience.substring(0, 1000),
-            parseInt(req.body.salary),
+            req.body.salary.substring(0, 30),
             req.params.application_id
         ];
         const formattedSql = con.format(sql, values);
