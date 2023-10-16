@@ -47,7 +47,7 @@ async function initializeDatabase() {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
-            application_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             user_id VARCHAR(30) NOT NULL,
             gpt_rating INT,
             gpt_analysis VARCHAR(1000),

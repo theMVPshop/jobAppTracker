@@ -63,7 +63,7 @@ export const updateApplication = async (req, res) => {
     const sql = `
         UPDATE applications
         SET gpt_rating = ?, gpt_analysis = ?, status = ?, description = ?, date_applied = ?, company_name = ?, position_title = ?, location = ?, skills = ?, experience = ?, salary = ?
-        WHERE application_id = ?
+        WHERE id = ?
     `;
     const con = await pool.getConnection();
     try {
@@ -80,7 +80,7 @@ export const updateApplication = async (req, res) => {
             req.body.skills.substring(0, 1000),
             req.body.experience.substring(0, 1000),
             req.body.salary.substring(0, 30),
-            req.params.application_id
+            req.params.id
         ];
         const formattedSql = con.format(sql, values);
         const [rows] = await con.execute(formattedSql);
@@ -94,11 +94,11 @@ export const updateApplication = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    const sql = "DELETE FROM applications WHERE application_id = ?";
+    const sql = "DELETE FROM applications WHERE id = ?";
 
     const con = await pool.getConnection();
     try {
-        const values = [req.params.application_id];
+        const values = [req.params.id];
         const formattedSql = con.format(sql, values);
         const [rows] = await con.execute(formattedSql);
         return res.status(200).json(rows);
