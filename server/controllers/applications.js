@@ -14,7 +14,7 @@ export const createApplication = async (req, res) => {
             await con.execute(con.format(createUserSql, [userId, userEmail, userPassword]));
         }
 
-        const createApplicationSql = "INSERT INTO jobs (user_id, gpt_rating, gpt_analysis, status, description, date_applied, company_name, position_title, location, skills, experience, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        const createApplicationSql = "INSERT INTO applications (user_id, gpt_rating, gpt_analysis, status, description, date_applied, company_name, position_title, location, skills, experience, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         const values = [
             userId,
             parseInt(req.body.gpt_rating),
@@ -44,7 +44,7 @@ export const createApplication = async (req, res) => {
 
 
 export const getUserApplications = async (req, res) => {
-    const sql = "SELECT * FROM jobs WHERE user_id = ?";
+    const sql = "SELECT * FROM applications WHERE user_id = ?";
     const con = await pool.getConnection();
     try {
         const userId = req.params.user_id;
@@ -61,9 +61,9 @@ export const getUserApplications = async (req, res) => {
 
 export const updateApplication = async (req, res) => {
     const sql = `
-        UPDATE jobs
+        UPDATE applications
         SET gpt_rating = ?, gpt_analysis = ?, status = ?, description = ?, date_applied = ?, company_name = ?, position_title = ?, location = ?, skills = ?, experience = ?, salary = ?
-        WHERE job_id = ?
+        WHERE application_id = ?
     `;
     const con = await pool.getConnection();
     try {
@@ -80,7 +80,7 @@ export const updateApplication = async (req, res) => {
             req.body.skills.substring(0, 1000),
             req.body.experience.substring(0, 1000),
             parseInt(req.body.salary),
-            req.params.job_id
+            req.params.application_id
         ];
         const formattedSql = con.format(sql, values);
         const [rows] = await con.execute(formattedSql);
@@ -94,7 +94,7 @@ export const updateApplication = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    const sql = "DELETE FROM jobs WHERE job_id = ?";
+    const sql = "DELETE FROM applications WHERE application_id = ?";
 
     const con = await pool.getConnection();
     try {
