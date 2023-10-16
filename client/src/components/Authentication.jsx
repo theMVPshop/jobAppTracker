@@ -35,22 +35,23 @@ const Authentication = () => {
 
         const { user_metadata } = await metadataResponse.json();
 
-        
+
 
         setUserMetadata(user_metadata);
-        
-        const postUuid = (e) => {
-          const res = {
-            method: 'POST', 
-            headers: {
-                "Content-Type": 'application/json'
-            },
-            body: JSON.stringify({
-                parcel: user.sub
-            })
-          }
-        }
-        // console.log("uuid: " + user.sub);
+
+        // function that will send uuid to backend
+        const postData = {
+          parcel: user?.sub,
+        };
+
+        // POST request
+        fetch('http://localhost:3000/api/uuid/post', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(postData),
+        });
       } catch (e) {
         console.log(e.message);
       }
