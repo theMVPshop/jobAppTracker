@@ -54,7 +54,7 @@ function App() {
             />
 
             <Route
-              path="/jobs"
+              path="/applications"
               element={<UpdateJobs />}
             />
 
