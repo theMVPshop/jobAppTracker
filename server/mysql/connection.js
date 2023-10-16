@@ -29,7 +29,7 @@ async function initializeDatabase() {
     // If you need to drop tables to start fresh, uncomment this code:
 
     // const dropTableStatements = [
-    //     `DROP TABLE IF EXISTS applications, users, resume;`
+    //     `DROP TABLE IF EXISTS jobs, applications, users, resume;`
     // ];
     // try {
     //     console.log('[MySQL] Deleting tables...');
@@ -47,7 +47,7 @@ async function initializeDatabase() {
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
-            application_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             user_id VARCHAR(30) NOT NULL,
             gpt_rating INT,
             gpt_analysis VARCHAR(1000),
@@ -59,7 +59,7 @@ async function initializeDatabase() {
             location VARCHAR(100),
             skills VARCHAR(1000),
             experience VARCHAR(1000),
-            salary INT,
+            salary varchar(30),
             FOREIGN KEY(user_id) references users(id)
         );`,
         `CREATE TABLE IF NOT EXISTS resume (

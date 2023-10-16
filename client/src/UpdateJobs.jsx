@@ -5,14 +5,18 @@ import { useAuth0 } from '@auth0/auth0-react';
 const UpdateJobs = () => {
     const { user, isAuthenticated, loginWithRedirect, getAccessTokenSilently } = useAuth0();
     const [applications, setApplications] = useState([]);
-    const [formData, setFormData] = useState({
-        gpt_rating: '',
-        status: '',
-        company_name: '',
-        position_title: '',
-        work_location: '',
-        requested_experience: '',
-        requested_education: ''
+    const [newApplicationData, setNewApplicationData] = useState({
+        gpt_rating: 5,
+        gpt_analysis: "",
+        status: "",
+        description: "",
+        date_applied: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        company_name: "",
+        position_title: "",
+        location: "",
+        skills: "",
+        experience: "",
+        salary: ""
     });
 
     useEffect(() => {
@@ -40,7 +44,7 @@ const UpdateJobs = () => {
 
     const updateApplication = async (application_id) => {
         try {
-            await ky.put(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`, { json: formData });
+            await ky.put(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`, { json: newApplicationData });
             fetchApplications();
         } catch (error) {
             console.error('Error deleting application:', error);
@@ -49,8 +53,8 @@ const UpdateJobs = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        setFormData({
-            ...formData,
+        setNewApplicationData({
+            ...newApplicationData,
             [name]: value
         });
     };
@@ -59,7 +63,7 @@ const UpdateJobs = () => {
         e.preventDefault();
 
         try {
-            await ky.post(`http://localhost:3000/api/jobs/users/${"test"}/applications`, { json: formData });
+            await ky.post(`http://localhost:3000/api/jobs/users/${"test"}/applications`, { json: newApplicationData });
             fetchApplications();
         } catch (error) {
             console.error('Error submitting application:', error);
@@ -72,11 +76,22 @@ const UpdateJobs = () => {
                 <label>
                     GPT Rating:
                     <input
-                        type="text"
+                        type="number"
+                        min={1}
+                        max={5}
                         name="gpt_rating"
-                        value={formData.gpt_rating}
+                        value={newApplicationData.gpt_rating}
                         onChange={handleInputChange}
                         placeholder="GPT Rating"
+                    />
+                </label>
+                <label>
+                    GPT Analysis:
+                    <textarea
+                        name="gpt_analysis"
+                        value={newApplicationData.gpt_analysis}
+                        onChange={handleInputChange}
+                        placeholder="GPT Analysis"
                     />
                 </label>
                 <label>
@@ -84,9 +99,27 @@ const UpdateJobs = () => {
                     <input
                         type="text"
                         name="status"
-                        value={formData.status}
+                        value={newApplicationData.status}
                         onChange={handleInputChange}
                         placeholder="Status"
+                    />
+                </label>
+                <label>
+                    Job Description:
+                    <textarea
+                        name="description"
+                        value={newApplicationData.description}
+                        onChange={handleInputChange}
+                        placeholder="Job Description"
+                    />
+                </label>
+                <label>
+                    Date Applied:
+                    <input
+                        type="datetime-local"
+                        name="date_applied"
+                        value={newApplicationData.date_applied}
+                        onChange={handleInputChange}
                     />
                 </label>
                 <label>
@@ -94,7 +127,7 @@ const UpdateJobs = () => {
                     <input
                         type="text"
                         name="company_name"
-                        value={formData.company_name}
+                        value={newApplicationData.company_name}
                         onChange={handleInputChange}
                         placeholder="Company Name"
                     />
@@ -104,39 +137,47 @@ const UpdateJobs = () => {
                     <input
                         type="text"
                         name="position_title"
-                        value={formData.position_title}
+                        value={newApplicationData.position_title}
                         onChange={handleInputChange}
                         placeholder="Position Title"
                     />
                 </label>
                 <label>
-                    Work Location:
+                    Location:
                     <input
                         type="text"
-                        name="work_location"
-                        value={formData.work_location}
+                        name="location"
+                        value={newApplicationData.ocation}
                         onChange={handleInputChange}
-                        placeholder="Work Location"
+                        placeholder="Location"
                     />
                 </label>
                 <label>
-                    Requested Experience:
-                    <input
-                        type="text"
-                        name="requested_experience"
-                        value={formData.requested_experience}
+                    Skills:
+                    <textarea
+                        name="skills"
+                        value={newApplicationData.skills}
+                        onChange={handleInputChange}
+                        placeholder="Skills"
+                    />
+                </label>
+                <label>
+                    Experience:
+                    <textarea
+                        name="experience"
+                        value={newApplicationData.experience}
                         onChange={handleInputChange}
                         placeholder="Requested Experience"
                     />
                 </label>
                 <label>
-                    Requested Education:
+                    Salary:
                     <input
                         type="text"
-                        name="requested_education"
-                        value={formData.requested_education}
+                        name="salary"
+                        value={newApplicationData.salary}
                         onChange={handleInputChange}
-                        placeholder="Requested Education"
+                        placeholder="Salary"
                     />
                 </label>
                 <button type="submit">Submit</button>
@@ -144,19 +185,23 @@ const UpdateJobs = () => {
             <div>
                 <h2>Applications</h2>
                 <button onClick={fetchApplications}>Fetch Applications</button>
-                {applications.map(app => (
-                    <div key={app.application_id}>
-                        <h2>Job #{app.application_id}</h2>
-                        <button onClick={() => deleteApplication(app.application_id)}>Delete</button>
-                        <button onClick={() => updateApplication(app.application_id)}>Update (with info from form at top)</button>
+                {applications.map(application => (
+                    <div key={application.id}>
+                        <h2>Job #{application.id}</h2>
+                        <button onClick={() => deleteApplication(application.id)}>Delete</button>
+                        <button onClick={() => updateApplication(application.id)}>Update (with info from form at top)</button>
                         <ul>
-                            <li>GPT Rating: {app.gpt_rating}</li>
-                            <li>Status: {app.status}</li>
-                            <li>Company Name: {app.company_name}</li>
-                            <li>Position Title: {app.position_title}</li>
-                            <li>Work Location: {app.work_location}</li>
-                            <li>Requested Experience: {app.requested_experience}</li>
-                            <li>Requested Education: {app.requested_education}</li>
+                            <li>GPT Rating: {application.gpt_rating}</li>
+                            <li>GPT Analysis: {application.gpt_analysis}</li>
+                            <li>Status: {application.status}</li>
+                            <li>Job Description: {application.description}</li>
+                            <li>Date Applied: {application.date_applied}</li>
+                            <li>Company Name: {application.company_name}</li>
+                            <li>Position Title: {application.position_title}</li>
+                            <li>Location: {application.location}</li>
+                            <li>Skills: {application.skills}</li>
+                            <li>Experience: {application.experience}</li>
+                            <li>Salary: {application.salary}</li>
                         </ul>
                     </div>
                 ))}
