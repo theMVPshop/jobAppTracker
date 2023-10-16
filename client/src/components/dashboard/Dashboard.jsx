@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
-
 const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -62,15 +61,70 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 999;
+  z-index: 9999;
+  cursor: pointer;
 `;
 
 const Dashboard = () => {
   const [isCardVisible, setCardVisibility] = useState(false);
+  const [rejectedCards, setRejectedCards] = useState([]);
+  const [appliedCards, setAppliedCards] = useState([]);
+  const [phoneCards, setPhoneCards] = useState([]);
+  const [onSiteCards, setOnSiteCards] = useState([]);
+  const [offerCards, setOfferCards] = useState([]);
 
-  const handlePlusClick = () => {
-    setCardVisibility(!isCardVisible);
+  const handlePlusClick = (column) => {
+    setCardVisibility(true);
+    setCardColumn(column);
   };
+
+  const handleCardSubmit = (column, card) => {
+    setCardVisibility(false);
+    switch (column) {
+      case "rejected":
+        setRejectedCards([...rejectedCards, card]);
+        break;
+      case "applied":
+        setAppliedCards([...appliedCards, card]);
+        break;
+      case "phone":
+        setPhoneCards([...phoneCards, card]);
+        break;
+      case "on site":
+        setOnSiteCards([...onSiteCards, card]);
+        break;
+      case "offer":
+        setOfferCards([...offerCards, card]);
+        break;
+      default:
+        break;
+    }
+  };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (isCardVisible) {
+        const modal = document.querySelector(".modal-content");
+        if (modal && !modal.contains(event.target)) {
+          setCardVisibility(false);
+        }
+      }
+    }
+
+    if (isCardVisible) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isCardVisible]);
+
+  const data = [
+    ["Info Card 1", "Info Card 2", "Info Card 3", "Info Card 4", "Info Card 5"],
+  ];
 
   return (
     <DashboardWrapper>
@@ -129,11 +183,17 @@ const Dashboard = () => {
           </TableRow>
         </tbody>
       </StyledTable>
-      <ModalOverlay isVisible={isCardVisible}>
-        <StandardCard
-          isVisible={isCardVisible}
-          setCardVisibility={setCardVisibility}
-        />
+      <ModalOverlay
+        isVisible={isCardVisible}
+        onClick={() => setCardVisibility(false)}
+      >
+        <div>
+          <StandardCard
+            isVisible={isCardVisible}
+            setCardVisibility={setCardVisibility}
+            onCardSubmit={(card) => handleCardSubmit(card)}
+          />
+        </div>
       </ModalOverlay>
     </DashboardWrapper>
   );
