@@ -59,7 +59,7 @@ async function initializeDatabase() {
             location VARCHAR(100),
             skills VARCHAR(1000),
             experience VARCHAR(1000),
-            salary INT,
+            salary varchar(30),
             FOREIGN KEY(user_id) references users(id)
         );`,
         `CREATE TABLE IF NOT EXISTS resume (
