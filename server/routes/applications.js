@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { createApplication, getUserApplications, updateApplication, deleteApplication } from '../controllers/jobs.js'
+import { createApplication, getUserApplications, updateApplication, deleteApplication } from '../controllers/applications.js'
 
 const router = Router()
 
