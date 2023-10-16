@@ -67,12 +67,8 @@ export const rateResume = async (req, res) => {
 
         const charLimit = 10000;
 
-        if (resumeText.length > charLimit) {
-            resumeText = resumeText.substring(0, charLimit);
-        }
-        if (jobInfo.length > charLimit) {
-            jobInfo = jobInfo.substring(0, charLimit);
-        }
+        resumeText = resumeText.substring(0, charLimit);
+        jobInfo = jobInfo.substring(0, charLimit);
 
         const content = `Here is my resume:
         ${resumeText}
