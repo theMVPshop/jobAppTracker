@@ -1,11 +1,11 @@
 import styled from "styled-components";
-import ButtonFilled from "../../reusable/ButtonFilled";
+import UploadResume from "./UploadResume";
 
 const Sidebar = () => {
   return (
     <SidebarWrapper>
       <SidebarContent>
-        <ButtonFilled content="Upload Resume" />
+        <UploadResume />
       </SidebarContent>
     </SidebarWrapper>
   );

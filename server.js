@@ -4,7 +4,7 @@ import 'dotenv/config';
 import OpenAI from "openai";
 import resumeRouter from "./server/routes/resume.js";
 import scrapeRouter from "./server/routes/scrape.js";
-import applicationRouter from "./server/routes/applicationTracker.js";
+import jobsRouter from "./server/routes/jobs.js";
 import passUuidRouter from "./server/routes/passUuid.js"
 
 export const openai = new OpenAI();
@@ -16,10 +16,9 @@ app.use(express.json());
 
 app.use("/api/resume", resumeRouter);
 app.use("/api/scrape", scrapeRouter);
-app.use("/api/jobs", applicationRouter);
-app.use("/api/uuid", passUuidRouter)
+app.use("/api/jobs", jobsRouter);
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);
 });

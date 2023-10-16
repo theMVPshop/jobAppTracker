@@ -6,6 +6,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import LandingBar from "./components/landing/LandingBar";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 import UpdateJobs from "./UpdateJobs";
+import UploadFile from "./UploadFile";
 
 //Theme Use Example:
 //font-family: ${(props) => props.theme.fonts.main}
@@ -55,6 +56,11 @@ function App() {
             <Route
               path="/jobs"
               element={<UpdateJobs />}
+            />
+
+            <Route
+              path="/resume"
+              element={<UploadFile />}
             />
           </Routes>
         </Router>
