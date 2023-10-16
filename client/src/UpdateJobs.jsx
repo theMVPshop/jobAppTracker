@@ -15,8 +15,6 @@ const UpdateJobs = () => {
         requested_education: ''
     });
 
-    const application_id = null;
-
     useEffect(() => {
         fetchApplications();
     }, []);
