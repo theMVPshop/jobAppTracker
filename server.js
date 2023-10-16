@@ -17,6 +17,7 @@ app.use(express.json());
 app.use("/api/resume", resumeRouter);
 app.use("/api/scrape", scrapeRouter);
 app.use("/api/jobs", jobsRouter);
+app.use("/api/uuid", passUuidRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
