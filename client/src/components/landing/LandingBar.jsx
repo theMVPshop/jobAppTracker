@@ -4,6 +4,7 @@ import { Icon } from "@blueprintjs/core";
 import HamburgerMenu from "./HamburgerMenu";
 import Authentication from "../Authentication";
 import AccountTile from "../../reusable/AccountTile";
+import SearchBar from "../dashboard/SearchBar";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingBar = () => {
@@ -12,7 +13,7 @@ const LandingBar = () => {
 
   return (
     <Nav>
-      <Container>
+      <Container className={isAuthenticated ? "expanded" : "collapsed"}>
         <h1>Job App Tracker</h1>
         {!isAuthenticated && (
           <>
@@ -28,12 +29,15 @@ const LandingBar = () => {
           </>
         )}
         {isAuthenticated && (
-          <ProfileDropdown>
-            <HamburgerMenu open={open} setOpen={setOpen} />
-            <MenuButton open={open} onClick={() => setOpen(!open)}>
-              <AccountTile />
-            </MenuButton>
-          </ProfileDropdown>
+          <>
+            <SearchBar />
+            <ProfileDropdown>
+              <HamburgerMenu open={open} setOpen={setOpen} />
+              <MenuButton open={open} onClick={() => setOpen(!open)}>
+                <AccountTile />
+              </MenuButton>
+            </ProfileDropdown>
+          </>
         )}
       </Container>
     </Nav>
@@ -50,6 +54,13 @@ const Nav = styled.div`
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  .collapsed {
+    max-width: 1920px;
+  }
+  .expanded {
+    max-width: 100%;
+    padding: 25px;
+  }
 `;
 
 const Container = styled.div`
@@ -62,9 +73,7 @@ const Container = styled.div`
   align-items: center;
   background-color: transparent;
   h1 {
-    @media only screen and (max-width: 1160px) {
-      font-size: 25px;
-    }
+    font-size: 25px;
   }
   @media only screen and (max-width: 700px) {
     padding: 0 50px;
