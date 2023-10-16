@@ -15,7 +15,7 @@ app.use(express.json());
 
 app.use("/api/resume", resumeRouter);
 app.use("/api/scrape", scrapeRouter);
-app.use("/api/jobs", applicationsRouter);
+app.use("/api/applications", applicationsRouter);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
