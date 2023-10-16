@@ -14,7 +14,7 @@ export const createApplication = async (req, res) => {
             await con.execute(con.format(createUserSql, [userId, userEmail, userPassword]));
         }
 
-        const createApplicationSql = "INSERT INTO jobs (user_id, gpt_rating, gpt_analysis, status, description, date_applied, company_name, position_title, location, skills, experience, salary) VALUES ()"
+        const createApplicationSql = "INSERT INTO jobs (user_id, gpt_rating, gpt_analysis, status, description, date_applied, company_name, position_title, location, skills, experience, salary) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
         const values = [
             userId,
             parseInt(req.body.gpt_rating),
