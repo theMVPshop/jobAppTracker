@@ -28,18 +28,18 @@ async function initializeDatabase() {
 
     // If you need to drop tables to start fresh, uncomment this code:
 
-    // const dropTableStatements = [
-    //     `DROP TABLE IF EXISTS applications, users, resume;`
-    // ];
-    // try {
-    //     console.log('[MySQL] Deleting tables...');
-    //     for (let statement of dropTableStatements) {
-    //         await con.execute(statement);
-    //     }
-    //     console.log('[MySQL] Deleted tables.');
-    // } catch (error) {
-    //     console.error('[MySQL] Error deleting tables:', error);
-    // }
+    const dropTableStatements = [
+        `DROP TABLE IF EXISTS jobs, applications, users, resume;`
+    ];
+    try {
+        console.log('[MySQL] Deleting tables...');
+        for (let statement of dropTableStatements) {
+            await con.execute(statement);
+        }
+        console.log('[MySQL] Deleted tables.');
+    } catch (error) {
+        console.error('[MySQL] Error deleting tables:', error);
+    }
 
     const createStatements = [
         `CREATE TABLE IF NOT EXISTS users (
