@@ -5,6 +5,7 @@ import HamburgerMenu from "./HamburgerMenu";
 import Authentication from "../Authentication";
 import AccountTile from "../../reusable/AccountTile";
 import SearchBar from "../dashboard/SearchBar";
+import Logo from "../../assets/logo.png";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const LandingBar = () => {
@@ -14,7 +15,11 @@ const LandingBar = () => {
   return (
     <Nav>
       <Container className={isAuthenticated ? "expanded" : "collapsed"}>
-        <h1>Job App Tracker</h1>
+        <TitleWrap>
+          <LogoIcon src={Logo} />
+          <h1>Job App Tracker</h1>
+        </TitleWrap>
+
         {!isAuthenticated && (
           <>
             <ButtonContainer>
@@ -34,7 +39,8 @@ const LandingBar = () => {
             <ProfileDropdown>
               <HamburgerMenu open={open} setOpen={setOpen} />
               <MenuButton open={open} onClick={() => setOpen(!open)}>
-                <AccountTile />
+                {!open && <AccountTile />}
+                {open && <StyledIcon icon="cross" size={30} />}
               </MenuButton>
             </ProfileDropdown>
           </>
@@ -59,7 +65,7 @@ const Nav = styled.div`
   }
   .expanded {
     max-width: 100%;
-    padding: 25px;
+    padding: 0 25px;
   }
 `;
 
@@ -74,10 +80,19 @@ const Container = styled.div`
   background-color: transparent;
   h1 {
     font-size: 25px;
+    @media only screen and (max-width: 1000px) {
+      display: none;
+    }
   }
   @media only screen and (max-width: 700px) {
     padding: 0 50px;
   }
+`;
+
+const TitleWrap = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
 `;
 
 const DropDown = styled.div`
@@ -85,6 +100,10 @@ const DropDown = styled.div`
   @media only screen and (max-width: 1160px) {
     display: flex;
   }
+`;
+
+const LogoIcon = styled.img`
+  height: 40px;
 `;
 
 const ProfileDropdown = styled.div`

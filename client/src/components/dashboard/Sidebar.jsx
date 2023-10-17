@@ -17,6 +17,9 @@ const SidebarWrapper = styled.div`
   display: flex;
   border-top: 1px solid ${(props) => props.theme.colors.gray2};
   width: 600px;
+  @media only screen and (max-width: 700px) {
+    display: none;
+  }
 `;
 
 const SidebarContent = styled.div`
