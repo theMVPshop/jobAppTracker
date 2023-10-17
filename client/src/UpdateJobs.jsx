@@ -10,7 +10,7 @@ const UpdateJobs = () => {
         gpt_analysis: "",
         status: "",
         description: "",
-        date_applied: new Date().toISOString(),
+        date_applied: new Date().toISOString().slice(0, 16),
         company_name: "",
         position_title: "",
         location: "",
@@ -71,10 +71,10 @@ const UpdateJobs = () => {
     };
 
     return (
-        <div>
-            <form onSubmit={handleSubmit}>
+        <div style={{margin: "1rem"}}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", gap: "1rem", flexWrap: "wrap", alignItems: "center" }}>
                 <label>
-                    GPT Rating:
+                    GPT Rating:&nbsp;
                     <input
                         type="number"
                         min={1}
@@ -86,8 +86,9 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    GPT Analysis:
-                    <textarea
+                    GPT Analysis:&nbsp;
+                    <input
+                        type='text'
                         name="gpt_analysis"
                         value={newApplicationData.gpt_analysis}
                         onChange={handleInputChange}
@@ -95,7 +96,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Status:
+                    Status:&nbsp;
                     <input
                         type="text"
                         name="status"
@@ -105,8 +106,9 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Job Description:
-                    <textarea
+                    Job Description:&nbsp;
+                    <input
+                        type='text'
                         name="description"
                         value={newApplicationData.description}
                         onChange={handleInputChange}
@@ -114,7 +116,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Date Applied:
+                    Date Applied:&nbsp;
                     <input
                         type="datetime-local"
                         name="date_applied"
@@ -123,7 +125,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Company Name:
+                    Company Name:&nbsp;
                     <input
                         type="text"
                         name="company_name"
@@ -133,7 +135,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Position Title:
+                    Position Title:&nbsp;
                     <input
                         type="text"
                         name="position_title"
@@ -143,7 +145,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Location:
+                    Location:&nbsp;
                     <input
                         type="text"
                         name="location"
@@ -153,8 +155,9 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Skills:
-                    <textarea
+                    Skills:&nbsp;
+                    <input
+                        type='text'
                         name="skills"
                         value={newApplicationData.skills}
                         onChange={handleInputChange}
@@ -162,8 +165,9 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Experience:
-                    <textarea
+                    Experience:&nbsp;
+                    <input
+                        type="text"
                         name="experience"
                         value={newApplicationData.experience}
                         onChange={handleInputChange}
@@ -171,7 +175,7 @@ const UpdateJobs = () => {
                     />
                 </label>
                 <label>
-                    Salary:
+                    Salary:&nbsp;
                     <input
                         type="text"
                         name="salary"
