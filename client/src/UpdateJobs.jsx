@@ -10,7 +10,7 @@ const UpdateJobs = () => {
         gpt_analysis: "",
         status: "",
         description: "",
-        date_applied: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        date_applied: new Date().toISOString(),
         company_name: "",
         position_title: "",
         location: "",
@@ -25,7 +25,7 @@ const UpdateJobs = () => {
 
     const fetchApplications = async () => {
         try {
-            const data = await ky(`http://localhost:3000/api/jobs/users/${"test"}/applications`).json();
+            const data = await ky(`http://localhost:3000/api/applications/users/${"test"}/applications`).json();
             setApplications(data);
             console.log(data)
         } catch (error) {
@@ -35,7 +35,7 @@ const UpdateJobs = () => {
 
     const deleteApplication = async (application_id) => {
         try {
-            await ky.delete(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`);
+            await ky.delete(`http://localhost:3000/api/applications/users/${"test"}/applications/${application_id}`);
             fetchApplications();
         } catch (error) {
             console.error('Error deleting application:', error);
@@ -44,7 +44,7 @@ const UpdateJobs = () => {
 
     const updateApplication = async (application_id) => {
         try {
-            await ky.put(`http://localhost:3000/api/jobs/users/${"test"}/applications/${application_id}`, { json: newApplicationData });
+            await ky.put(`http://localhost:3000/api/applications/users/${"test"}/applications/${application_id}`, { json: newApplicationData });
             fetchApplications();
         } catch (error) {
             console.error('Error deleting application:', error);
@@ -63,7 +63,7 @@ const UpdateJobs = () => {
         e.preventDefault();
 
         try {
-            await ky.post(`http://localhost:3000/api/jobs/users/${"test"}/applications`, { json: newApplicationData });
+            await ky.post(`http://localhost:3000/api/applications/users/${"test"}/applications`, { json: newApplicationData });
             fetchApplications();
         } catch (error) {
             console.error('Error submitting application:', error);
