@@ -6,6 +6,8 @@ import styled from "styled-components";
 const AccountTile = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0();
 
+  console.log(user);
+
   if (isLoading) {
     return <div>Loading ...</div>;
   }

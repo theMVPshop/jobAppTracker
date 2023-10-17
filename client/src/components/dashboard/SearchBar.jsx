@@ -20,7 +20,7 @@ const SearchBar = () => {
           onChange={(event) => {
             setSearchQuery(event.target.value);
           }}
-          placeholder="Search job titles or companies..."
+          placeholder="Search applications..."
           value={searchQuery}
         />
         {searchQuery ? (
