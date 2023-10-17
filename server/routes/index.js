@@ -13,4 +13,5 @@ router.delete('/applications/:application_id', applicationsRoute)
 
 //OpenAI Job Tracker Categorizer
 router.post('/categorize', openaiJobTrackRoutes)
+
 export default router
