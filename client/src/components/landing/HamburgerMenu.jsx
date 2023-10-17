@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import Authentication from "../Authentication";
+import UploadResume from "../dashboard/UploadResume";
 import { useAuth0 } from "@auth0/auth0-react";
 
 const HamburgerMenu = ({ open }) => {
@@ -10,6 +11,9 @@ const HamburgerMenu = ({ open }) => {
         <Menu open={open}>
           <div>
             <ul>
+              <li>
+                <UploadResume />
+              </li>
               <li>
                 <Authentication />
               </li>
@@ -29,9 +33,9 @@ const Wrapper = styled.div`
   justify-content: center;
   top: 60px;
   left: 0;
-  z-index: 5;
   .collapsed {
     max-width: 1920px;
+    margin: 0;
   }
   .expanded {
     max-width: 100%;
@@ -56,6 +60,7 @@ const Menu = styled.div`
   background-color: ${(props) => props.theme.colors.gray1};
   border: 1px solid ${(props) => props.theme.colors.gray2};
   border-radius: ${(props) => props.theme.other.borderRadius};
+  z-index: 5;
   div {
     margin: 0 25px;
   }

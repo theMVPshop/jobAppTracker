@@ -32,6 +32,9 @@ const Wrapper = styled.div`
   gap: 10px;
   h3 {
     font-family: ${(props) => props.theme.fonts.main};
+    @media only screen and (max-width: 700px) {
+      display: none;
+    }
   }
   img {
     height: 40px;
