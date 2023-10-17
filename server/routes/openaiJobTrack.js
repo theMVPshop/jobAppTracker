@@ -1,7 +1,7 @@
-const express = require('express')
-const router = express.Router()
-const openAiControllers = require('../controllers/openai')
+import { Router } from 'express';
+const router = Router()
+import { categorizeText } from '../controllers/openai';
 
-router.post('/categorize', openAiControllers.categorizeText)
+router.post('/categorize', categorizeText)
 
-module.exports = router;
+export default router;
