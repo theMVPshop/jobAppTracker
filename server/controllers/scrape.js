@@ -4,13 +4,12 @@ import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 export const scrape = async (req, res) => {
     try {
-        console.log(req.body)
         const { url } = req.body;
         const domain = new URL(url).hostname.split(".").slice(-2).join(".");
         const parser = parsers[domain];
         const transformer = urlTransformers[domain];
         if (!parser) return res.status(400).send("Website not supported.");
-        
+
         const jobDescription = await fetchAndParse(url, parser, transformer);
         return jobDescription ? res.status(200).send(jobDescription) : res.status(404).send("No job description found.");
 
@@ -36,24 +35,34 @@ const transformIndeedUrl = (url) => {
     return `https://www.indeed.com/viewjob?jk=${vjkValue}`;
 };
 
+const transformLinkedInUrl = (url) => {
+    const urlObj = new URL(url);
+    const jobId = new URLSearchParams(urlObj.search).get("currentJobId") || urlObj.pathname.split('/')[3];
+    if (jobId) {
+        return `https://www.linkedin.com/jobs/view/${jobId}`;
+    }
+    return url;
+};
+
 const parseLinkedIn = ($) => {
-    return $("#job-details").text().trim() || $(".jobs-description").first().text().trim() || $(".show-more-less-html__markup").first().text().trim() || "";
+    return $("#job-details").text().trim() || $(".jobs-description").first().text().trim() || $(".show-more-less-html__markup").first().text().trim() || $(".jobs-description-content").first().text().trim() || "";
 };
 
 const parseIndeed = ($) => {
     return $("#jobDescriptionText").text().trim() || $(".jobsearch-jobDescriptionText").text().trim() || "";
 };
 
-const parseZipRecruiter = ($) => { 
+const parseZipRecruiter = ($) => {
     return $(".job_details").text().trim() || "";
- }
+}
 
 const parsers = {
     "linkedin.com": parseLinkedIn,
     "indeed.com": parseIndeed,
-    "ziprecruiter.com": parseZipRecruiter,  
+    "ziprecruiter.com": parseZipRecruiter,
 };
 
 const urlTransformers = {
     "indeed.com": transformIndeedUrl,
+    "linkedin.com": transformLinkedInUrl,
 };
