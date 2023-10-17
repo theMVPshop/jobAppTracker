@@ -2,11 +2,17 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 const CardWrapper = styled.div`
-  display: ${(props) => (props.isVisible ? "block" : "none")};
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  ${(props) => !props.isVisible && "display: none;"}
   padding: 10px;
-  margin: 10px;
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 0 4px rgba(0, 0, 0, 0.1);
+  width: 50%;
+  text-align: center;
 `;
 
 const InputWrapper = styled.div`
@@ -25,28 +31,44 @@ const InputField = styled.input`
   border-radius: 5px;
 `;
 
-const StandardCard = ({ isVisible, setCardVisibility }) => {
-  const [input, setInput] = useState("");
+const StandardCard = ({ isVisible, onCardSubmit }) => {
+  const [jobTitle, setJobTitle] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
 
-  const handleInputChange = (e) => {
-    setInput(e.target.value);
+  const handleJobTitleChange = (e) => {
+    e.stopPropagation();
+    setJobTitle(e.target.value);
   };
-  const handleCloseModal = () => {
-    setInput("");
-    setCardVisibility(false);
+
+  const handleJobDescriptionChange = (e) => {
+    e.stopPropagation();
+    setJobDescription(e.target.value);
+  };
+
+  const handleCardSubmit = () => {
+    const card = { title: jobTitle, description: jobDescription };
+    onCardSubmit(card);
   };
 
   return (
-    <CardWrapper isVisible={isVisible}>
+    <CardWrapper isVisible={isVisible} onClick={(e) => e.stopPropagation()}>
       <InputWrapper>
         <InputLabel>Job Title:</InputLabel>
-        <InputField type="text" value={input} onChange={handleInputChange} />
+        <InputField
+          type="text"
+          value={jobTitle}
+          onChange={handleJobTitleChange}
+        />
       </InputWrapper>
       <InputWrapper>
         <InputLabel>Job Description:</InputLabel>
-        <InputField type="text" value={input} onChange={handleInputChange} />
+        <InputField
+          type="text"
+          value={jobDescription}
+          onChange={handleJobDescriptionChange}
+        />
       </InputWrapper>
-      <button onClick={handleCloseModal}>Close</button>
+      <button onClick={handleCardSubmit}>Submit</button>
     </CardWrapper>
   );
 };
