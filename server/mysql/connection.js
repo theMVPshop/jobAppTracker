@@ -26,7 +26,7 @@ console.log("[MySQL] Initializing database...");
 
 async function initializeDatabase() {
 
-    // If you need to drop tables to start fresh, uncomment this code:
+   // If you need to drop tables to start fresh, uncomment this code:
 
     // const dropTableStatements = [
     //     `DROP TABLE IF EXISTS jobs, applications, users, resume;`
@@ -43,12 +43,12 @@ async function initializeDatabase() {
 
     const createStatements = [
         `CREATE TABLE IF NOT EXISTS users (
-            id VARCHAR(30) NOT NULL PRIMARY KEY,
+            id VARCHAR(100) NOT NULL PRIMARY KEY,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
             id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-            user_id VARCHAR(30) NOT NULL,
+            user_id VARCHAR(100) NOT NULL,
             gpt_rating INT,
             gpt_analysis VARCHAR(1000),
             status VARCHAR(20),
@@ -63,7 +63,7 @@ async function initializeDatabase() {
             FOREIGN KEY(user_id) references users(id)
         );`,
         `CREATE TABLE IF NOT EXISTS resume (
-            user_id VARCHAR(30) PRIMARY KEY,
+            user_id VARCHAR(100) PRIMARY KEY,
             resume_text TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
         );`
