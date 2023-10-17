@@ -6,7 +6,14 @@ import styled from "styled-components";
 const AccountTile = () => {
   const { user, isAuthenticated, isLoading, error } = useAuth0();
 
-  console.log(user);
+  let username = user.nickname;
+
+  if (!user.nickname) {
+    username = user.name;
+  }
+  if (!user.nickname) {
+    username = user.email;
+  }
 
   if (isLoading) {
     return <div>Loading ...</div>;
@@ -19,7 +26,7 @@ const AccountTile = () => {
   return (
     isAuthenticated && (
       <Wrapper>
-        <h3>{user.name}</h3>
+        <h3>{username}</h3>
         <img src={user.picture} alt={user.name} />
       </Wrapper>
     )
