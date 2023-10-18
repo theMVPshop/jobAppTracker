@@ -1,10 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
-import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
-import ButtonEmpty from "../../reusable/ButtonEmpty";
 import ColumnHead from "./ColumnHead";
-import TileCard from "./TileCard";
 import ColumnBody from "./ColumnBody";
 
 const Table = (props) => {

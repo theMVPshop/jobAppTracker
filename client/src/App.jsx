@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LandingDisplay from "./components/landing/LandingDisplay";
 import { Auth0Provider } from "@auth0/auth0-react";
 import Dashboard from "./components/dashboard/Dashboard";
-import LandingBar from "./components/landing/LandingBar";
+import LandingBar from "./components/Landing/LandingBar";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 import UpdateJobs from "./UpdateJobs";
 import UploadFile from "./UploadFile";

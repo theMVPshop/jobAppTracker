@@ -1,11 +1,20 @@
 import styled from "styled-components";
 import TileCard from "./TileCard";
+import { useEffect, useState } from "react";
 
 const ColumnBody = (props) => {
+  const [color, setColor] = useState("#fff");
   const searchQuery = props.searchQuery;
+  const column = props.column;
+
+  useEffect(() => {
+    if (column === "Rejected") {
+      setColor("#F6F7F8");
+    }
+  }, [setColor, column]);
 
   return (
-    <TableCell>
+    <TableCell style={{ backgroundColor: color }}>
       {props.data
         .filter((card) => {
           if (searchQuery === "" || searchQuery === undefined) {
@@ -15,7 +24,7 @@ const ColumnBody = (props) => {
           }
         })
         .map((card, index) => (
-          <TileCard key={index} card={card} />
+          <TileCard key={index} card={card} column={column} />
         ))}
     </TableCell>
   );
