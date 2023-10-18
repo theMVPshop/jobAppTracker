@@ -12,7 +12,8 @@ export const uploadResume = async (req, res) => {
         const fileBuffer = req.file.buffer;
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
-        const userId = req.params.user_id;
+        const userId = req.body.parcel;
+        console.log(req.body.parcel);
 
         const query = `
             INSERT INTO resume (user_id, resume_text)
@@ -35,7 +36,7 @@ export const uploadResume = async (req, res) => {
 export const getResume = async (req, res) => {
     const con = await pool.getConnection();
     try {
-        const userId = req.params.user_id;
+        const userId = req.body.parcel;
 
         const [rows] = await con.execute(
             'SELECT resume_text FROM resume WHERE user_id = ?',
