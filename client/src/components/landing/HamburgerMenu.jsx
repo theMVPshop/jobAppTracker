@@ -12,9 +12,6 @@ const HamburgerMenu = ({ open }) => {
           <div>
             <ul>
               <li>
-                <UploadResume />
-              </li>
-              <li>
                 <Authentication />
               </li>
             </ul>
