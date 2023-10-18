@@ -53,9 +53,7 @@ function UploadResume() {
     console.log("Uploading...");
 
     const userId = fetch("http://localhost:3000/api/uuid/get")
-      .then((res) => {
-        return res.json();
-      })
+      .then((res) => res.json())
       .then((data) => {
         return data.user_id;
       })

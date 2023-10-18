@@ -12,13 +12,13 @@ export const uploadResume = async (req, res) => {
         const fileBuffer = req.file.buffer;
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
-        const userId = req.body.parcel;
-        console.log(req.body.parcel);
+        const userId = req.params.user_id;
+        console.log(req.params);
 
         const query = `
             INSERT INTO resume (user_id, resume_text)
             VALUES (?, ?)
-            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text);
+            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text)
         `;
 
         await con.execute(query, [userId, resumeText]);
@@ -36,7 +36,7 @@ export const uploadResume = async (req, res) => {
 export const getResume = async (req, res) => {
     const con = await pool.getConnection();
     try {
-        const userId = req.body.parcel;
+        const userId = req.params.user_id;
 
         const [rows] = await con.execute(
             'SELECT resume_text FROM resume WHERE user_id = ?',
@@ -60,7 +60,8 @@ export const getResume = async (req, res) => {
 
 export const rateResume = async (req, res) => {
     try {
-        const { jobInfo, resumeText } = req.body;
+        let { jobInfo, resumeText } = req.body;
+        console.log(req.body);
 
         if (!jobInfo || !resumeText) {
             return res.status(400).send("Both resume and job info are required.");
