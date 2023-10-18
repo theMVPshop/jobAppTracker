@@ -3,9 +3,11 @@ import { Icon } from "@blueprintjs/core";
 // import { DataContext } from "../../App";
 import React, { useContext, useState } from "react";
 
-const SearchBar = () => {
+const SearchBar = (props) => {
   //   const { searchQuery, setSearchQuery } = useContext(DataContext);
-  const [searchQuery, setSearchQuery] = useState("");
+
+  const searchQuery = props.props.searchQuery;
+  const setSearchQuery = props.props.setSearchQuery;
 
   const cancel = () => {
     setSearchQuery("");

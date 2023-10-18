@@ -68,8 +68,6 @@ function UploadResume() {
     setIsLoading(false);
   };
 
-  console.log(file);
-
   return (
     <>
       {isLoading ? (

@@ -7,6 +7,7 @@ import LandingBar from "./components/landing/LandingBar";
 import AuthenticationGuard from "./components/AuthenticationGuard";
 import UpdateJobs from "./UpdateJobs";
 import UploadFile from "./UploadFile";
+import { useState } from "react";
 
 //Theme Use Example:
 //font-family: ${(props) => props.theme.fonts.main}
@@ -31,6 +32,7 @@ const theme = {
 /* Auth0Provider needs to wrap around the entire application, based on recommendation from Auth0 */
 
 function App() {
+  const [searchQuery, setSearchQuery] = useState("");
   return (
     <Auth0Provider
       domain="dev-qxzngmucus86xphq.us.auth0.com"
@@ -45,23 +47,25 @@ function App() {
     >
       <ThemeProvider theme={theme}>
         <Router>
-          <LandingBar />
+          <LandingBar
+            searchQuery={searchQuery}
+            setSearchQuery={setSearchQuery}
+          />
           <Routes>
             <Route path="/" element={<LandingDisplay />} />
             <Route
               path="/dashboard"
-              element={<AuthenticationGuard component={Dashboard} />}
+              element={
+                <AuthenticationGuard
+                  component={Dashboard}
+                  searchQuery={searchQuery}
+                />
+              }
             />
 
-            <Route
-              path="/applications"
-              element={<UpdateJobs />}
-            />
+            <Route path="/applications" element={<UpdateJobs />} />
 
-            <Route
-              path="/resume"
-              element={<UploadFile />}
-            />
+            <Route path="/resume" element={<UploadFile />} />
           </Routes>
         </Router>
       </ThemeProvider>
