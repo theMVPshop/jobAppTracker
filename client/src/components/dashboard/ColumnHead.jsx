@@ -1,10 +1,18 @@
 import styled from "styled-components";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
+import { useEffect, useState } from "react";
 
 const ColumnHead = (props) => {
   const handlePlusClick = props.handlePlusClick;
+  const [color, setColor] = useState("#fff");
+
+  useEffect(() => {
+    if (props.column === "Rejected") {
+      setColor("#F6F7F8");
+    }
+  }, [setColor, props.column]);
   return (
-    <TableCell>
+    <TableCell style={{ backgroundColor: color }}>
       <div>
         <h3>{props.column}</h3>
       </div>

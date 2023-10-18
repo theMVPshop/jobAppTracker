@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 
 const TileCard = (props) => {
   const [tileColor, setTileColor] = useState();
+  const column = props.column;
 
   const randomNumberInRange = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -14,8 +15,12 @@ const TileCard = (props) => {
 
   useEffect(() => {
     const newColor = colors[number];
-    setTileColor(newColor);
-  }, [colors, number]);
+    if (column === "Rejected") {
+      setTileColor("#CCCCCC");
+    } else {
+      setTileColor(newColor);
+    }
+  }, [colors, number, column]);
 
   return (
     <InfoCard key={props.index} style={{ backgroundColor: tileColor }}>
