@@ -36,14 +36,36 @@ const InfoCard = styled.div`
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const StandardTable = ({ headers, data }) => {
+const PlusButton = styled.button`
+  position: relative;
+  bottom: 1px;
+  right: 5px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  font-size: 20px;
+  cursor: pointer;
+  margin: 10px;
+`;
+
+const StandardTable = ({ headers, data, onPlusClick }) => {
   return (
     <DashboardWrapper>
       <StyledTable>
         <TableHead>
           <tr>
             {headers.map((header, index) => (
-              <TableCell key={index}>{header}</TableCell>
+              <TableCell key={index}>
+                <div>{header}</div>
+                <div>
+                  <PlusButton onClick={() => onPlusClick(header.toLowerCase())}>
+                    +
+                  </PlusButton>
+                </div>
+              </TableCell>
             ))}
           </tr>
         </TableHead>
