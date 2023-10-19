@@ -3,7 +3,7 @@ import ky from "ky";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function UploadFile() {
-    const { user, isAuthenticated } = useAuth0();
+    const { user, isAuthenticated, loginWithPopup } = useAuth0();
     const [file, setFile] = useState(null);
     const [jobInfo, setjobInfo] = useState("");
     const [jobUrl, setJobUrl] = useState("");
@@ -56,6 +56,17 @@ function UploadFile() {
         //     alert("Error getting user ID.");
         //     return;
         // }
+
+        if (!isAuthenticated) {
+            await loginWithPopup().then(() => {
+                if (isAuthenticated) {
+                    uploadResume();
+                }
+            }).catch((error) => {
+                alert("Error logging in");
+            });
+            return;
+        }
 
         setIsLoading(true);
 
