@@ -13,11 +13,12 @@ export const uploadResume = async (req, res) => {
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
         const userId = req.params.user_id;
+        console.log(req.params);
 
         const query = `
             INSERT INTO resume (user_id, resume_text)
             VALUES (?, ?)
-            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text);
+            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text)
         `;
 
         await con.execute(query, [userId, resumeText]);
@@ -59,7 +60,7 @@ export const getResume = async (req, res) => {
 
 export const rateResume = async (req, res) => {
     try {
-        const { jobInfo, resumeText } = req.body;
+        let { jobInfo, resumeText } = req.body;
 
         if (!jobInfo || !resumeText) {
             return res.status(400).send("Both resume and job info are required.");
@@ -92,6 +93,7 @@ export const rateResume = async (req, res) => {
 
         return res.status(200).send(message);
     } catch (error) {
+        console.log(error)
         return res.status(500).send(error.message);
     }
 };

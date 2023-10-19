@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import UploadResume from "./UploadResume";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@blueprintjs/core";
 
 const Sidebar = () => {
@@ -8,7 +8,6 @@ const Sidebar = () => {
 
   const handleClick = () => {
     setIsCollapsed(!isCollapsed);
-    console.log(isCollapsed);
   };
 
   return (
@@ -42,11 +41,11 @@ const SidebarWrapper = styled.div`
 
   .collapsed {
     width: 50px;
-    margin: 50px 0;
+    margin: 35px 0;
   }
   .expanded {
     width: 200px;
-    margin: 35px 10px;
+    margin: 20px 10px;
     @media only screen and (max-width: 700px) {
       width: 90vw;
     }

@@ -37,7 +37,7 @@ const transformIndeedUrl = (url) => {
 
 const transformLinkedInUrl = (url) => {
     const urlObj = new URL(url);
-    const jobId = new URLSearchParams(urlObj.search).get("currentJobId") || urlObj.pathname.split('/')[3];
+    const jobId = new URLSearchParams(urlObj.search).get("currentJobId");
     if (jobId) {
         return `https://www.linkedin.com/jobs/view/${jobId}`;
     }

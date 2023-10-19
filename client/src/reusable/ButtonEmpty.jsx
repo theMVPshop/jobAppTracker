@@ -14,10 +14,11 @@ export default ButtonEmpty;
 const StyledButton = styled.button`
   position: relative;
   min-width: 180px;
-  width: 100%;
+  width: 90%;
+  margin: 10px 0;
   height: 40px;
   border-radius: ${(props) => props.theme.other.borderRadius};
-  background-color: ${(props) => props.theme.colors.primaryWhite} !important;
+  background-color: transparent !important;
   border: 1px solid ${(props) => props.theme.colors.primaryBlue};
   background-color: transparent;
   p {

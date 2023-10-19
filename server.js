@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import 'dotenv/config';
+import path from "path";
+import url from "url";
 import OpenAI from "openai";
 import resumeRouter from "./server/routes/resume.js";
 import scrapeRouter from "./server/routes/scrape.js";
@@ -26,8 +28,10 @@ app.use("/api/scrape", scrapeRouter);
 app.use("/api/applications", applicationsRouter);
 app.use("/api/uuid", passUuidRouter);
 
+const __filename = url.fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-
+app.use(express.static(path.join(__dirname, './client/dist')));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {

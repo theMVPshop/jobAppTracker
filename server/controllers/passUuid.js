@@ -31,5 +31,11 @@ export const logUuid = async (req, res) => {
 }
 
 
+export const getUserId = async (req, res) => {
+    const uuid = req.params
+    console.log(uuid)
+    return res.status(200).json({user_id: uuid});
+}
+
 
 
