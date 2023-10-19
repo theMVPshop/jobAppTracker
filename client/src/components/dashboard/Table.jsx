@@ -14,6 +14,7 @@ const Table = (props) => {
   const [onSiteCards, setOnSiteCards] = useState([]);
   const [offerCards, setOfferCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const cardRef = useRef(null);
 
   const searchQuery = props.searchQuery;
   const columns = props.columns;
@@ -21,7 +22,7 @@ const Table = (props) => {
 
   const handlePlusClick = (column) => {
     setCardVisibility(true);
-    setCardColumn(column);
+    // setCardColumn(column);
   };
 
   const handleCardSubmit = (column, card) => {
@@ -59,26 +60,18 @@ const Table = (props) => {
     }
   }
 
+  function handleClickOutside(event) {
+    if (cardRef.current && !cardRef.current.contains(event.target)) {
+      setCardVisibility(false);
+    }
+  }
+
   useEffect(() => {
-    function handleClickOutside(event) {
-      if (isCardVisible) {
-        const modal = document.querySelector(".modal-content");
-        if (modal && !modal.contains(event.target)) {
-          setCardVisibility(false);
-        }
-      }
-    }
-
-    if (isCardVisible) {
-      document.addEventListener("click", handleClickOutside);
-    } else {
-      document.removeEventListener("click", handleClickOutside);
-    }
-
+    document.addEventListener('click', handleClickOutside, true);
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener('click', handleClickOutside, true);
     };
-  }, [isCardVisible]);
+  }, []);
 
   return (
     <DashboardWrapper>
@@ -107,11 +100,14 @@ const Table = (props) => {
           </TableRow>
         </tbody>
       </StyledTable>
-      <ModalOverlay isVisible={isCardVisible}>
-        <StandardCard
-          isVisible={isCardVisible}
-          onCardSubmit={(card) => handleCardSubmit(cardColumn, card)}
-        />
+      <ModalOverlay isvisible={isCardVisible.toString()}>
+        <div ref={cardRef}>
+          <StandardCard
+            onBlur={() => { setCardVisibility(false); console.log("blur") }}
+            isvisible={isCardVisible.toString()}
+            onCardSubmit={(card) => handleCardSubmit(cardColumn, card)}
+          />
+        </div>
       </ModalOverlay>
       <DisplayCard card={selectedCard} />
       {rejectedCards.map((card, index) => (
@@ -161,7 +157,7 @@ const TableRow = styled.tr`
 `;
 
 const ModalOverlay = styled.div`
-  display: ${(props) => (props.isVisible ? "block" : "none")};
+  display: ${(props) => (props.isvisible === "true" ? "block" : "none")};
   position: fixed;
   top: 0;
   left: 0;

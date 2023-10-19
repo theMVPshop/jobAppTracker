@@ -8,7 +8,7 @@ const CardWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  ${(props) => !props.isVisible && "display: none;"}
+  ${(props) => !(props.isvisible === "true") && "display: none;"}
   padding: 10px;
   background-color: #fff;
   border-radius: 8px;

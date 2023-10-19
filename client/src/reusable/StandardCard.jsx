@@ -6,7 +6,7 @@ const CardWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  ${(props) => !props.isVisible && "display: none;"}
+  ${(props) => !(props.isvisible === "true") && "display: none;"}
   padding: 10px;
   background-color: #fff;
   border-radius: 8px;
@@ -31,7 +31,7 @@ const InputField = styled.input`
   border-radius: 5px;
 `;
 
-const StandardCard = ({ isVisible, onCardSubmit }) => {
+const StandardCard = ({ isvisible, onCardSubmit }) => {
   const [jobTitle, setJobTitle] = useState("");
   const [jobUrl, setJobDescription] = useState("");
 
@@ -51,7 +51,7 @@ const StandardCard = ({ isVisible, onCardSubmit }) => {
   };
 
   return (
-    <CardWrapper isVisible={isVisible} onClick={(e) => e.stopPropagation()}>
+    <CardWrapper isvisible={isvisible.toString()} onClick={(e) => e.stopPropagation()}>
       <InputWrapper>
         <InputLabel>Job Title:</InputLabel>
         <InputField
