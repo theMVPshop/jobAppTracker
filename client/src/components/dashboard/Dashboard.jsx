@@ -3,6 +3,7 @@ import styled from "styled-components";
 import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
 import Sidebar from "./Sidebar";
+import UploadFile from "../../UploadFile";
 const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;
@@ -193,6 +194,7 @@ const Dashboard = () => {
           />
         </ModalOverlay>
       </DashboardWrapper>
+      <UploadFile></UploadFile>
     </HorizontalWrapper>
   );
 };
