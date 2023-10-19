@@ -13,6 +13,7 @@ const Table = (props) => {
   const [phoneCards, setPhoneCards] = useState([]);
   const [onSiteCards, setOnSiteCards] = useState([]);
   const [offerCards, setOfferCards] = useState([]);
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const searchQuery = props.searchQuery;
   const columns = props.columns;
@@ -56,84 +57,84 @@ const Table = (props) => {
       default:
         break;
     }
+  }
 
-    useEffect(() => {
-      function handleClickOutside(event) {
-        if (isCardVisible) {
-          const modal = document.querySelector(".modal-content");
-          if (modal && !modal.contains(event.target)) {
-            setCardVisibility(false);
-          }
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (isCardVisible) {
+        const modal = document.querySelector(".modal-content");
+        if (modal && !modal.contains(event.target)) {
+          setCardVisibility(false);
         }
       }
+    }
 
-      if (isCardVisible) {
-        document.addEventListener("click", handleClickOutside);
-      } else {
-        document.removeEventListener("click", handleClickOutside);
-      }
+    if (isCardVisible) {
+      document.addEventListener("click", handleClickOutside);
+    } else {
+      document.removeEventListener("click", handleClickOutside);
+    }
 
-      return () => {
-        document.removeEventListener("click", handleClickOutside);
-      };
-    }, [isCardVisible]);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isCardVisible]);
 
-    return (
-      <DashboardWrapper>
-        <StyledTable>
-          <TableHead>
-            <tr>
-              {columns.map((column, index) => (
-                <ColumnHead
-                  key={index}
-                  column={column}
-                  handlePlusClick={handlePlusClick}
-                />
-              ))}
-            </tr>
-          </TableHead>
-          <tbody>
-            <TableRow>
-              {columns.map((column, index) => (
-                <ColumnBody
-                  key={index}
-                  column={column}
-                  data={data}
-                  searchQuery={searchQuery}
-                />
-              ))}
-            </TableRow>
-          </tbody>
-        </StyledTable>
-        <ModalOverlay isVisible={isCardVisible}>
-          <StandardCard
-            isVisible={isCardVisible}
-            onCardSubmit={(card) => handleCardSubmit(cardColumn, card)}
-          />
-        </ModalOverlay>
-        <DisplayCard card={selectedCard} onSomeAction={handleSomeAction} />
-        {rejectedCards.map((card, index) => (
-          <div key={index} onClick={() => handleSavedCardClick(card)}></div>
-        ))}
-        <DisplayCard card={selectedCard} onSomeAction={handleSomeAction} />
-        {appliedCards.map((card, index) => (
-          <div key={index} onClick={() => handleSavedCardClick(card)}></div>
-        ))}
-        <DisplayCard card={selectedCard} onSomeAction={handleSomeAction} />
-        {phoneCards.map((card, index) => (
-          <div key={index} onClick={() => handleSavedCardClick(card)}></div>
-        ))}
-        <DisplayCard card={selectedCard} onSomeAction={handleSomeAction} />
-        {onSiteCards.map((card, index) => (
-          <div key={index} onClick={() => handleSavedCardClick(card)}></div>
-        ))}
-        <DisplayCard card={selectedCard} onSomeAction={handleSomeAction} />
-        {offerCards.map((card, index) => (
-          <div key={index} onClick={() => handleSavedCardClick(card)}></div>
-        ))}
-      </DashboardWrapper>
-    );
-  };
+  return (
+    <DashboardWrapper>
+      <StyledTable>
+        <TableHead>
+          <tr>
+            {columns.map((column, index) => (
+              <ColumnHead
+                key={index}
+                column={column}
+                handlePlusClick={handlePlusClick}
+              />
+            ))}
+          </tr>
+        </TableHead>
+        <tbody>
+          <TableRow>
+            {columns.map((column, index) => (
+              <ColumnBody
+                key={index}
+                column={column}
+                data={data}
+                searchQuery={searchQuery}
+              />
+            ))}
+          </TableRow>
+        </tbody>
+      </StyledTable>
+      <ModalOverlay isVisible={isCardVisible}>
+        <StandardCard
+          isVisible={isCardVisible}
+          onCardSubmit={(card) => handleCardSubmit(cardColumn, card)}
+        />
+      </ModalOverlay>
+      <DisplayCard card={selectedCard} />
+      {rejectedCards.map((card, index) => (
+        <div key={index} onClick={() => handleSavedCardClick(card)}></div>
+      ))}
+      <DisplayCard card={selectedCard} />
+      {appliedCards.map((card, index) => (
+        <div key={index} onClick={() => handleSavedCardClick(card)}></div>
+      ))}
+      <DisplayCard card={selectedCard} />
+      {phoneCards.map((card, index) => (
+        <div key={index} onClick={() => handleSavedCardClick(card)}></div>
+      ))}
+      <DisplayCard card={selectedCard} />
+      {onSiteCards.map((card, index) => (
+        <div key={index} onClick={() => handleSavedCardClick(card)}></div>
+      ))}
+      <DisplayCard card={selectedCard} />
+      {offerCards.map((card, index) => (
+        <div key={index} onClick={() => handleSavedCardClick(card)}></div>
+      ))}
+    </DashboardWrapper>
+  );
 };
 
 export default Table;
