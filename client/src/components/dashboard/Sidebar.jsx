@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import UploadResume from "./UploadResume";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Icon } from "@blueprintjs/core";
 
 const Sidebar = () => {
