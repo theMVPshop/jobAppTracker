@@ -74,6 +74,17 @@ function UploadFile() {
             })
         }
 
+        if (!isAuthenticated) {
+            await loginWithPopup().then(() => {
+                if (isAuthenticated) {
+                    uploadResume();
+                }
+            }).catch((error) => {
+                alert("Error logging in");
+            });
+            return;
+        }
+
         setIsLoading(true);
 
         const formData = new FormData();

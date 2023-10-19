@@ -61,7 +61,6 @@ export const getResume = async (req, res) => {
 export const rateResume = async (req, res) => {
     try {
         let { jobInfo, resumeText } = req.body;
-        console.log(req.body);
 
         if (!jobInfo || !resumeText) {
             return res.status(400).send("Both resume and job info are required.");
@@ -94,6 +93,7 @@ export const rateResume = async (req, res) => {
 
         return res.status(200).send(message);
     } catch (error) {
+        console.log(error)
         return res.status(500).send(error.message);
     }
 };

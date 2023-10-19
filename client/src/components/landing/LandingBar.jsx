@@ -8,7 +8,7 @@ import SearchBar from "../dashboard/SearchBar";
 import Logo from "../../assets/logo.png";
 import { useAuth0 } from "@auth0/auth0-react";
 
-const LandingBar = () => {
+const LandingBar = (props) => {
   const [open, setOpen] = useState(false);
   const { isAuthenticated } = useAuth0();
 
@@ -35,7 +35,7 @@ const LandingBar = () => {
         )}
         {isAuthenticated && (
           <>
-            <SearchBar />
+            <SearchBar props={props} />
             <ProfileDropdown>
               <HamburgerMenu open={open} setOpen={setOpen} />
               <MenuButton open={open} onClick={() => setOpen(!open)}>

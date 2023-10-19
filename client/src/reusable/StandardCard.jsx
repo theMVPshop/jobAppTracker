@@ -33,7 +33,7 @@ const InputField = styled.input`
 
 const StandardCard = ({ isVisible, onCardSubmit }) => {
   const [jobTitle, setJobTitle] = useState("");
-  const [jobDescription, setJobDescription] = useState("");
+  const [jobUrl, setJobDescription] = useState("");
 
   const handleJobTitleChange = (e) => {
     e.stopPropagation();
@@ -46,7 +46,7 @@ const StandardCard = ({ isVisible, onCardSubmit }) => {
   };
 
   const handleCardSubmit = () => {
-    const card = { title: jobTitle, description: jobDescription };
+    const card = { title: jobTitle, description: jobUrl };
     onCardSubmit(card);
   };
 
@@ -61,10 +61,10 @@ const StandardCard = ({ isVisible, onCardSubmit }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputLabel>Job Description:</InputLabel>
+        <InputLabel>Job URL:</InputLabel>
         <InputField
           type="text"
-          value={jobDescription}
+          value={jobUrl}
           onChange={handleJobDescriptionChange}
         />
       </InputWrapper>
