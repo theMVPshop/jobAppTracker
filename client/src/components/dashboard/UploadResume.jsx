@@ -14,6 +14,7 @@ function UploadResume() {
   const [gptRating, setGptRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+
   const hiddenFileInput = useRef(null);
 
   const handleClick = (event) => {
@@ -51,9 +52,21 @@ function UploadResume() {
 
     console.log("Uploading...");
 
+    const userId = fetch("http://localhost:3000/api/uuid/get")
+      .then((res) => res.json())
+      .then((data) => {
+        return data.user_id;
+      })
+      .catch((err) => {
+        alert("Error: " + err);
+      })
+
+      
+      
+
     try {
       const resumeText = await ky
-        .post("http://localhost:3000/api/resume/upload", { body: formData })
+        .post(`http://localhost:3000/api/resume/users/${userId}/upload`, { body: formData })
         .text();
       const rating = await ky
         .post("http://localhost:3000/api/resume/rate", {

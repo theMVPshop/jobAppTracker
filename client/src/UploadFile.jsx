@@ -39,6 +39,15 @@ function UploadFile() {
         }
     }
 
+    const userId = fetch("http://localhost:3000/api/uuid/get")
+      .then((res) => res.json())
+      .then((data) => {
+        return data.user_id;
+      })
+      .catch((err) => {
+        alert("Error: " + err);
+      })
+
     const uploadResume = async () => {
         if (!file) {
             alert("Please select a file first.");
@@ -56,6 +65,14 @@ function UploadFile() {
         //     alert("Error getting user ID.");
         //     return;
         // }
+        
+        if (!isAuthenticated) {
+            loginWithPopup(getUser()).then(token => {
+                getUser().then(user => {
+                    console.log(user);
+                });
+            })
+        }
 
         if (!isAuthenticated) {
             await loginWithPopup().then(() => {
@@ -76,8 +93,8 @@ function UploadFile() {
         console.log("Uploading...")
 
         try {
-            await ky.post(`http://localhost:3000/api/resume/users/${"test"}/upload`, { body: formData });
-            const resumeText = await ky(`http://localhost:3000/api/resume/users/${"test"}`).text();
+            await ky.post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, { body: formData });
+            const resumeText = await ky(`http://localhost:3000/api/resume/users/${user.sub}`).text();
             const rating = await ky.post("http://localhost:3000/api/resume/rate", { json: { resumeText, jobInfo } }).text();
             setGptRating(rating);
 

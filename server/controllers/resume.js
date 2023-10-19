@@ -13,11 +13,12 @@ export const uploadResume = async (req, res) => {
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
         const userId = req.params.user_id;
+        console.log(req.params);
 
         const query = `
             INSERT INTO resume (user_id, resume_text)
             VALUES (?, ?)
-            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text);
+            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text)
         `;
 
         await con.execute(query, [userId, resumeText]);
