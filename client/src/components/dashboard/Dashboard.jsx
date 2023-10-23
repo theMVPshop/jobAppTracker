@@ -5,6 +5,7 @@ import StandardCard from "../../reusable/StandardCard";
 import Sidebar from "./Sidebar";
 import Table from "./Table";
 
+
 const Dashboard = (props) => {
   const columns = ["Rejected", "Applied", "Phone", "Onsite", "Offer"];
 

@@ -3,8 +3,8 @@ import { createApplication, getUserApplications, updateApplication, deleteApplic
 
 const router = Router()
 
-router.post('/users/:user_id/applications', createApplication);
 router.get('/users/:user_id/applications', getUserApplications);
+router.post('/users/:user_id/applications', createApplication);
 router.put('/users/:user_id/applications/:id', updateApplication);
 router.delete('/users/:user_id/applications/:id', deleteApplication);
 
