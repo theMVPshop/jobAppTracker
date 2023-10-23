@@ -4,7 +4,7 @@ import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
 import Sidebar from "./Sidebar";
 import Table from "./Table";
-import UploadFile from "../../UploadFile.jsx";
+
 
 const Dashboard = (props) => {
   const columns = ["Rejected", "Applied", "Phone", "Onsite", "Offer"];
@@ -24,7 +24,6 @@ const Dashboard = (props) => {
     <HorizontalWrapper>
       <Sidebar />
       <Table data={data} columns={columns} searchQuery={searchQuery} />
-      <UploadFile></UploadFile>
     </HorizontalWrapper>
   );
 };
