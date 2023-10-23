@@ -5,10 +5,8 @@ import { openai } from "../../server.js";
 // });
 
 export const categorizeText = async (req, res) => {
-  
   try {
     const {scraped} = req.body
-    
     const response = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -33,17 +31,17 @@ export const categorizeText = async (req, res) => {
         console.log("Content in controller", content)
         // Process and format the categorized data as previously shown
       // console.log("The response in controller:", response.choices[0].message.content)
-        return res.json(content); // Return the formatted data as a JSON response
+        res.json(content); // Return the formatted data as a JSON response
       } catch (jsonError) {
         console.error("JSON Parsing Error:", jsonError);
-        return res.status(500).json({ error: "Invalid JSON response from OpenAI" });
+        res.status(500).json({ error: "Invalid JSON response from OpenAI" });
       }
     } else {
-      return res.status(500).json({ error: "Invalid response from OpenAI" });
+      res.status(500).json({ error: "Invalid response from OpenAI" });
     }
   } catch (error) {
     console.error("Error categorizing and storing text:", error);
-    return res.status(500).json({ error: "Categorization and storage failed" });
+    res.status(500).json({ error: "Categorization and storage failed" });
   }
 };
 

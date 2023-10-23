@@ -113,22 +113,11 @@ function UploadFile() {
     try {
         const body = { scraped: jobInfo };
         const response = await ky.post("http://localhost:3000/api/categorize", { json: body });
-
-        // Set a timeout for the response
-        const timeout = setTimeout(() => {
-            throw new Error("Request timed out");
-        }, 20000); // Adjust the timeout duration as needed
-
         console.log("HEYYYY:", response.data);
-
-        clearTimeout(timeout); // Clear the timeout once the response is received
-
         setCategorizedData(response.data);
     } catch (error) {
         console.error('error:', error);
-        // Handle errors, such as displaying an error message to the user
     }
-    console.log("made it to the end");
 };
 
 
