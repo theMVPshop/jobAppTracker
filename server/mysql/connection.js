@@ -68,6 +68,7 @@ async function initializeDatabase() {
             user_id VARCHAR(100) PRIMARY KEY,
             resume_text TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            FOREIGN KEY(user_id) references users(id)
         );`
     ];
 
