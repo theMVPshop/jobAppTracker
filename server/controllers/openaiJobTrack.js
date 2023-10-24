@@ -2,11 +2,13 @@ import { openai } from "../../server.js";
 
 
 export const categorizeText = async (req, res) => {
-  const jobInfo = req.body.jobInfo 
+
+  console.log("Categorizing...");
+  const { jobInfo } = req.body;
 
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       messages: [
         {
           role: "system",
@@ -18,7 +20,7 @@ export const categorizeText = async (req, res) => {
       max_tokens: 700,
       temperature: 1
     });
-    
+
     if (response && response.choices && response.choices.length > 0) {
       const content = response.choices[0].message.content;
       try {
@@ -27,18 +29,19 @@ export const categorizeText = async (req, res) => {
         // console.log("Categorized data in controller:", categorizedData)
         // console.log("Content in controller", content)
         // Process and format the categorized data as previously shown
-      // console.log("The response in controller:", response.choices[0].message.content)
-        res.json(categorizedData); // Return the formatted data as a JSON response
+        // console.log("The response in controller:", response.choices[0].message.content)
+        console.log("Categorized!", categorizedData);
+        return res.json(categorizedData); // Return the formatted data as a JSON response
       } catch (jsonError) {
         console.error("JSON Parsing Error:", jsonError);
-        res.status(500).json({ error: "Invalid JSON response from OpenAI" });
+        return res.status(500).json({ error: "Invalid JSON response from OpenAI" });
       }
     } else {
-      res.status(500).json({ error: "Invalid response from OpenAI" });
+      return res.status(500).json({ error: "Invalid response from OpenAI" });
     }
   } catch (error) {
     console.error("Error categorizing and storing text:", error);
-    res.status(500).json({ error: "Categorization and storage failed" });
+    return res.status(500).json({ error: "Categorization and storage failed" });
   }
 };
 
