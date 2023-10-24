@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import ky from "ky";
 import { useAuth0 } from "@auth0/auth0-react";
+import axios from 'axios'
 
 function UploadFile() {
     const { user, isAuthenticated, loginWithPopup } = useAuth0();
@@ -111,24 +112,11 @@ function UploadFile() {
     const handleOpenAISubmit = async (e) => {
     e.preventDefault();
     try {
-        const body = { scraped: jobInfo };
-        const response = await ky.post("http://localhost:3000/api/categorize", { json: body });
-
-        // Set a timeout for the response
-        const timeout = setTimeout(() => {
-            throw new Error("Request timed out");
-        }, 20000); // Adjust the timeout duration as needed
-
-        console.log("HEYYYY:", response.data);
-
-        clearTimeout(timeout); // Clear the timeout once the response is received
-
+        const response = await axios.post("http://localhost:3000/api/categorize", { jobInfo });
         setCategorizedData(response.data);
     } catch (error) {
         console.error('error:', error);
-        // Handle errors, such as displaying an error message to the user
     }
-    console.log("made it to the end");
 };
 
 
