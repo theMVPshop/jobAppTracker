@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import ky from "ky";
 
 const CardWrapper = styled.div`
   position: fixed;
@@ -33,11 +34,17 @@ const InputField = styled.input`
 
 const StandardCard = ({ isvisible, onCardSubmit }) => {
   const [jobTitle, setJobTitle] = useState("");
-  const [jobUrl, setJobDescription] = useState("");
+  const [jobUrl, setJobUrl] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
 
   const handleJobTitleChange = (e) => {
     e.stopPropagation();
     setJobTitle(e.target.value);
+  };
+
+  const handleJobUrlChange = (e) => {
+    e.stopPropagation();
+    setJobUrl(e.target.value);
   };
 
   const handleJobDescriptionChange = (e) => {
@@ -45,8 +52,14 @@ const StandardCard = ({ isvisible, onCardSubmit }) => {
     setJobDescription(e.target.value);
   };
 
+  const getJobDescription = async () => {
+    console.log(jobUrl)
+    const desc = await ky.post("http://localhost:3000/api/scrape", { json: { url: jobUrl } }).text();
+    setJobDescription(desc);
+  }
+
   const handleCardSubmit = () => {
-    const card = { title: jobTitle, description: jobUrl };
+    const card = { title: jobTitle, description: jobDescription };
     onCardSubmit(card);
   };
 
@@ -65,6 +78,14 @@ const StandardCard = ({ isvisible, onCardSubmit }) => {
         <InputField
           type="text"
           value={jobUrl}
+          onChange={handleJobUrlChange}
+        />
+      </InputWrapper>
+      <button onClick={getJobDescription}>Find Job Description From LinkedIn, Indeed, or ZipRecruiter</button>
+      <InputWrapper>
+        <InputLabel>Job Description:</InputLabel>
+        <textarea
+          value={jobDescription}
           onChange={handleJobDescriptionChange}
         />
       </InputWrapper>
