@@ -14,6 +14,14 @@ function UploadResume() {
   const [gptRating, setGptRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  if (!isAuthenticated) {
+    loginWithPopup(getUser()).then(token => {
+      getUser().then(user => {
+        console.log(user);
+      });
+    })
+  }
+
 
   const hiddenFileInput = useRef(null);
 
@@ -61,19 +69,22 @@ function UploadResume() {
         alert("Error: " + err);
       })
 
+
+
+
       
       
 
     try {
       const resumeText = await ky
-        .post(`http://localhost:3000/api/resume/users/${userId}/upload`, { body: formData })
+        .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, { body: formData })
         .text();
-      const rating = await ky
-        .post("http://localhost:3000/api/resume/rate", {
-          json: { resumeText, jobInfo },
-        })
-        .text();
-      setGptRating(rating);
+      // const rating = await ky
+      //   .post("http://localhost:3000/api/resume/rate", {
+      //     json: { resumeText, jobInfo },
+      //   })
+      //   .text();
+      // setGptRating(rating);
     } catch (error) {
       alert("Error: " + error);
     }
