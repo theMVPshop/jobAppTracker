@@ -12,8 +12,9 @@ export const uploadResume = async (req, res) => {
         const fileBuffer = req.file.buffer;
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
+    
         const userId = req.params.user_id;
-        console.log(req.params);
+        console.log(req.params.user_id);
 
         const query = `
             INSERT INTO resume (user_id, resume_text)

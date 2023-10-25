@@ -66,9 +66,9 @@ async function initializeDatabase() {
             FOREIGN KEY(user_id) references users(id)
         );`,
         `CREATE TABLE IF NOT EXISTS resume (
-            user_id VARCHAR(100) PRIMARY KEY,
+            user_id VARCHAR(100),
             resume_text TEXT,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) references users(id)
         );`
     ];

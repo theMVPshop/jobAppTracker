@@ -71,13 +71,7 @@ function UploadFile() {
     //     return;
     // }
 
-    if (!isAuthenticated) {
-      loginWithPopup(getUser()).then(token => {
-        getUser().then(user => {
-          console.log(user);
-        });
-      })
-    }
+    
 
     if (!isAuthenticated) {
       await loginWithPopup().then(() => {
