@@ -79,12 +79,7 @@ function UploadResume() {
       const resumeText = await ky
         .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, { body: formData })
         .text();
-      // const rating = await ky
-      //   .post("http://localhost:3000/api/resume/rate", {
-      //     json: { resumeText, jobInfo },
-      //   })
-      //   .text();
-      // setGptRating(rating);
+      alert("Resume uploaded successfully!")
     } catch (error) {
       alert("Error: " + error);
     }
