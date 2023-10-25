@@ -5,6 +5,7 @@ import ColumnHead from "./ColumnHead";
 import ColumnBody from "./ColumnBody";
 import DisplayCard from "../../reusable/DIsplayCard";
 import ky from "ky";
+import { Job } from "../../App";
 
 const Table = (props) => {
   const [isCardVisible, setCardVisibility] = useState(false);
@@ -14,6 +15,7 @@ const Table = (props) => {
   const [onSiteCards, setOnSiteCards] = useState([]);
   const [offerCards, setOfferCards] = useState([]);
   const [selectedCard, setSelectedCard] = useState(null);
+  const [cardColumn, setCardColumn] = useState(null);
   const cardRef = useRef(null);
 
   const searchQuery = props.searchQuery;
@@ -22,30 +24,32 @@ const Table = (props) => {
 
   const handlePlusClick = (column) => {
     setCardVisibility(true);
-    // setCardColumn(column);
+    setCardColumn(column);
   };
 
-  const handleCardSubmit = async (column, card) => {
+  const handleCardSubmit = async (e, column, card) => {
+    console.log("Submitting...");
     setCardVisibility(false);
-    const apiEndpoint = `http://localhost:3000/api/categorize`; // Replace with your actual API endpoint
     const jobInfo = `Job Title: ${card.title}
-    Description: ${card.description}`;
-    const categorizedData = await ky.post(apiEndpoint, { json: { jobInfo }, timeout: 120000 }).json();
+      Description: ${card.description}`;
+    const categorizedData = await ky.post("http://localhost:3000/api/categorize", { json: { jobInfo }, timeout: 120000 }).json();
+    const job = new Job({ position_title: card.title, company_name: categorizedData["Company Name"], date_applied: new Date().toLocaleDateString() });
+    console.log(job, column);
     switch (column) {
       case "rejected":
-        setRejectedCards([...rejectedCards, card]);
+        setRejectedCards([job, ...rejectedCards]);
         break;
       case "applied":
-        setAppliedCards([...appliedCards, card]);
+        setAppliedCards([job, ...appliedCards]);
         break;
       case "phone":
-        setPhoneCards([...phoneCards, card]);
+        setPhoneCards([job, ...phoneCards]);
         break;
       case "on site":
-        setOnSiteCards([...onSiteCards, card]);
+        setOnSiteCards([job, ...onSiteCards]);
         break;
       case "offer":
-        setOfferCards([...offerCards, card]);
+        setOfferCards([job, ...offerCards]);
         break;
       default:
         break;
@@ -97,7 +101,7 @@ const Table = (props) => {
           <StandardCard
             onBlur={() => { setCardVisibility(false); console.log("blur") }}
             isvisible={isCardVisible.toString()}
-            onCardSubmit={(card) => handleCardSubmit(cardColumn, card)}
+            onCardSubmit={(e) => handleCardSubmit(e, cardColumn, card)}
           />
         </div>
       </ModalOverlay>
