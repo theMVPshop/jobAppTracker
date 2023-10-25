@@ -12,6 +12,37 @@ import { useState } from "react";
 //Theme Use Example:
 //font-family: ${(props) => props.theme.fonts.main}
 
+export const toTitleCase = (str) => {
+  return str.replace(
+    /([a-z\d])([A-Z]+)/g, '$1_$2'
+  ).replace(
+    /_/g, ' '
+  ).replace(
+    /\b./g, char => char.toUpperCase()
+  );
+}
+
+const columnsData = [{
+  title: "Rejected",
+  data: []
+},
+{
+  title: "Applied",
+  data: []
+},
+{
+  title: "Phone",
+  data: []
+},
+{
+  title: "Onsite",
+  data: []
+},
+{
+  title: "Offer",
+  data: []
+}];
+
 const theme = {
   colors: {
     primaryWhite: "#fff",
@@ -30,6 +61,42 @@ const theme = {
 };
 
 /* Auth0Provider needs to wrap around the entire application, based on recommendation from Auth0 */
+
+export class Job {
+  constructor({
+    id = null,
+    gpt_rating = null,
+    gpt_analysis = null,
+    description = null,
+    status = null,
+    date_applied = null,
+    company_name = null,
+    position_title = null,
+    location = null,
+    job_type = null,
+    salary = null,
+    qualifications = null,
+    responsibilities = null,
+    skills = null,
+    education = null
+  } = {}) {
+    this.id = id;
+    this.gpt_rating = gpt_rating;
+    this.gpt_analysis = gpt_analysis;
+    this.description = description;
+    this.status = status;
+    this.date_applied = date_applied;
+    this.company_name = company_name;
+    this.position_title = position_title;
+    this.location = location;
+    this.job_type = job_type;
+    this.salary = salary;
+    this.qualifications = qualifications;
+    this.responsibilities = responsibilities;
+    this.skills = skills;
+    this.education = education;
+  }
+}
 
 function App() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -55,12 +122,7 @@ function App() {
             <Route path="/" element={<LandingDisplay />} />
             <Route
               path="/dashboard"
-              element={
-                <AuthenticationGuard
-                  component={Dashboard}
-                  searchQuery={searchQuery}
-                />
-              }
+              element={<Dashboard initialData={columnsData} />}
             />
 
             <Route path="/applications" element={<UpdateJobs />} />
