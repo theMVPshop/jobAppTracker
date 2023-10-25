@@ -25,20 +25,12 @@ const Table = (props) => {
     // setCardColumn(column);
   };
 
-  const handleCardSubmit = (column, card) => {
+  const handleCardSubmit = async (column, card) => {
     setCardVisibility(false);
-    const apiEndpoint = `http://localhost:3000/api/saveCard`; // Replace with your actual API endpoint
-    ky.post(apiEndpoint, {
-      json: { column, card },
-    }).then(async (response) => {
-      // Handle the API response as needed
-      if (response.status === 200) {
-        // Card saved successfully, you can update state or show a message
-      } else {
-        console.error("Failed to save card:", await response.text());
-        // Handle error
-      }
-    });
+    const apiEndpoint = `http://localhost:3000/api/categorize`; // Replace with your actual API endpoint
+    const jobInfo = `Job Title: ${card.title}
+    Description: ${card.description}`;
+    const categorizedData = await ky.post(apiEndpoint, { json: { jobInfo }, timeout: 120000 }).json();
     switch (column) {
       case "rejected":
         setRejectedCards([...rejectedCards, card]);
@@ -93,7 +85,7 @@ const Table = (props) => {
               <ColumnBody
                 key={index}
                 column={column}
-                data={data}
+                data={appliedCards.length ? appliedCards : data}
                 searchQuery={searchQuery}
               />
             ))}
