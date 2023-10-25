@@ -45,15 +45,31 @@ const transformLinkedInUrl = (url) => {
 };
 
 const parseLinkedIn = ($) => {
-    return $("#job-details").text().trim() || $(".jobs-description").first().text().trim() || $(".show-more-less-html__markup").first().text().trim() || $(".jobs-description-content").first().text().trim() || "";
+    const title = $(".job-details-jobs-unified-top-card__job-title").text().trim() || $(".topcard__title").text().trim() || $("h1").text().trim() || $("h2").text().trim() || "";
+
+    const description = $("#job-details").text().trim() || $(".jobs-description").first().text().trim() || $(".show-more-less-html__markup").first().text().trim() || $(".jobs-description-content").first().text().trim() || "";
+
+    return `Job Title: ${title}
+    Job Description: ${description}`;
 };
 
 const parseIndeed = ($) => {
-    return $("#jobDescriptionText").text().trim() || $(".jobsearch-jobDescriptionText").text().trim() || "";
+    const title = $(".jobsearch-JobInfoHeader-title").text().trim() || $("#vjs-jobtitle").text().trim() || "";
+
+    const description = $("#jobDescriptionText").text().trim() || $(".jobsearch-jobDescriptionText").text().trim() || "";
+
+    return `Job Title: ${title}
+    Job Description: ${description}`;
 };
 
 const parseZipRecruiter = ($) => {
-    return $(".job_details").text().trim() || "";
+
+    const title = $("h1").text().trim() || $(".mb-8").text().trim() || "";
+
+    const description = $(".job_details").text().trim() || "";
+
+    return `Job Title: ${title}
+    Job Description: ${description}`;
 }
 
 const parsers = {
