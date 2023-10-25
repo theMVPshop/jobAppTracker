@@ -13,8 +13,8 @@ import opeanAIRouter from "./server/routes/openaiJobTrack.js"
 const apiKey = process.env.OPENAI_API_KEY
 
 export const openai = new OpenAI({
-    apiKey: apiKey, // Your OpenAI API key
-  });
+  apiKey: apiKey, // Your OpenAI API key
+});
 
 
 const app = express();
@@ -33,7 +33,15 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.static(path.join(__dirname, './client/dist')));
 
+app.get('*', function (_req, res) {
+  res.sendFile(path.join(__dirname, './client/dist/index.html'), function (err) {
+    if (err) {
+      res.status(500).send(err)
+    }
+  })
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`Server started on http://localhost:${PORT}`);
+  console.log(`Server started on http://localhost:${PORT}`);
 });
