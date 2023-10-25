@@ -44,10 +44,10 @@ async function initializeDatabase() {
     const createStatements = [
         `CREATE TABLE IF NOT EXISTS users (
             id VARCHAR(100) NOT NULL PRIMARY KEY,
-            created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         );`,
         `CREATE TABLE IF NOT EXISTS applications (
-            id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            application_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             user_id VARCHAR(100) NOT NULL,
             gpt_rating INT,
             gpt_analysis VARCHAR(1000),
@@ -55,7 +55,7 @@ async function initializeDatabase() {
             date_applied DATETIME DEFAULT CURRENT_TIMESTAMP,
             company_name VARCHAR(100),
             position_title VARCHAR(100),
-            location VARCHAR(100),
+            work_location VARCHAR(100),
             job_type VARCHAR(100),
             salary VARCHAR(100),
             qualifications JSON,

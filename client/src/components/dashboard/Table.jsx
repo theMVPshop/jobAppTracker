@@ -27,7 +27,7 @@ const Table = (props) => {
 
   const handleCardSubmit = (column, card) => {
     setCardVisibility(false);
-    const apiEndpoint = `http://localhost:3000/api/saveCard`; // Replace with your actual API endpoint
+    const apiEndpoint = `http://localhost:3000/api/applications`; // Replace with your actual API endpoint
     ky.post(apiEndpoint, {
       json: { column, card },
     }).then(async (response) => {

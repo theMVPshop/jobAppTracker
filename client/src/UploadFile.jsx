@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ky from "ky";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from 'axios'
+// import { data } from "cheerio/lib/api/attributes";
 
 function UploadFile() {
     const { user, isAuthenticated, loginWithPopup } = useAuth0();
@@ -12,7 +13,7 @@ function UploadFile() {
     const [isLoading, setIsLoading] = useState(false);
     const [categorizedData, setCategorizedData] = useState(null);
 
-
+  console.log("Me:", user.sub)
     const onFileChange = (e) => {
         setFile(e.target.files[0]);
     };
@@ -43,14 +44,14 @@ function UploadFile() {
         }
     }
 
-    const userId = fetch("http://localhost:3000/api/uuid/get")
-      .then((res) => res.json())
-      .then((data) => {
-        return data.user_id;
-      })
-      .catch((err) => {
-        alert("Error: " + err);
-      })
+    // const userId = fetch("http://localhost:3000/api/uuid/get")
+    //   .then((res) => res.json())
+    //   .then((data) => {
+    //     return data.user_id;
+    //   })
+    //   .catch((err) => {
+    //     alert("Error: " + err);
+    //   })
 
     const uploadResume = async () => {
         if (!file) {
@@ -119,6 +120,16 @@ function UploadFile() {
     }
 };
 
+const dataToServer = async () => {
+  console.log("data to backend")
+  try {
+    await axios.post('http://localhost:3000/api/applications', {categorizedData})
+  } catch (error) {
+    console.log(error)
+  }
+  console.log("data to backend done")
+}
+
 
     const renderCategorizedData = () => {
         if (!categorizedData) {
@@ -179,6 +190,7 @@ function UploadFile() {
                 <strong>Requested Education:</strong> {categorizedData['Requested Educations'] == "" ? "No relevant Educations found" : categorizedData['Requested Educations'] }
               </li>
             </ul>
+            <button onClick={dataToServer}>Save Job Posting</button>
           </div>
         );
       };

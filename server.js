@@ -25,7 +25,7 @@ app.use(express.json());
 app.use("/api/categorize", opeanAIRouter)
 app.use("/api/resume", resumeRouter);
 app.use("/api/scrape", scrapeRouter);
-app.use("/api/applications", applicationsRouter);
+app.use("/", applicationsRouter);
 app.use("/api/uuid", passUuidRouter);
 
 const __filename = url.fileURLToPath(import.meta.url);

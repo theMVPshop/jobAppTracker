@@ -17,29 +17,29 @@ export const getUserApplications = async (req, res) => {
 };
 
 export const createApplication = async (req, res) => {
-    // const checkUserSql = "SELECT id FROM users WHERE id = ?";
-    // const createUserSql = "INSERT INTO users (id) VALUES (?)";
+    const checkUserSql = "SELECT id FROM users WHERE id = ?";
+    const createUserSql = "INSERT INTO users (id) VALUES (?)";
 
     const con = await pool.getConnection();
     try {
         const userId = req.params.user_id;
-        // let [userRows] = await con.execute(con.format(checkUserSql, [userId]));
-        // if (userRows.length === 0) {
-        //     await con.execute(con.format(createUserSql, [userId]));
-        // }
+        let [userRows] = await con.execute(con.format(checkUserSql, [userId]));
+        if (userRows.length === 0) {
+            await con.execute(con.format(createUserSql, [userId]));
+        }
         const categorizedData = req.body.categorizedData
-        const createApplicationSql = "INSERT INTO applications (user_id, gpt_rating, gpt_analysis, status, company_name, position_title, work_location, job_type, salary, requested_qualifications, responsibilities, skills, requested_education) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        const createApplicationSql = `INSERT INTO applications (user_id, company_name, position_title, work_location, job_type, salary, qualifications, responsibilities, skills, education) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
         
         const values = [
             userId,
-            parseInt(req.body.gpt_rating),
-            req.body.gpt_analysis.substring(0, 1000),
-            req.body.status.substring(0, 20),
+            // parseInt(req.body.gpt_rating),
+            // req.body.gpt_analysis,      IF UNCOMMENTED HAVE TO ADD IN INSERT QUERY AND ?, ? IN VALUES QUERY.
+            // req.body.status,
             categorizedData['Company Name'], 
             categorizedData['Position Title'],
             categorizedData['Work Location'], 
             categorizedData['Job Type'],
-            categorizedData['Salary'], 
+            categorizedData['Salary'],
             JSON.stringify(categorizedData['Requested Qualifications']),
             JSON.stringify(categorizedData['Responsibilities']), 
             JSON.stringify(categorizedData['Skills']),
