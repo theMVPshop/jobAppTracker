@@ -55,7 +55,6 @@ const Dashboard = (props) => {
   };
 
   const handleUpdateJob = async (updatedData, newStatus = null) => {
-    console.log("heyyy");
     try {
       const statusToUpdate = newStatus || selectedColumn || updatedData.status;
       // Here, newStatus will default to null if not provided
@@ -184,8 +183,9 @@ const Dashboard = (props) => {
       })
       .text();
 
-    const gpt_rating = parseInt(gptResponse.substring(0, 1));
-    const gpt_analysis = gptResponse.substring(8).trim();
+    const gpt_rating = parseInt(gptResponse.slice(0, 1));
+    const periodIndex = gptResponse.indexOf('.');
+    const gpt_analysis = gptResponse.slice(periodIndex + 2);
 
     console.log(gpt_rating, gpt_analysis);
 

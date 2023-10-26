@@ -79,7 +79,12 @@ export const rateResume = async (req, res) => {
         Please follow these instructions clearly: Give me a 1-5 star rating of how well my resume matches this job.
         Then follow that with a CONCISE explanation (1-2 sentence max) of why you gave that rating.
         Directly connect the resume with the job description, noting years of experience and skill requirements, etc.
+        Be generous with your rating, 5 stars shouldn't be impossible but should indicate a near perfect match.
+        But don't be afraid to give a 1 star rating if the resume is completely unqualified.
+        Don't give a low rating just because you don't have enough information to give a high rating, but do mention in your explanation that you're lacking information if that's the case.
         Format it like this:
+        <star_rating_number> stars. <explanation>
+        For example:
         3 stars. Looks like you have the right skills for this job but lack the years of experience they're looking for.`;
 
         const chat = await openai.chat.completions.create({

@@ -28,7 +28,6 @@ export const categorizeText = async (req, res) => {
         // console.log("Content in controller", content)
         // Process and format the categorized data as previously shown
         // console.log("The response in controller:", response.choices[0].message.content)
-        console.log("Categorized!", categorizedData);
         return res.json(categorizedData); // Return the formatted data as a JSON response
       } catch (jsonError) {
         console.error("JSON Parsing Error:", jsonError);
