@@ -153,7 +153,7 @@ const Dashboard = (props) => {
       .json();
 
     // Create a new job object (assuming jobData is the new job's data)
-    const newJob = { ...jobData, id: applicationId, status: currentColumn };
+    let newJob = { ...jobData, id: applicationId, status: currentColumn };
 
     console.log(newJob);
 
@@ -171,6 +171,20 @@ const Dashboard = (props) => {
     });
 
     setNewJobModalVisible(false); // Close the modal
+
+    const resumeText = await ky(`http://localhost:3000/api/resume/users/${user.sub}`).text();
+    const jobInfo = JSON.stringify(jobData);
+
+    const gptResponse = await ky.post(`http://localhost:3000/api/resume/rate`, { json: { resumeText, jobInfo } }).text();
+
+    const gpt_rating = parseInt(gptResponse.substring(0, 1));
+    const gpt_analysis = gptResponse.substring(8).trim();
+
+    console.log(gpt_rating, gpt_analysis);
+
+    newJob = { ...newJob, gpt_rating, gpt_analysis };
+    handleUpdateJob(newJob);
+
   };
 
   const login = () => {
