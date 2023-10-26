@@ -14,6 +14,7 @@ export default ButtonFilled;
 const StyledButton = styled.button`
   position: relative;
   /* width: 180px; */
+  margin: 0;
   width: 100%;
   min-width: 180px;
   height: 40px;

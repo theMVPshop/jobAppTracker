@@ -4,6 +4,7 @@ import PageLoader from "./PageLoader";
 const AuthenticationGuard = (props) => {
   const component = props.component;
   const searchQuery = props.searchQuery;
+  const initialData = props.initialData;
 
   const Component = withAuthenticationRequired(component, {
     onRedirecting: () => (
@@ -13,7 +14,7 @@ const AuthenticationGuard = (props) => {
     ),
   });
 
-  return <Component searchQuery={searchQuery} />;
+  return <Component searchQuery={searchQuery} props={initialData} />;
 };
 
 export default AuthenticationGuard;

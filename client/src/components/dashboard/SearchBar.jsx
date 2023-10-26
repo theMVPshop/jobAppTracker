@@ -17,7 +17,7 @@ const SearchBar = (props) => {
     <SearchWrapper>
       <SearchInput>
         <StyledIcon icon="search" size={15} />
-        <input
+        <Search
           type="text"
           onChange={(event) => {
             setSearchQuery(event.target.value);
@@ -66,19 +66,22 @@ const SearchInput = styled.form`
   &:focus-within {
     border: 1px solid ${(props) => props.theme.colors.primaryBlue};
   }
-  input {
-    border: 0;
-    height: inherit;
-    /* background-color: ${(props) => props.theme.colors.gray1}; */
-    text-overflow: ellipsis;
-    width: 100%;
-    /* color: ${(props) => props.theme.colors.gray2}; */
-    &::placeholder {
-      color: inherit;
-    }
-    &:focus {
-      outline: none;
-    }
+`;
+
+const Search = styled.input`
+  padding: 5px 10px;
+  font-size: 14px;
+  border: 0;
+  height: inherit;
+  /* background-color: ${(props) => props.theme.colors.gray1}; */
+  text-overflow: ellipsis;
+  width: 100%;
+  /* color: ${(props) => props.theme.colors.gray2}; */
+  &::placeholder {
+    color: inherit;
+  }
+  &:focus {
+    outline: none;
   }
 `;
 

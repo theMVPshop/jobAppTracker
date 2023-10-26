@@ -13,35 +13,34 @@ import { useState } from "react";
 //font-family: ${(props) => props.theme.fonts.main}
 
 export const toTitleCase = (str) => {
-  return str.replace(
-    /([a-z\d])([A-Z]+)/g, '$1_$2'
-  ).replace(
-    /_/g, ' '
-  ).replace(
-    /\b./g, char => char.toUpperCase()
-  );
-}
+  return str
+    .replace(/([a-z\d])([A-Z]+)/g, "$1_$2")
+    .replace(/_/g, " ")
+    .replace(/\b./g, (char) => char.toUpperCase());
+};
 
-const columnsData = [{
-  title: "Rejected",
-  data: []
-},
-{
-  title: "Applied",
-  data: []
-},
-{
-  title: "Phone",
-  data: []
-},
-{
-  title: "Onsite",
-  data: []
-},
-{
-  title: "Offer",
-  data: []
-}];
+const columnsData = [
+  {
+    title: "Rejected",
+    data: [],
+  },
+  {
+    title: "Applied",
+    data: [],
+  },
+  {
+    title: "Phone",
+    data: [],
+  },
+  {
+    title: "Onsite",
+    data: [],
+  },
+  {
+    title: "Offer",
+    data: [],
+  },
+];
 
 const theme = {
   colors: {
@@ -78,7 +77,7 @@ export class Job {
     qualifications = null,
     responsibilities = null,
     skills = null,
-    education = null
+    education = null,
   } = {}) {
     this.id = id;
     this.gpt_rating = gpt_rating;
@@ -122,7 +121,13 @@ function App() {
             <Route path="/" element={<LandingDisplay />} />
             <Route
               path="/dashboard"
-              element={<Dashboard initialData={columnsData} />}
+              element={
+                <AuthenticationGuard
+                  component={Dashboard}
+                  searchQuery={searchQuery}
+                  initialData={columnsData}
+                />
+              }
             />
 
             <Route path="/applications" element={<UpdateJobs />} />

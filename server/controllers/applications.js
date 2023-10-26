@@ -112,7 +112,7 @@ export const updateApplication = async (req, res) => {
         return value != null ? value : null;  // If value is null or undefined, replace with null
     });
 
-    const sql = `UPDATE applications SET ${setClauses.join(', ')} WHERE user_id = ? AND id = ?`;
+    const sql = `UPDATE applications SET ${setClauses.join(', ')} WHERE user_id = ? AND application_id = ?`;
     values.push(req.params.user_id, parseInt(req.params.id, 10));  // Parse application_id to int
 
     const con = await pool.getConnection();
@@ -126,7 +126,7 @@ export const updateApplication = async (req, res) => {
 
         // After updating, fetch the updated job data
         const [updatedJobData] = await con.execute(
-            'SELECT * FROM applications WHERE user_id = ? AND id = ?',
+            'SELECT * FROM applications WHERE user_id = ? AND application_id = ?',
             [req.params.user_id, parseInt(req.params.id, 10)]
         );
 
@@ -142,7 +142,7 @@ export const updateApplication = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    const sql = "DELETE FROM applications WHERE id = ? AND user_id = ?";
+    const sql = "DELETE FROM applications WHERE application_id = ? AND user_id = ?";
 
     const con = await pool.getConnection();
     try {

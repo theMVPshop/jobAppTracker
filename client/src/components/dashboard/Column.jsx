@@ -1,27 +1,53 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import styled from "styled-components";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 
-const Column = ({ title, data, onPlusClick, onCardClick, onCardDelete }) => {
-    return (
-        <>
-            <TableHead>
-                <tr>
-                    <TableCell>
-                        <ButtonEmpty content="+" handleClick={() => onPlusClick(title)} />
-                    </TableCell>
-                </tr>
-            </TableHead>
-            <tbody>
-                <TableRow>
-                    {data.length ? (data.map((cardData, index) => (
-                        <Card key={index} data={cardData} onDelete={onCardDelete} onClick={() => onCardClick(cardData)} />
-                    ))) : null}
-                </TableRow>
-            </tbody>
-        </>
-    );
+const Column = ({
+  title,
+  data,
+  onPlusClick,
+  onCardClick,
+  onCardDelete,
+  searchQuery,
+}) => {
+  const [color, setColor] = useState("#fff");
+
+  useEffect(() => {
+    if (title === "Rejected") {
+      setColor("#F6F7F8");
+    }
+  }, [setColor, title]);
+
+  return (
+    <TableCell style={{ backgroundColor: color }}>
+      {data.length
+        ? data
+            .filter((cardData) => {
+              if (searchQuery === "" || searchQuery === undefined) {
+                return cardData;
+              } else if (
+                cardData.position_title
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase()) ||
+                cardData.company_name
+                  .toLowerCase()
+                  .includes(searchQuery.toLowerCase())
+              ) {
+                return cardData;
+              }
+            })
+            .map((cardData, index) => (
+              <Card
+                key={index}
+                data={cardData}
+                onDelete={onCardDelete}
+                onClick={() => onCardClick(cardData)}
+              />
+            ))
+        : null}
+    </TableCell>
+  );
 };
 
 export default Column;
@@ -31,17 +57,6 @@ const TableCell = styled.td`
   text-align: center;
   vertical-align: top;
   position: relative;
-  width: 300px;
-  padding-top: 20px;
-  h3 {
-    margin: 5px;
-  }
-`;
-
-const TableHead = styled.thead`
-  background-color: #fff;
-`;
-
-const TableRow = styled.tr`
-  height: calc((100vh - 2em) / 5);
+  width: 370px;
+  min-width: 370px;
 `;

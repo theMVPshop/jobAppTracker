@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import StandardCard from "../../reusable/StandardCard";
-import ColumnHead from "./ColumnHead";
+import ColumnHead from "../dashboard/ColumnHead";
 import ColumnBody from "./ColumnBody";
 import DisplayCard from "../../reusable/DIsplayCard";
 import ky from "ky";
@@ -32,8 +32,17 @@ const Table = (props) => {
     setCardVisibility(false);
     const jobInfo = `Job Title: ${card.title}
       Description: ${card.description}`;
-    const categorizedData = await ky.post("http://localhost:3000/api/categorize", { json: { jobInfo }, timeout: 120000 }).json();
-    const job = new Job({ position_title: card.title, company_name: categorizedData["Company Name"], date_applied: new Date().toLocaleDateString() });
+    const categorizedData = await ky
+      .post("http://localhost:3000/api/categorize", {
+        json: { jobInfo },
+        timeout: 120000,
+      })
+      .json();
+    const job = new Job({
+      position_title: card.title,
+      company_name: categorizedData["Company Name"],
+      date_applied: new Date().toLocaleDateString(),
+    });
     console.log(job, column);
     switch (column) {
       case "rejected":
@@ -54,7 +63,7 @@ const Table = (props) => {
       default:
         break;
     }
-  }
+  };
 
   function handleClickOutside(event) {
     if (cardRef.current && !cardRef.current.contains(event.target)) {
@@ -63,9 +72,9 @@ const Table = (props) => {
   }
 
   useEffect(() => {
-    document.addEventListener('click', handleClickOutside, true);
+    document.addEventListener("click", handleClickOutside, true);
     return () => {
-      document.removeEventListener('click', handleClickOutside, true);
+      document.removeEventListener("click", handleClickOutside, true);
     };
   }, []);
 
@@ -99,7 +108,10 @@ const Table = (props) => {
       <ModalOverlay isvisible={isCardVisible.toString()}>
         <div ref={cardRef}>
           <StandardCard
-            onBlur={() => { setCardVisibility(false); console.log("blur") }}
+            onBlur={() => {
+              setCardVisibility(false);
+              console.log("blur");
+            }}
             isvisible={isCardVisible.toString()}
             onCardSubmit={(e) => handleCardSubmit(e, cardColumn, card)}
           />
