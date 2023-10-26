@@ -140,10 +140,11 @@ const NewJobModal = forwardRef(function (
             </label>
             {isLoading ? (
               <>
-                <progress />{" "}
+                <ProgressCont>
+                  <progress />{" "}
+                </ProgressCont>
                 <p>
-                  Finding job information, this may take up to a minute or
-                  longer...
+                  Finding job information, may take up to a minute or longer...
                 </p>
               </>
             ) : null}
@@ -168,6 +169,12 @@ const NewJobModal = forwardRef(function (
 });
 
 export default NewJobModal;
+
+const ProgressCont = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
+`;
 
 const RightWrapper = styled.div`
   width: 100%;

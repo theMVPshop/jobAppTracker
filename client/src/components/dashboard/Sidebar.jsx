@@ -34,7 +34,7 @@ export default Sidebar;
 const SidebarWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  /* border-top: 1px solid ${(props) => props.theme.colors.gray2}; */
+  border-top: 1px solid ${(props) => props.theme.colors.gray2};
   /* padding: 0 8px; */
   /* gap: 45px; */
 

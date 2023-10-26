@@ -213,6 +213,8 @@ const Dashboard = (props) => {
     }
   };
 
+  const icons = ["cross", "tick", "phone", "home", "hand"];
+
   useEffect(() => {
     if (isAuthenticated) {
       fetchData();
@@ -250,6 +252,8 @@ const Dashboard = (props) => {
                       <ColumnHead
                         key={index}
                         title={column.title}
+                        data={column.data}
+                        icons={icons[index]}
                         column={column}
                         handlePlusClick={handlePlusClick}
                       />

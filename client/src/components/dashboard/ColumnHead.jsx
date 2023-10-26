@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 import { useEffect, useState } from "react";
+import { Icon } from "@blueprintjs/core";
 
-const ColumnHead = ({ title, handlePlusClick }) => {
+const ColumnHead = ({ title, data, icons, handlePlusClick }) => {
   const [color, setColor] = useState("#fff");
 
   useEffect(() => {
@@ -12,9 +13,13 @@ const ColumnHead = ({ title, handlePlusClick }) => {
   }, [setColor, title]);
   return (
     <TableCell style={{ backgroundColor: color }}>
-      <div>
-        <h3>{title}</h3>
-      </div>
+      <HeadWrap>
+        <StyledIcon icon={icons} size={25} />
+        <div>
+          <h3>{title}</h3>
+          <h4>Jobs: {data.length}</h4>
+        </div>
+      </HeadWrap>
       <ButtonWrap>
         <BtnCont>
           <ButtonEmpty content="+" handleClick={() => handlePlusClick(title)} />
@@ -27,7 +32,7 @@ const ColumnHead = ({ title, handlePlusClick }) => {
 export default ColumnHead;
 
 const TableCell = styled.td`
-  border: 1px solid #ddd;
+  border: 1px solid ${(props) => props.theme.colors.gray2};
   text-align: center;
   vertical-align: top;
   position: relative;
@@ -37,6 +42,16 @@ const TableCell = styled.td`
   h3 {
     margin: 5px;
   }
+  h4 {
+    color: gray;
+    margin: 5px;
+  }
+`;
+
+const HeadWrap = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;
 
 const ButtonWrap = styled.div`
@@ -48,4 +63,16 @@ const ButtonWrap = styled.div`
 
 const BtnCont = styled.div`
   width: 90%;
+`;
+
+const StyledIcon = styled(Icon)`
+  fill: gray;
+  position: absolute;
+  left: 180px;
+  top: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  margin: 5px 0;
 `;
