@@ -12,6 +12,7 @@ const JobInfoModal = forwardRef(function (
   ref
 ) {
   const [isEditModalVisible, setEditModalVisible] = useState(false);
+  const [selectedColumn, setSelectedColumn] = useState(data ? data.status : "");
 
   const handleEdit = () => {
     setEditModalVisible(true);
@@ -36,7 +37,8 @@ const JobInfoModal = forwardRef(function (
                 <h2>Job Information</h2>
                 {data
                   ? Object.keys(data).map((key, index) =>
-                      data[key] && !["id", "user_id", "status"].includes(key) ? (
+                      data[key] &&
+                      !["id", "user_id", "status"].includes(key) ? (
                         <div key={index}>
                           <h3>{toTitleCase(key)}:</h3>
                           <p>
@@ -48,6 +50,19 @@ const JobInfoModal = forwardRef(function (
                       ) : null
                     )
                   : null}
+                <div>
+                  <h3>Status:</h3>
+                  <select
+                    value={selectedColumn}
+                    onChange={(e) => setSelectedColumn(e.target.value)}
+                  >
+                    {columnsData.map((column) => (
+                      <option key={column.title} value={column.title}>
+                        {column.title}
+                      </option>
+                    ))}
+                  </select>
+                </div>
                 <ButtonContainer>
                   <ButtonFilled
                     content="Edit Job Info"
