@@ -32,11 +32,11 @@ const Wrapper = styled.div`
   left: 0;
   .collapsed {
     max-width: 1920px;
-    margin: 0;
+    margin: 0 100px;
   }
   .expanded {
     max-width: 100%;
-    margin: 0 40px;
+    margin: 0 25px;
     padding: 0;
   }
 `;

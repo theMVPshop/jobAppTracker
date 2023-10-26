@@ -34,18 +34,17 @@ export default Sidebar;
 const SidebarWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  border-top: 1px solid ${(props) => props.theme.colors.gray2};
-  width: 600px;
-  /* padding: 10px; */
+  /* border-top: 1px solid ${(props) => props.theme.colors.gray2}; */
+  /* padding: 0 8px; */
   /* gap: 45px; */
 
   .collapsed {
-    width: 50px;
+    width: 54px;
     margin: 35px 0;
   }
   .expanded {
     width: 200px;
-    margin: 20px 10px;
+    margin: 6px 17px;
     @media only screen and (max-width: 700px) {
       width: 90vw;
     }
@@ -60,6 +59,7 @@ const SidebarContent = styled.div`
 const Tab = styled.div`
   display: flex;
   justify-content: flex-end;
+  margin-bottom: 13px;
   button {
     width: fit-content;
   }

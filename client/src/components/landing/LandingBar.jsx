@@ -28,7 +28,8 @@ const LandingBar = (props) => {
             <DropDown>
               <HamburgerMenu open={open} setOpen={setOpen} />
               <MenuButton open={open} onClick={() => setOpen(!open)}>
-                <StyledIcon icon="menu" size={30} />
+                {!open && <StyledIcon icon="menu" size={30} />}
+                {open && <StyledIcon icon="cross" size={30} />}
               </MenuButton>
             </DropDown>
           </>
@@ -66,6 +67,7 @@ const Nav = styled.div`
   .expanded {
     max-width: 100%;
     padding: 0 25px;
+    /* border-bottom: 1px solid ${(props) => props.theme.colors.gray2}; */
   }
 `;
 
@@ -109,6 +111,7 @@ const LogoIcon = styled.img`
 const ProfileDropdown = styled.div`
   display: flex;
   border-radius: ${(props) => props.theme.other.borderRadius};
+
   &:hover {
     background-color: ${(props) => props.theme.colors.gray1} !important;
     cursor: pointer;
@@ -117,6 +120,8 @@ const ProfileDropdown = styled.div`
 
 const MenuButton = styled.button`
   border: none;
+  margin: 0;
+  padding: 2px 5px;
   background-color: transparent;
   cursor: pointer;
 `;
@@ -125,6 +130,13 @@ const StyledIcon = styled(Icon)`
   fill: ${(props) => props.theme.colors.primaryBlue};
   display: flex;
   align-items: center;
+  padding: 3px;
+  border-radius: 5px;
+  &:hover {
+    background-color: ${(props) => props.theme.colors.gray1} !important;
+    fill: ${(props) => props.theme.colors.secondaryBlue};
+    cursor: pointer;
+  }
 `;
 
 const ButtonContainer = styled.div`

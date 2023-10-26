@@ -2,8 +2,15 @@ import React, { useState, forwardRef } from "react";
 import "./modal.css";
 import EditJobModal from "./EditJobModal";
 import { toTitleCase } from "../../App";
+import styled from "styled-components";
+import { Icon } from "@blueprintjs/core";
+import ButtonEmpty from "../../reusable/ButtonEmpty";
+import ButtonFilled from "../../reusable/ButtonFilled";
 
-const JobInfoModal = forwardRef(function ({ data, isVisible, onClose, onDelete, onUpdate }, ref) {
+const JobInfoModal = forwardRef(function (
+  { data, isVisible, onClose, onDelete, onUpdate },
+  ref
+) {
   const [isEditModalVisible, setEditModalVisible] = useState(false);
 
   const handleEdit = () => {
@@ -16,36 +23,85 @@ const JobInfoModal = forwardRef(function ({ data, isVisible, onClose, onDelete, 
   };
 
   return (
-    <div ref={ref} className={`modal ${isVisible ? 'visible' : ''}`}>
-      {isVisible && data ? (
-        <div className="modal-content">
-          <button onClick={onClose}>X</button>
-          <button onClick={(e) => { e.stopPropagation(); handleEdit(); }}>Edit Job Info</button>
-          <h2>Job Information</h2>
-          {data ? Object.keys(data).map((key, index) => (
-            data[key] && !['id', 'status'].includes(key) ? (
-              <div key={index}>
-                <h3>{toTitleCase(key)}:</h3>
-                <p>
-                  {key === "date_applied" ?
-                    new Date(data[key]).toLocaleDateString()
-                    : data[key]}
-                </p>
+    <div ref={ref} className={`modal ${isVisible ? "visible" : ""}`}>
+      <div>
+        {!isEditModalVisible ? (
+          <>
+            {isVisible && data ? (
+              <div className="modalcard">
+                <RightWrapper>
+                  <StyledCross icon="cross" size={25} onClick={onClose} />
+                </RightWrapper>
+
+                <h2>Job Information</h2>
+                {data
+                  ? Object.keys(data).map((key, index) =>
+                      data[key] && !["id", "status"].includes(key) ? (
+                        <div key={index}>
+                          <h3>{toTitleCase(key)}:</h3>
+                          <p>
+                            {key === "date_applied"
+                              ? new Date(data[key]).toLocaleDateString()
+                              : data[key]}
+                          </p>
+                        </div>
+                      ) : null
+                    )
+                  : null}
+                <ButtonContainer>
+                  <ButtonFilled
+                    content="Edit Job Info"
+                    handleClick={(e) => {
+                      e.stopPropagation();
+                      handleEdit();
+                    }}
+                  />
+                  <ButtonEmpty
+                    content="Delete Job"
+                    handleClick={(e) => onDelete(data.id)}
+                  >
+                    Delete Job
+                  </ButtonEmpty>
+                </ButtonContainer>
               </div>
-            ) : null
-          )) : null}
-          <button onClick={(e) => onDelete(data.id)}>Delete Job</button>
-        </div>
-      ) : null}
-      <EditJobModal
-        ref={ref}
-        isVisible={isEditModalVisible}
-        onClose={() => setEditModalVisible(false)}
-        onSubmit={handleEditSubmit}
-        initialData={data}
-      />
+            ) : null}
+          </>
+        ) : (
+          <EditJobModal
+            ref={ref}
+            isVisible={isEditModalVisible}
+            onClose={() => setEditModalVisible(false)}
+            onSubmit={handleEditSubmit}
+            initialData={data}
+          />
+        )}
+      </div>
     </div>
   );
 });
 
 export default JobInfoModal;
+
+const RightWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+`;
+
+const StyledCross = styled(Icon)`
+  fill: ${(props) => props.theme.colors.secondaryBlue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  margin: 5px 0;
+  :hover {
+    fill: red;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+`;
