@@ -11,7 +11,7 @@ const ConfirmDeleteModal = forwardRef(function (
   return (
     <div ref={ref} className={`modal ${isVisible ? "visible" : ""}`}>
       {isVisible ? (
-        <div className="smallmodalcard">
+        <div className="deletemodalcard">
           <h2>Confirm Deletion</h2>
           <p>Are you sure you want to delete this job?</p>
           <ButtonContainer>
