@@ -53,7 +53,7 @@ const Column = ({
 export default Column;
 
 const TableCell = styled.td`
-  border: 1px solid #ddd;
+  border: 1px solid ${(props) => props.theme.colors.gray2};
   text-align: center;
   vertical-align: top;
   position: relative;
