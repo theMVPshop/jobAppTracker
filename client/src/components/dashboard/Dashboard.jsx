@@ -47,7 +47,6 @@ const Dashboard = ({ initialData }) => {
   };
 
   const handleUpdateJob = async (updatedData, newStatus = null) => {
-    console.log("heyyy")
     try {
       // Here, newStatus will default to null if not provided
       const updatedJobData = { ...updatedData, status: newStatus || updatedData.status };
@@ -133,7 +132,7 @@ const Dashboard = ({ initialData }) => {
     const { applicationId } = await ky.post(`http://localhost:3000/api/users/${user.sub}/applications`, { json: jobData }).json();
 
     // Create a new job object (assuming jobData is the new job's data)
-    const newJob = { ...jobData, id: applicationId, status: currentColumn };
+    let newJob = { ...jobData, id: applicationId, status: currentColumn };
 
     console.log(newJob)
 
@@ -151,6 +150,19 @@ const Dashboard = ({ initialData }) => {
     });
 
     setNewJobModalVisible(false);  // Close the modal
+
+    const resumeText = await ky(`http://localhost:3000/api/resume/users/${user.sub}`).text();
+
+    const jobInfo = JSON.stringify(newJob);
+
+    const gptResponse = await ky.post("http://localhost:3000/api/resume/rate", { json: { resumeText, jobInfo } }).text();
+
+    const gpt_rating = parseInt(gptResponse.substring(0, 1));
+    const gpt_analysis = gptResponse.substring(8);
+
+    newJob = { gpt_rating: gpt_rating, gpt_analysis: gpt_analysis, ...newJob };
+
+    handleUpdateJob(newJob);
   };
 
   const login = () => {
