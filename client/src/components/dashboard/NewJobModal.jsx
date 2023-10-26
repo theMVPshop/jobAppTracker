@@ -15,7 +15,6 @@ const NewJobModal = forwardRef(function (
   const [useManualInput, setUseManualInput] = useState(false);
   const [jobUrl, setJobUrl] = useState("");
   const [jobData, setJobData] = useState({
-    id: "",
     position_title: "",
     company_name: "",
     date_applied: "",
@@ -59,7 +58,6 @@ const NewJobModal = forwardRef(function (
 
     onSubmit(fetchedData);
     setJobData({
-      id: "",
       gpt_rating: 0,
       gpt_analysis: "",
       description: "",
@@ -82,7 +80,6 @@ const NewJobModal = forwardRef(function (
   const handleManualSubmit = () => {
     onSubmit(jobData);
     setJobData({
-      id: "",
       gpt_rating: 0,
       gpt_analysis: "",
       description: "",
