@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import StandardTable from "../../reusable/StandardTable";
 import StandardCard from "../../reusable/StandardCard";
-import Sidebar from "./Sidebar";
+import Sidebar from "../dashboard/Sidebar";
 const DashboardWrapper = styled.div`
   display: flex;
   flex-direction: column;

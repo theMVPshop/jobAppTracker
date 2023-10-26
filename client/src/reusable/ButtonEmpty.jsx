@@ -14,8 +14,8 @@ export default ButtonEmpty;
 const StyledButton = styled.button`
   position: relative;
   min-width: 180px;
-  width: 90%;
-  margin: 10px 0;
+  width: 100%;
+  margin: 0;
   height: 40px;
   border-radius: ${(props) => props.theme.other.borderRadius};
   background-color: transparent !important;
