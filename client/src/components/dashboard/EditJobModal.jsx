@@ -29,7 +29,7 @@ const EditJobModal = forwardRef(function (
         </RightWrapper>
         {initialData
           ? Object.keys(initialData).map((key) =>
-              !["id", "gpt_rating", "gpt_analysis", "status"].includes(key) ? (
+              !["id", "user_id", "gpt_rating", "gpt_analysis", "status"].includes(key) ? (
                 <label key={key}>
                   {toTitleCase(key)}
                   <input
