@@ -36,7 +36,7 @@ const JobInfoModal = forwardRef(function (
                 <h2>Job Information</h2>
                 {data
                   ? Object.keys(data).map((key, index) =>
-                      data[key] && !["id", "status"].includes(key) ? (
+                      data[key] && !["id", "user_id", "status"].includes(key) ? (
                         <div key={index}>
                           <h3>{toTitleCase(key)}:</h3>
                           <p>
