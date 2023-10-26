@@ -142,7 +142,7 @@ export const updateApplication = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    const sql = "DELETE FROM applications WHERE id = ? AND user_id = ?";
+    const sql = "DELETE FROM applications WHERE application_id = ? AND user_id = ?";
 
     const con = await pool.getConnection();
     try {
