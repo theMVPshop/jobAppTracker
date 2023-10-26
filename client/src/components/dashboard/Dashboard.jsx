@@ -57,6 +57,7 @@ const Dashboard = (props) => {
   const handleUpdateJob = async (updatedData, newStatus = null) => {
     console.log("heyyy");
     try {
+      const statusToUpdate = newStatus || selectedColumn || updatedData.status;
       // Here, newStatus will default to null if not provided
       const updatedJobData = {
         ...updatedData,
@@ -172,10 +173,16 @@ const Dashboard = (props) => {
 
     setNewJobModalVisible(false); // Close the modal
 
-    const resumeText = await ky(`http://localhost:3000/api/resume/users/${user.sub}`).text();
+    const resumeText = await ky(
+      `http://localhost:3000/api/resume/users/${user.sub}`
+    ).text();
     const jobInfo = JSON.stringify(jobData);
 
-    const gptResponse = await ky.post(`http://localhost:3000/api/resume/rate`, { json: { resumeText, jobInfo } }).text();
+    const gptResponse = await ky
+      .post(`http://localhost:3000/api/resume/rate`, {
+        json: { resumeText, jobInfo },
+      })
+      .text();
 
     const gpt_rating = parseInt(gptResponse.substring(0, 1));
     const gpt_analysis = gptResponse.substring(8).trim();
@@ -184,7 +191,6 @@ const Dashboard = (props) => {
 
     newJob = { ...newJob, gpt_rating, gpt_analysis };
     handleUpdateJob(newJob);
-
   };
 
   const login = () => {
