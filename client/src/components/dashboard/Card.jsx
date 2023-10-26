@@ -4,21 +4,18 @@ import { Icon } from "@blueprintjs/core";
 
 const Card = ({ data, onClick, onDelete }) => {
   const [tileColor, setTileColor] = useState();
-  const randomNumberInRange = (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  };
-
-  const number = randomNumberInRange(0, 4);
-  const colors = ["#0094FF", "#003B65", "#1F5B87", "#5495C3", "#0062A9"];
+  const colors = ["#999999", "#C9463C", "#DF8E25", "#C6B346", "#35AB64", "#3CA3DA"];
 
   useEffect(() => {
-    const newColor = colors[number];
     if (data.status === "Rejected") {
       setTileColor("#CCCCCC");
-    } else {
-      setTileColor(newColor);
+    } else if (data.gpt_rating) {
+      setTileColor(colors[data.gpt_rating]);
     }
-  }, [colors, number]);
+    else {
+      setTileColor(colors[0]);
+    }
+  }, [data]);
 
   return (
     <InfoCard
@@ -43,10 +40,12 @@ const Card = ({ data, onClick, onDelete }) => {
               onDelete(data.id);
             }}
           />
-          <StarWrapper>
-            <h4>{data.star_rating}</h4>
-            <StyledIcon icon="star" size={15} />
-          </StarWrapper>
+          {data.gpt_rating &&
+            <StarWrapper>
+              <h4>{data.gpt_rating}</h4>
+              <StyledIcon icon="star" size={15} />
+            </StarWrapper>
+          }
         </RightWrapper>
       </ContentWrapper>
     </InfoCard>
