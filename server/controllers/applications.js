@@ -112,8 +112,8 @@ export const updateApplication = async (req, res) => {
         return value != null ? value : null;  // If value is null or undefined, replace with null
     });
 
-    const sql = `UPDATE applications SET ${setClauses.join(', ')} WHERE user_id = ? AND application_id = ?`;
-    values.push(req.params.user_id, parseInt(req.params.id, 10));  // Parse application_id to int
+    const sql = `UPDATE applications SET ${setClauses.join(', ')} WHERE user_id = ? AND id = ?`;
+    values.push(req.params.user_id, parseInt(req.params.id, 10));  // Parse id to int
 
     const con = await pool.getConnection();
     try {
@@ -126,7 +126,7 @@ export const updateApplication = async (req, res) => {
 
         // After updating, fetch the updated job data
         const [updatedJobData] = await con.execute(
-            'SELECT * FROM applications WHERE user_id = ? AND application_id = ?',
+            'SELECT * FROM applications WHERE user_id = ? AND id = ?',
             [req.params.user_id, parseInt(req.params.id, 10)]
         );
 
@@ -142,13 +142,13 @@ export const updateApplication = async (req, res) => {
 };
 
 export const deleteApplication = async (req, res) => {
-    const sql = "DELETE FROM applications WHERE application_id = ? AND user_id = ?";
+    const sql = "DELETE FROM applications WHERE id = ? AND user_id = ?";
 
     const con = await pool.getConnection();
     try {
-        const application_id = req.params.id;
+        const id = req.params.id;
         const user_id = req.params.user_id;
-        const formattedSql = con.format(sql, [application_id, user_id]);
+        const formattedSql = con.format(sql, [id, user_id]);
         const [rows] = await con.execute(formattedSql);
 
         if (rows.affectedRows === 0) {
