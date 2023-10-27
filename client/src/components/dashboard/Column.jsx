@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import styled from "styled-components";
-import ButtonEmpty from "../../reusable/ButtonEmpty";
 
 const Column = ({
   title,
   data,
-  onPlusClick,
   onCardClick,
   onCardDelete,
   searchQuery,
@@ -37,9 +35,9 @@ const Column = ({
                 return cardData;
               }
             })
-            .map((cardData, index) => (
+            .map((cardData) => (
               <Card
-                key={index}
+                key={cardData.id}
                 data={cardData}
                 onDelete={onCardDelete}
                 onClick={() => onCardClick(cardData)}

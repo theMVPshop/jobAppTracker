@@ -56,7 +56,6 @@ const Dashboard = (props) => {
 
   const handleUpdateJob = async (updatedData, newStatus = null) => {
     try {
-      const statusToUpdate = newStatus || selectedColumn || updatedData.status;
       // Here, newStatus will default to null if not provided
       const updatedJobData = {
         ...updatedData,
@@ -75,25 +74,47 @@ const Dashboard = (props) => {
         setJobInfoModalData(updatedJobData);
       }
 
-      // Updating the local state to reflect the changes
-      setColumnsData((prevColumnsData) => {
-        return prevColumnsData.map((column) => {
-          return {
-            ...column,
-            data: column.data.map((job) => {
-              if (job.id === response.id) {
-                // If the updated job is currently being displayed in the JobInfoModal,
-                // update the jobInfoModalData state as well
-                if (jobInfoModalData && jobInfoModalData.id === response.id) {
-                  setJobInfoModalData(response);
-                }
-                return response; // Replace the existing job data with the updated data from the server
-              }
-              return job; // Return the existing job data unchanged
-            }),
-          };
+      const updateColumnsData = (columns, job) => {
+        let jobRemoved = false;
+        let updatedColumns = columns.map(column => {
+          const jobIndex = column.data.findIndex(item => item.id === job.id);
+          if (jobIndex > -1) {
+            jobRemoved = true;
+            return {
+              ...column,
+              data: [
+                ...column.data.slice(0, jobIndex),
+                ...column.data.slice(jobIndex + 1),
+              ],
+            };
+          } else {
+            return column;
+          }
         });
-      });
+
+        if (jobRemoved) {
+          updatedColumns = updatedColumns.map(column => {
+            if (column.title === job.status) {
+              return {
+                ...column,
+                data: [...column.data, job],
+              };
+            } else {
+              return column;
+            }
+          });
+        }
+
+        return updatedColumns;
+      };
+
+      // Use the updateColumnsData function to get the updated columns data
+      const updatedColumnsData = updateColumnsData(columnsData, updatedJobData);
+
+      // Set the updated columns data
+      setColumnsData(updatedColumnsData);
+
+
     } catch (error) {
       console.error(error);
     }
@@ -220,6 +241,10 @@ const Dashboard = (props) => {
       fetchData();
     }
   }, [isAuthenticated]);
+
+  useEffect(() => {
+    console.log("new:", columnsData);
+  }, [columnsData])
 
   // function handleClickOutside(event) {
   //   console.log(modalRef.current);
