@@ -19,7 +19,7 @@ export const toTitleCase = (str) => {
     .replace(/\b./g, (char) => char.toUpperCase());
 };
 
-const columnsData = [
+export const columnsData = [
   {
     title: "Rejected",
     data: [],

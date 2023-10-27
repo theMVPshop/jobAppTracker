@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import "./modal.css";
 import EditJobModal from "./EditJobModal";
 import { toTitleCase } from "../../App";
@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { Icon } from "@blueprintjs/core";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 import ButtonFilled from "../../reusable/ButtonFilled";
+import { columnsData } from "../../App";
 
 const JobInfoModal = forwardRef(function (
   { data, isVisible, onClose, onDelete, onUpdate },
@@ -23,6 +24,15 @@ const JobInfoModal = forwardRef(function (
     setEditModalVisible(false);
   };
 
+  const handleSelectChange = (e) => {
+    setSelectedColumn(e.target.value);
+    onUpdate({ ...data, status: e.target.value });
+  }
+
+  useEffect(() => {
+    setSelectedColumn(data ? data.status : "");
+  }, [data])
+
   return (
     <div ref={ref} className={`modal ${isVisible ? "visible" : ""}`}>
       <div>
@@ -37,24 +47,24 @@ const JobInfoModal = forwardRef(function (
                 <h2>Job Information</h2>
                 {data
                   ? Object.keys(data).map((key, index) =>
-                      data[key] &&
+                    data[key] &&
                       !["id", "user_id", "status"].includes(key) ? (
-                        <div key={index}>
-                          <h3>{toTitleCase(key)}:</h3>
-                          <p>
-                            {key === "date_applied"
-                              ? new Date(data[key]).toLocaleDateString()
-                              : data[key]}
-                          </p>
-                        </div>
-                      ) : null
-                    )
+                      <div key={index}>
+                        <h3>{toTitleCase(key)}:</h3>
+                        <p>
+                          {key === "date_applied"
+                            ? new Date(data[key]).toLocaleDateString()
+                            : data[key]}
+                        </p>
+                      </div>
+                    ) : null
+                  )
                   : null}
                 <div>
                   <h3>Status:</h3>
                   <select
                     value={selectedColumn}
-                    onChange={(e) => setSelectedColumn(e.target.value)}
+                    onChange={handleSelectChange}
                   >
                     {columnsData.map((column) => (
                       <option key={column.title} value={column.title}>
