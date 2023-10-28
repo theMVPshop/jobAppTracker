@@ -61,6 +61,9 @@ const Nav = styled.div`
   align-items: center;
   justify-content: center;
   background-color: transparent;
+  position: fixed;
+  top: 0;
+  z-index: 2;
   .collapsed {
     max-width: 1920px;
   }

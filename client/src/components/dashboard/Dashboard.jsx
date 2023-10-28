@@ -41,7 +41,7 @@ const Dashboard = (props) => {
   };
 
   const handlePlusClick = (columnTitle) => {
-    console.log(`Add card to ${columnTitle}`);
+    // console.log(`Add card to ${columnTitle}`);
     setNewJobModalVisible(true);
     setCurrentColumn(columnTitle);
   };
@@ -76,8 +76,8 @@ const Dashboard = (props) => {
 
       const updateColumnsData = (columns, job) => {
         let jobRemoved = false;
-        let updatedColumns = columns.map(column => {
-          const jobIndex = column.data.findIndex(item => item.id === job.id);
+        let updatedColumns = columns.map((column) => {
+          const jobIndex = column.data.findIndex((item) => item.id === job.id);
           if (jobIndex > -1) {
             jobRemoved = true;
             return {
@@ -93,7 +93,7 @@ const Dashboard = (props) => {
         });
 
         if (jobRemoved) {
-          updatedColumns = updatedColumns.map(column => {
+          updatedColumns = updatedColumns.map((column) => {
             if (column.title === job.status) {
               return {
                 ...column,
@@ -113,8 +113,6 @@ const Dashboard = (props) => {
 
       // Set the updated columns data
       setColumnsData(updatedColumnsData);
-
-
     } catch (error) {
       console.error(error);
     }
@@ -205,7 +203,7 @@ const Dashboard = (props) => {
       .text();
 
     const gpt_rating = parseInt(gptResponse.slice(0, 1));
-    const periodIndex = gptResponse.indexOf('.');
+    const periodIndex = gptResponse.indexOf(".");
     const gpt_analysis = gptResponse.slice(periodIndex + 2);
 
     console.log(gpt_rating, gpt_analysis);
@@ -242,9 +240,7 @@ const Dashboard = (props) => {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {
-    console.log("new:", columnsData);
-  }, [columnsData])
+  useEffect(() => {}, [columnsData]);
 
   // function handleClickOutside(event) {
   //   console.log(modalRef.current);
@@ -263,7 +259,9 @@ const Dashboard = (props) => {
 
   return (
     <HorizontalWrapper>
-      <Sidebar />
+      <SideNav>
+        <Sidebar />
+      </SideNav>
       <DashboardWrapper>
         <div className="dashboard">
           {!isAuthenticated ? (
@@ -314,6 +312,8 @@ const Dashboard = (props) => {
                 isVisible={isNewJobModalVisible}
                 onClose={() => setNewJobModalVisible(false)}
                 onSubmit={handleJobSubmit}
+                currentColumn={currentColumn}
+                icons={icons}
               />
               <ConfirmDeleteModal
                 ref={modalRef}
@@ -333,9 +333,18 @@ export default Dashboard;
 
 const HorizontalWrapper = styled.div`
   display: flex;
+  width: 100%;
+  /* overflow-x: scroll; */
+  margin-top: 60px;
+`;
+
+const SideNav = styled.div`
+  position: fixed;
+  z-index: 2;
 `;
 
 const DashboardWrapper = styled.div`
+  margin-left: 54px;
   display: flex;
   flex-direction: column;
 `;

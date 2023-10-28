@@ -15,13 +15,12 @@ function UploadResume() {
   const [isLoading, setIsLoading] = useState(false);
 
   if (!isAuthenticated) {
-    loginWithPopup(getUser()).then(token => {
-      getUser().then(user => {
+    loginWithPopup(getUser()).then((token) => {
+      getUser().then((user) => {
         console.log(user);
       });
-    })
+    });
   }
-
 
   const hiddenFileInput = useRef(null);
 
@@ -67,19 +66,15 @@ function UploadResume() {
       })
       .catch((err) => {
         alert("Error: " + err);
-      })
-
-
-
-
-      
-      
+      });
 
     try {
       const resumeText = await ky
-        .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, { body: formData })
+        .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, {
+          body: formData,
+        })
         .text();
-      alert("Resume uploaded successfully!")
+      alert("Resume uploaded successfully!");
     } catch (error) {
       alert("Error: " + error);
     }
@@ -89,12 +84,6 @@ function UploadResume() {
 
   return (
     <>
-      {isLoading ? (
-        <>
-          <progress /> <p>Loading...</p>
-        </>
-      ) : null}
-      <p>{gptRating}</p>
       <div>
         {!file && (
           <ButtonFilled content="Upload Resume" handleClick={handleClick} />
@@ -115,6 +104,12 @@ function UploadResume() {
             </div>
           </SelectedWrapper>
         )}
+        {isLoading ? (
+          <>
+            <progress /> <p>Loading...</p>
+          </>
+        ) : null}
+        <p>{gptRating}</p>
         <br />
         <br />
       </div>

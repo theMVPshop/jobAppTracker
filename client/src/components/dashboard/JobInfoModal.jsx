@@ -27,11 +27,11 @@ const JobInfoModal = forwardRef(function (
   const handleSelectChange = (e) => {
     setSelectedColumn(e.target.value);
     onUpdate({ ...data, status: e.target.value });
-  }
+  };
 
   useEffect(() => {
     setSelectedColumn(data ? data.status : "");
-  }, [data])
+  }, [data]);
 
   return (
     <div ref={ref} className={`modal ${isVisible ? "visible" : ""}`}>
@@ -45,24 +45,9 @@ const JobInfoModal = forwardRef(function (
                 </RightWrapper>
 
                 <h2>Job Information</h2>
-                {data
-                  ? Object.keys(data).map((key, index) =>
-                    data[key] &&
-                      !["id", "user_id", "status"].includes(key) ? (
-                      <div key={index}>
-                        <h3>{toTitleCase(key)}:</h3>
-                        <p>
-                          {key === "date_applied"
-                            ? new Date(data[key]).toLocaleDateString()
-                            : data[key]}
-                        </p>
-                      </div>
-                    ) : null
-                  )
-                  : null}
                 <div>
                   <h3>Status:</h3>
-                  <select
+                  <StatusDropdown
                     value={selectedColumn}
                     onChange={handleSelectChange}
                   >
@@ -71,8 +56,23 @@ const JobInfoModal = forwardRef(function (
                         {column.title}
                       </option>
                     ))}
-                  </select>
+                  </StatusDropdown>
                 </div>
+                {data
+                  ? Object.keys(data).map((key, index) =>
+                      data[key] &&
+                      !["id", "user_id", "status"].includes(key) ? (
+                        <div key={index}>
+                          <h3>{toTitleCase(key)}:</h3>
+                          <p>
+                            {key === "date_applied"
+                              ? new Date(data[key]).toLocaleDateString()
+                              : data[key]}
+                          </p>
+                        </div>
+                      ) : null
+                    )
+                  : null}
                 <ButtonContainer>
                   <ButtonFilled
                     content="Edit Job Info"
@@ -107,6 +107,17 @@ const JobInfoModal = forwardRef(function (
 
 export default JobInfoModal;
 
+const StatusDropdown = styled.select`
+  width: 200px;
+  height: 40px;
+  background-color: ${(props) => props.theme.colors.primaryBlue};
+  border-color: ${(props) => props.theme.colors.primaryBlue};
+  color: white;
+  font-size: 18px;
+  border-radius: 5px;
+  padding: 5px;
+`;
+
 const RightWrapper = styled.div`
   width: 100%;
   display: flex;
@@ -119,7 +130,7 @@ const StyledCross = styled(Icon)`
   align-items: center;
   justify-content: center;
   padding-left: 5px;
-  margin: 5px 0;
+  margin: 5px 0px;
   :hover {
     fill: red;
   }

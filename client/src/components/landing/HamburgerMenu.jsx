@@ -30,6 +30,8 @@ const Wrapper = styled.div`
   justify-content: center;
   top: 60px;
   left: 0;
+  /* top: 60px;
+  left: 0; */
   .collapsed {
     max-width: 1920px;
     margin: 0 100px;

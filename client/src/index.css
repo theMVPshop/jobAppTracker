@@ -32,6 +32,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   overflow-y: hidden;
+  /* overflow-x: hidden; */
 }
 
 /* code {

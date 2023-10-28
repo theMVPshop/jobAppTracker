@@ -35,8 +35,9 @@ const SidebarWrapper = styled.div`
   display: flex;
   flex-direction: column;
   border-top: 1px solid ${(props) => props.theme.colors.gray2};
-  /* padding: 0 8px; */
-  /* gap: 45px; */
+  border-right: 1px solid ${(props) => props.theme.colors.gray2};
+  background-color: white;
+  height: calc(100vh - 60px);
 
   .collapsed {
     width: 54px;
@@ -44,9 +45,9 @@ const SidebarWrapper = styled.div`
   }
   .expanded {
     width: 200px;
-    margin: 6px 17px;
+    margin: 38px 17px;
     @media only screen and (max-width: 700px) {
-      width: 90vw;
+      width: calc(100vw - 35px);
     }
   }
 `;
@@ -59,7 +60,7 @@ const SidebarContent = styled.div`
 const Tab = styled.div`
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 13px;
+  margin-bottom: 25px;
   button {
     width: fit-content;
   }
