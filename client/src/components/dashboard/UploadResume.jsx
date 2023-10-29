@@ -49,7 +49,14 @@ function UploadResume() {
 
   const cancel = () => {
     setFile(null);
+    const deleteResume = async () => {
+      await ky.delete(`http://localhost:3000/api/resume/users/${user.sub}/delete`,)
+    }
+    deleteResume()
+    setResumes(null)
+    console.log("Deleted Resumes from client")
   };
+  
 
   const uploadResume = async () => {
     if (!file) {
@@ -137,7 +144,10 @@ function UploadResume() {
         {resumes && (
           <SelectedWrapper>
             <ButtonFilled content="Update Resume"/>
-            <p>{resumes.resume_file_name}</p>
+            <div onClick={cancel}>
+              <StyledIcon icon="cross" size={30} />
+              <p>{resumes.resume_file_name}</p>
+            </div>
           <p>You have a resume</p>
           </SelectedWrapper>
         )}

@@ -161,3 +161,15 @@ export const updateResume = async (req,res) => {
     }
 };
 
+export const deleteResume = async (req,res) => {
+    const userId = req.params.user_id;
+
+    const sql = `DELETE FROM resume WHERE resume_id > 0 AND user_id = ?;`
+
+    pool.query(sql, [userId], (deleteErr, deleteResult) => {
+        if (deleteErr) return res.json(deleteErr);
+        res.json(deleteResult)
+
+
+    })
+}
