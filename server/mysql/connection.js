@@ -61,11 +61,13 @@ async function initializeDatabase() {
             qualifications TEXT,
             responsibilities TEXT,
             skills VARCHAR(1000),
-            education VARCHAR(100),
+            education VARCHAR(1000),
             FOREIGN KEY(user_id) references users(id)
         );`,
     `CREATE TABLE IF NOT EXISTS resume (
+            resume_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
             user_id VARCHAR(100),
+            resume_file_name VARCHAR(50),
             resume_text TEXT,
             created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY(user_id) references users(id)

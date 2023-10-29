@@ -1,18 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import ky from "ky";
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonFilled from "../../reusable/ButtonFilled";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 import { Icon } from "@blueprintjs/core";
 import styled from "styled-components";
+import axios from 'axios'
 
 function UploadResume() {
   const { user, isAuthenticated } = useAuth0();
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("")
   const [jobInfo, setjobInfo] = useState("");
   const [jobUrl, setJobUrl] = useState("");
   const [gptRating, setGptRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [resumes,setResumes] = useState(null);
 
   if (!isAuthenticated) {
     loginWithPopup(getUser()).then(token => {
@@ -21,6 +24,17 @@ function UploadResume() {
       });
     })
   }
+
+  useEffect(() => {
+    const fetchResume = async () => {
+    const resumeData = await axios.get(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
+    setResumes(resumeData.data[0]);
+    console.log(resumes)
+    }
+    fetchResume();
+  }, [])
+  console.log("The resumes:", resumes)
+
 
 
   const hiddenFileInput = useRef(null);
@@ -57,6 +71,7 @@ function UploadResume() {
     formData.append("pdfFile", file);
     formData.append("user_id", user.sub);
     formData.append("resume_id", 1);
+    
 
     console.log("Uploading...");
 
@@ -69,16 +84,12 @@ function UploadResume() {
         alert("Error: " + err);
       })
 
-
-
-
-      
-      
-
     try {
       const resumeText = await ky
-        .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, { body: formData })
+        .post(`http://localhost:3000/api/resume/users/${user.sub}/${file.name}`, {body: formData})
         .text();
+        setResumes(resumeText)
+        setFile(null)
       alert("Resume uploaded successfully!")
     } catch (error) {
       alert("Error: " + error);
@@ -86,7 +97,15 @@ function UploadResume() {
 
     setIsLoading(false);
   };
-  console.log("file:", file)
+
+  const updateResume = async () => {
+    try{
+      const updatedResume = await axios.put(`http://localhost:3000/api/resume/users/${user.sub}/update`, {file})
+    } catch(error) {
+
+    }
+  }
+
   return (
     <>
       {isLoading ? (
@@ -96,7 +115,7 @@ function UploadResume() {
       ) : null}
       <p>{gptRating}</p>
       <div>
-        {!file && (
+        {!resumes && (
           <ButtonFilled content="Upload Resume" handleClick={handleClick} />
         )}
         <input
@@ -113,6 +132,13 @@ function UploadResume() {
               <StyledIcon icon="cross" size={30} />
               <p>{file.name}</p>
             </div>
+          </SelectedWrapper>
+        )}
+        {resumes && (
+          <SelectedWrapper>
+            <ButtonFilled content="Update Resume"/>
+            <p>{resumes.resume_file_name}</p>
+          <p>You have a resume</p>
           </SelectedWrapper>
         )}
         <br />
