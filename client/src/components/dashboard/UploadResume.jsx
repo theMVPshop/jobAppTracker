@@ -41,10 +41,12 @@ function UploadResume() {
 
   const handleClick = (event) => {
     hiddenFileInput.current.click();
+
   };
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
+    e.target.value = ''; // Reset the input value
   };
 
   const cancel = () => {
@@ -95,7 +97,7 @@ function UploadResume() {
       const resumeText = await ky
         .post(`http://localhost:3000/api/resume/users/${user.sub}/${file.name}`, {body: formData})
         .text();
-        setResumes(resumeText)
+        setResumes({ resume_file_name: file.name });
         setFile(null)
       alert("Resume uploaded successfully!")
     } catch (error) {
@@ -122,7 +124,7 @@ function UploadResume() {
       ) : null}
       <p>{gptRating}</p>
       <div>
-        {!resumes && (
+        {!resumes && !file && (
           <ButtonFilled content="Upload Resume" handleClick={handleClick} />
         )}
         <input
@@ -130,7 +132,8 @@ function UploadResume() {
           accept=".pdf"
           onChange={onFileChange}
           ref={hiddenFileInput}
-          style={{ display: "none" }}
+          style={{display: "none"}}
+          
         />
         {file && (
           <SelectedWrapper>
@@ -143,12 +146,12 @@ function UploadResume() {
         )}
         {resumes && (
           <SelectedWrapper>
-            <ButtonFilled content="Update Resume"/>
+            <p>You have a current resume. You may delete the current and reupload a new one if needed.</p>
             <div onClick={cancel}>
               <StyledIcon icon="cross" size={30} />
               <p>{resumes.resume_file_name}</p>
             </div>
-          <p>You have a resume</p>
+          
           </SelectedWrapper>
         )}
         <br />
