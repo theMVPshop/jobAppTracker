@@ -135,31 +135,7 @@ export const rateResume = async (req, res) => {
 };
 
 
-export const updateResume = async (req,res) => {
-    try {
-    const con = await pool.getConnection();
-    if (!req.file) {
-        return res.status(400).send("No file uploaded");
-    }
-    const fileBuffer = req.file.buffer;
-    const fileUint8Array = new Uint8Array(fileBuffer);
-    const resumeText = await readPdfText({ data: fileUint8Array });
-    const userId = req.params.user_id;
-    
-    const query = `
-        UPDATE resume SET resume_text = ? WHERE user_id = ?;
-    `;
-    await con.execute(query, [resumeText, userId]);
-        
-    res.status(200).send("Resume uploaded successfully.");
-        
-    } catch (error) {
-        console.log(error);
-        return res.status(500).send(error.message);
-    } finally {
-        con.release();
-    }
-};
+
 
 export const deleteResume = async (req,res) => {
     const userId = req.params.user_id;

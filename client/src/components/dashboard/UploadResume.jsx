@@ -17,6 +17,7 @@ function UploadResume() {
   const [isLoading, setIsLoading] = useState(false);
   const [resumes,setResumes] = useState(null);
 
+  //Check if user is authenticated
   if (!isAuthenticated) {
     loginWithPopup(getUser()).then(token => {
       getUser().then(user => {
@@ -24,42 +25,17 @@ function UploadResume() {
       });
     })
   }
-
+  
+  //Load users Resumes
   useEffect(() => {
     const fetchResume = async () => {
-    const resumeData = await axios.get(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
-    setResumes(resumeData.data[0]);
-    console.log(resumes)
+      const resumeData = await axios.get(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
+      setResumes(resumeData.data[0]);
     }
     fetchResume();
   }, [])
-  console.log("The resumes:", resumes)
-
-
-
-  const hiddenFileInput = useRef(null);
-
-  const handleClick = (event) => {
-    hiddenFileInput.current.click();
-
-  };
-
-  const onFileChange = (e) => {
-    setFile(e.target.files[0]);
-    e.target.value = ''; // Reset the input value
-  };
-
-  const cancel = () => {
-    setFile(null);
-    const deleteResume = async () => {
-      await ky.delete(`http://localhost:3000/api/resume/users/${user.sub}/delete`,)
-    }
-    deleteResume()
-    setResumes(null)
-    console.log("Deleted Resumes from client")
-  };
   
-
+  //Upload resume to server
   const uploadResume = async () => {
     if (!file) {
       alert("Please select a file first.");
@@ -99,21 +75,38 @@ function UploadResume() {
         .text();
         setResumes({ resume_file_name: file.name });
         setFile(null)
-      alert("Resume uploaded successfully!")
+        alert("Resume uploaded successfully!")
     } catch (error) {
       alert("Error: " + error);
     }
-
+    
     setIsLoading(false);
   };
 
-  const updateResume = async () => {
-    try{
-      const updatedResume = await axios.put(`http://localhost:3000/api/resume/users/${user.sub}/update`, {file})
-    } catch(error) {
-
+  //Either cancels submission of resume file or after submission deletes it from server.
+  const cancel = () => {
+    setFile(null);
+    const deleteResume = async () => {
+      await ky.delete(`http://localhost:3000/api/resume/users/${user.sub}/delete`,)
     }
-  }
+    deleteResume()
+    setResumes(null)
+    console.log("Deleted Resumes from client")
+  };
+  
+  
+  const hiddenFileInput = useRef(null);
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
+
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+    e.target.value = ''; // Reset the input value
+  };
+
+  
+
 
   return (
     <>
