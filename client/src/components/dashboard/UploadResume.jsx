@@ -5,7 +5,6 @@ import ButtonFilled from "../../reusable/ButtonFilled";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 import { Icon } from "@blueprintjs/core";
 import styled from "styled-components";
-import axios from 'axios'
 
 function UploadResume() {
   const { user, isAuthenticated } = useAuth0();
@@ -30,7 +29,7 @@ function UploadResume() {
   //Load users Resumes
   useEffect(() => {
     const fetchResume = async () => {
-      const resumeData = await axios.get(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
+      const resumeData = await ky(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
       setResumes(resumeData.data[0]);
     }
     fetchResume();

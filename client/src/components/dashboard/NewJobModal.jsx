@@ -1,4 +1,4 @@
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, useEffect } from "react";
 import "./modal.css";
 import { toTitleCase } from "../../App";
 import ky from "ky";
@@ -8,10 +8,9 @@ import ButtonEmpty from "../../reusable/ButtonEmpty";
 import ButtonFilled from "../../reusable/ButtonFilled";
 
 const NewJobModal = forwardRef(function (
-  { isVisible, onClose, onSubmit, currentColumn, icons },
+  { isVisible, onClose, onSubmit, currentColumn, icons, isLoading, setIsLoading },
   ref
 ) {
-  const [isLoading, setIsLoading] = useState(false);
   const [useManualInput, setUseManualInput] = useState(false);
   const [jobUrl, setJobUrl] = useState("");
   const [jobData, setJobData] = useState({
@@ -58,48 +57,34 @@ const NewJobModal = forwardRef(function (
     };
 
     onSubmit(fetchedData);
-    setJobData({
-      id: "",
-      gpt_rating: 0,
-      gpt_analysis: "",
-      description: "",
-      status: "",
-      date_applied: "",
-      company_name: "",
-      position_title: "",
-      location: "",
-      job_type: "",
-      salary: "",
-      qualifications: "",
-      responsibilities: "",
-      skills: "",
-      education: "",
-    });
-    setIsLoading(false);
-    setJobUrl("");
   };
 
   const handleManualSubmit = () => {
     onSubmit(jobData);
-    setJobData({
-      id: "",
-      gpt_rating: 0,
-      gpt_analysis: "",
-      description: "",
-      status: "",
-      date_applied: "",
-      company_name: "",
-      position_title: "",
-      location: "",
-      job_type: "",
-      salary: "",
-      qualifications: "",
-      responsibilities: "",
-      skills: "",
-      education: "",
-    });
-    setJobUrl("");
   };
+
+  useEffect(() => {
+    if (!isLoading) {
+      setJobData({
+        id: "",
+        gpt_rating: 0,
+        gpt_analysis: "",
+        description: "",
+        status: "",
+        date_applied: "",
+        company_name: "",
+        position_title: "",
+        location: "",
+        job_type: "",
+        salary: "",
+        qualifications: "",
+        responsibilities: "",
+        skills: "",
+        education: "",
+      });
+      setJobUrl("");
+    }
+  }, [isLoading])
 
   const columns = ["Rejected", "Applied", "Phone", "Onsite", "Offer"];
   const iconIndex = columns.indexOf(currentColumn);
