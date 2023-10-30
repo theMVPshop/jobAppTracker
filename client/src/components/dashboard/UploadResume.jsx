@@ -1,19 +1,23 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import ky from "ky";
 import { useAuth0 } from "@auth0/auth0-react";
 import ButtonFilled from "../../reusable/ButtonFilled";
 import ButtonEmpty from "../../reusable/ButtonEmpty";
 import { Icon } from "@blueprintjs/core";
 import styled from "styled-components";
+import axios from 'axios'
 
 function UploadResume() {
   const { user, isAuthenticated } = useAuth0();
   const [file, setFile] = useState(null);
+  const [fileName, setFileName] = useState("")
   const [jobInfo, setjobInfo] = useState("");
   const [jobUrl, setJobUrl] = useState("");
   const [gptRating, setGptRating] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [resumes,setResumes] = useState(null);
 
+  //Check if user is authenticated
   if (!isAuthenticated) {
     loginWithPopup(getUser()).then((token) => {
       getUser().then((user) => {
@@ -22,20 +26,17 @@ function UploadResume() {
     });
   }
 
-  const hiddenFileInput = useRef(null);
-
-  const handleClick = (event) => {
-    hiddenFileInput.current.click();
-  };
-
-  const onFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const cancel = () => {
-    setFile(null);
-  };
-
+  
+  //Load users Resumes
+  useEffect(() => {
+    const fetchResume = async () => {
+      const resumeData = await axios.get(`http://localhost:3000/api/resume/users/${user.sub}/resumes`)
+      setResumes(resumeData.data[0]);
+    }
+    fetchResume();
+  }, [])
+  
+  //Upload resume to server
   const uploadResume = async () => {
     if (!file) {
       alert("Please select a file first.");
@@ -56,6 +57,7 @@ function UploadResume() {
     formData.append("pdfFile", file);
     formData.append("user_id", user.sub);
     formData.append("resume_id", 1);
+    
 
     console.log("Uploading...");
 
@@ -68,24 +70,50 @@ function UploadResume() {
         alert("Error: " + err);
       });
 
+
     try {
       const resumeText = await ky
-        .post(`http://localhost:3000/api/resume/users/${user.sub}/upload`, {
-          body: formData,
-        })
+        .post(`http://localhost:3000/api/resume/users/${user.sub}/${file.name}`, {body: formData})
         .text();
-      alert("Resume uploaded successfully!");
+        setResumes({ resume_file_name: file.name });
+        setFile(null)
+        alert("Resume uploaded successfully!")
     } catch (error) {
       alert("Error: " + error);
     }
-
+    
     setIsLoading(false);
   };
+
+  //Either cancels submission of resume file or after submission deletes it from server.
+  const cancel = () => {
+    setFile(null);
+    const deleteResume = async () => {
+      await ky.delete(`http://localhost:3000/api/resume/users/${user.sub}/delete`,)
+    }
+    deleteResume()
+    setResumes(null)
+    console.log("Deleted Resumes from client")
+  };
+  
+  
+  const hiddenFileInput = useRef(null);
+  const handleClick = (event) => {
+    hiddenFileInput.current.click();
+  };
+
+  const onFileChange = (e) => {
+    setFile(e.target.files[0]);
+    e.target.value = ''; // Reset the input value
+  };
+
+  
+
 
   return (
     <>
       <div>
-        {!file && (
+        {!resumes && !file && (
           <ButtonFilled content="Upload Resume" handleClick={handleClick} />
         )}
         <input
@@ -93,7 +121,8 @@ function UploadResume() {
           accept=".pdf"
           onChange={onFileChange}
           ref={hiddenFileInput}
-          style={{ display: "none" }}
+          style={{display: "none"}}
+          
         />
         {file && (
           <SelectedWrapper>
@@ -104,12 +133,16 @@ function UploadResume() {
             </div>
           </SelectedWrapper>
         )}
-        {isLoading ? (
-          <>
-            <progress /> <p>Loading...</p>
-          </>
-        ) : null}
-        <p>{gptRating}</p>
+        {resumes && (
+          <SelectedWrapper>
+            <p>You have a current resume. You may delete the current and reupload a new one if needed.</p>
+            <div onClick={cancel}>
+              <StyledIcon icon="cross" size={30} />
+              <p>{resumes.resume_file_name}</p>
+            </div>
+          
+          </SelectedWrapper>
+        )}
         <br />
         <br />
       </div>

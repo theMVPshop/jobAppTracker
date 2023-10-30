@@ -23,6 +23,7 @@ const Sidebar = () => {
         {!isCollapsed && <UploadResume />}
         {isCollapsed && (
           <StyledIcon onClick={handleClick} icon="document" size={35} />
+          
         )}
       </SidebarContent>
     </SidebarWrapper>
