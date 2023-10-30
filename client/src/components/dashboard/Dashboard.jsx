@@ -8,6 +8,7 @@ import ky from "ky";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import ColumnHead from "./ColumnHead";
+import axios from 'axios'
 
 const Dashboard = (props) => {
   const initialData = props.props;
@@ -245,6 +246,8 @@ const Dashboard = (props) => {
   useEffect(() => {
     console.log("new:", columnsData);
   }, [columnsData])
+
+
 
   // function handleClickOutside(event) {
   //   console.log(modalRef.current);

@@ -3,26 +3,26 @@ import pool from "../mysql/connection.js";
 import { openai } from "../../server.js";
 
 export const uploadResume = async (req, res) => {
+
     const con = await pool.getConnection();
     try {
         if (!req.file) {
             return res.status(400).send("No file uploaded");
         }
-
+        
         const fileBuffer = req.file.buffer;
         const fileUint8Array = new Uint8Array(fileBuffer);
         const resumeText = await readPdfText({ data: fileUint8Array });
     
         const userId = req.params.user_id;
-        console.log(req.params.user_id);
+        const fileName = req.params.file_name
 
         const query = `
-            INSERT INTO resume (user_id, resume_text)
-            VALUES (?, ?)
-            ON DUPLICATE KEY UPDATE resume_text = VALUES(resume_text)
+            INSERT INTO resume (user_id,resume_file_name,resume_text)
+            VALUES (?,?,?)
         `;
 
-        await con.execute(query, [userId, resumeText]);
+        await con.execute(query, [userId,fileName,resumeText]);
 
         res.status(200).send("Resume uploaded successfully.");
 
@@ -35,6 +35,8 @@ export const uploadResume = async (req, res) => {
 };
 
 export const getResume = async (req, res) => {
+    console.log("Get Resume has been found");
+
     const con = await pool.getConnection();
     try {
         const userId = req.params.user_id;
@@ -49,6 +51,34 @@ export const getResume = async (req, res) => {
         }
 
         const resumeText = rows[0].resume_text;
+        console.log("The rows:", rows)
+        return res.status(200).send(resumeText);
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(error.message);
+    } finally {
+        con.release();
+    }
+};
+
+export const getResumes = async (req, res) => {
+    console.log("Get Resumes has been found");
+
+    const con = await pool.getConnection();
+    try {
+        const userId = req.params.user_id;
+
+        const [rows] = await con.execute(
+            'SELECT * FROM resume WHERE user_id = ?',
+            [userId]
+        );
+
+        if (rows.length === 0) {
+            return res.status(404).send('Resume not found');
+        }
+
+        const resumeText = rows;
         return res.status(200).send(resumeText);
 
     } catch (error) {
@@ -103,3 +133,19 @@ export const rateResume = async (req, res) => {
         return res.status(500).send(error.message);
     }
 };
+
+
+
+
+export const deleteResume = async (req,res) => {
+    const userId = req.params.user_id;
+
+    const sql = `DELETE FROM resume WHERE resume_id > 0 AND user_id = ?;`
+
+    pool.query(sql, [userId], (deleteErr, deleteResult) => {
+        if (deleteErr) return res.json(deleteErr);
+        res.json(deleteResult)
+
+
+    })
+}
