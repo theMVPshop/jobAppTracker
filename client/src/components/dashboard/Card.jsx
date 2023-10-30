@@ -4,15 +4,21 @@ import { Icon } from "@blueprintjs/core";
 
 const Card = ({ data, onClick, onDelete }) => {
   const [tileColor, setTileColor] = useState();
-  const colors = ["#999999", "#C9463C", "#DF8E25", "#C6B346", "#35AB64", "#3CA3DA"];
+  const colors = [
+    "#999999",
+    "#C9463C",
+    "#DF8E25",
+    "#C6B346",
+    "#35AB64",
+    "#3CA3DA",
+  ];
 
   useEffect(() => {
     if (data.status === "Rejected") {
       setTileColor("#CCCCCC");
     } else if (data.gpt_rating) {
       setTileColor(colors[data.gpt_rating]);
-    }
-    else {
+    } else {
       setTileColor(colors[0]);
     }
   }, [data]);
@@ -40,12 +46,12 @@ const Card = ({ data, onClick, onDelete }) => {
               onDelete(data.id);
             }}
           />
-          {data.gpt_rating &&
+          {data.gpt_rating && (
             <StarWrapper>
               <h4>{data.gpt_rating}</h4>
               <StyledIcon icon="star" size={15} />
             </StarWrapper>
-          }
+          )}
         </RightWrapper>
       </ContentWrapper>
     </InfoCard>
@@ -62,7 +68,7 @@ const InfoCard = styled.div`
   padding: 10px 0;
   margin: 10px auto;
   width: 90%;
-  height: 100px;
+  height: 85px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {

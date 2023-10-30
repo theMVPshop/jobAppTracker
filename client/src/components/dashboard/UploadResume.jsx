@@ -19,12 +19,13 @@ function UploadResume() {
 
   //Check if user is authenticated
   if (!isAuthenticated) {
-    loginWithPopup(getUser()).then(token => {
-      getUser().then(user => {
+    loginWithPopup(getUser()).then((token) => {
+      getUser().then((user) => {
         console.log(user);
       });
-    })
+    });
   }
+
   
   //Load users Resumes
   useEffect(() => {
@@ -67,7 +68,8 @@ function UploadResume() {
       })
       .catch((err) => {
         alert("Error: " + err);
-      })
+      });
+
 
     try {
       const resumeText = await ky
@@ -110,12 +112,6 @@ function UploadResume() {
 
   return (
     <>
-      {isLoading ? (
-        <>
-          <progress /> <p>Loading...</p>
-        </>
-      ) : null}
-      <p>{gptRating}</p>
       <div>
         {!resumes && !file && (
           <ButtonFilled content="Upload Resume" handleClick={handleClick} />

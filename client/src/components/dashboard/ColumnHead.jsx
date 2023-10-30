@@ -36,9 +36,13 @@ const TableCell = styled.td`
   text-align: center;
   vertical-align: top;
   position: relative;
-  width: 370px;
-  min-width: 370px;
+  width: 288px;
+  min-width: 288px;
   padding-top: 20px;
+  z-index: 1;
+  @media only screen and (max-width: 700px) {
+    width: calc(100vw - 54px);
+  }
   h3 {
     margin: 5px;
   }
@@ -49,6 +53,8 @@ const TableCell = styled.td`
 `;
 
 const HeadWrap = styled.div`
+  position: relative;
+  right: 15px;
   display: flex;
   width: 100%;
   justify-content: center;
@@ -66,10 +72,10 @@ const BtnCont = styled.div`
 `;
 
 const StyledIcon = styled(Icon)`
-  fill: gray;
-  position: absolute;
-  left: 180px;
-  top: 30px;
+  fill: ${(props) => props.theme.colors.secondaryBlue};
+  position: relative;
+  right: 20px;
+  top: 0px;
   display: flex;
   align-items: center;
   justify-content: center;

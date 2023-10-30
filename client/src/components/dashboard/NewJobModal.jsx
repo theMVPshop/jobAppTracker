@@ -8,7 +8,7 @@ import ButtonEmpty from "../../reusable/ButtonEmpty";
 import ButtonFilled from "../../reusable/ButtonFilled";
 
 const NewJobModal = forwardRef(function (
-  { isVisible, onClose, onSubmit },
+  { isVisible, onClose, onSubmit, currentColumn, icons },
   ref
 ) {
   const [isLoading, setIsLoading] = useState(false);
@@ -82,7 +82,7 @@ const NewJobModal = forwardRef(function (
   const handleManualSubmit = () => {
     onSubmit(jobData);
     setJobData({
-      id:"",
+      id: "",
       gpt_rating: 0,
       gpt_analysis: "",
       description: "",
@@ -101,12 +101,25 @@ const NewJobModal = forwardRef(function (
     setJobUrl("");
   };
 
+  const columns = ["Rejected", "Applied", "Phone", "Onsite", "Offer"];
+  const iconIndex = columns.indexOf(currentColumn);
+  const thisIcon = icons[iconIndex];
+
   return (
     <div ref={ref} className={`modal ${isVisible ? "visible" : ""}`}>
       <div className="modalcard">
-        <RightWrapper>
-          <StyledCross icon="cross" size={25} onClick={onClose} />
-        </RightWrapper>
+        <Titlebar>
+          <div>
+            <StyledSpacer icon="cross" size={25} onClick={onClose} />
+          </div>
+          <ColumnTitle>
+            <StyledIcon icon={thisIcon} size={25} onClick={onClose} />
+            <h3>{currentColumn}</h3>
+          </ColumnTitle>
+          <div>
+            <StyledCross icon="cross" size={25} onClick={onClose} />
+          </div>
+        </Titlebar>
         {useManualInput ? (
           <>
             {Object.keys(jobData).map((key) =>
@@ -170,6 +183,19 @@ const NewJobModal = forwardRef(function (
 
 export default NewJobModal;
 
+const Titlebar = styled.div`
+  display: flex;
+  justify-content: space-around;
+`;
+
+const ColumnTitle = styled.div`
+  display: flex;
+  position: relative;
+  width: 100%;
+  gap: 10px;
+  justify-content: center;
+`;
+
 const ProgressCont = styled.div`
   display: flex;
   width: 100%;
@@ -193,6 +219,24 @@ const StyledCross = styled(Icon)`
   :hover {
     fill: red;
   }
+`;
+
+const StyledIcon = styled(Icon)`
+  fill: ${(props) => props.theme.colors.secondaryBlue};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  margin: 5px 0;
+`;
+
+const StyledSpacer = styled(Icon)`
+  fill: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 5px;
+  margin: 5px 0;
 `;
 
 const ButtonContainer = styled.div`
