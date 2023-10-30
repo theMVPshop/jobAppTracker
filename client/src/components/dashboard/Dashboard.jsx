@@ -8,7 +8,6 @@ import ky from "ky";
 import styled from "styled-components";
 import Sidebar from "./Sidebar";
 import ColumnHead from "./ColumnHead";
-import axios from 'axios'
 
 const Dashboard = (props) => {
   const initialData = props.props;
@@ -20,6 +19,7 @@ const Dashboard = (props) => {
   const [currentColumn, setCurrentColumn] = useState("Applied");
   const [isConfirmModalVisible, setConfirmModalVisible] = useState(false);
   const [jobToDelete, setJobToDelete] = useState(null);
+  const [isLoadingNewJob, setIsLoadingNewJob] = useState(false);
   const modalRef = useRef(null);
 
   const reorganizeColumns = (jobs) => {
@@ -57,13 +57,11 @@ const Dashboard = (props) => {
 
   const handleUpdateJob = async (updatedData, newStatus = null) => {
     try {
-      // Here, newStatus will default to null if not provided
       const updatedJobData = {
         ...updatedData,
         status: newStatus || updatedData.status,
       };
 
-      // Making a PUT request to update the job data on the server using ky
       const response = await ky
         .put(
           `http://localhost:3000/api/users/${user.sub}/applications/${updatedData.id}`,
@@ -164,33 +162,10 @@ const Dashboard = (props) => {
   };
 
   const handleJobSubmit = async (jobData) => {
-    jobData = { ...jobData, status: currentColumn };
 
-    const { applicationId } = await ky
-      .post(`http://localhost:3000/api/users/${user.sub}/applications`, {
-        json: jobData,
-      })
-      .json();
+    const status = currentColumn;
 
-    // Create a new job object (assuming jobData is the new job's data)
-    let newJob = { ...jobData, id: applicationId, status: currentColumn };
-
-    console.log(newJob);
-
-    // Update the columnsData state to include the new job in the correct column
-    setColumnsData((prevColumnsData) => {
-      return prevColumnsData.map((column) => {
-        if (column.title === currentColumn) {
-          return {
-            ...column,
-            data: [newJob, ...column.data],
-          };
-        }
-        return column;
-      });
-    });
-
-    setNewJobModalVisible(false); // Close the modal
+    jobData = { ...jobData, status };
 
     const resumeText = await ky(
       `http://localhost:3000/api/resume/users/${user.sub}`
@@ -207,10 +182,32 @@ const Dashboard = (props) => {
     const periodIndex = gptResponse.indexOf(".");
     const gpt_analysis = gptResponse.slice(periodIndex + 2);
 
-    console.log(gpt_rating, gpt_analysis);
+    jobData = { ...jobData, gpt_rating, gpt_analysis };
 
-    newJob = { ...newJob, gpt_rating, gpt_analysis };
-    handleUpdateJob(newJob);
+    const { applicationId } = await ky
+      .post(`http://localhost:3000/api/users/${user.sub}/applications`, {
+        json: jobData,
+      })
+      .json();
+
+    // Create a new job object (assuming jobData is the new job's data)
+    let newJob = { ...jobData, id: applicationId, status };
+
+    // Update the columnsData state to include the new job in the correct column
+    setColumnsData((prevColumnsData) => {
+      return prevColumnsData.map((column) => {
+        if (column.title === status) {
+          return {
+            ...column,
+            data: [newJob, ...column.data],
+          };
+        }
+        return column;
+      });
+    });
+
+    setNewJobModalVisible(false); // Close the modal
+    setIsLoadingNewJob(false);
   };
 
   const login = () => {
@@ -241,7 +238,7 @@ const Dashboard = (props) => {
     }
   }, [isAuthenticated]);
 
-  useEffect(() => {}, [columnsData]);
+  useEffect(() => { }, [columnsData]);
 
 
 
@@ -317,6 +314,8 @@ const Dashboard = (props) => {
                 onSubmit={handleJobSubmit}
                 currentColumn={currentColumn}
                 icons={icons}
+                isLoading={isLoadingNewJob}
+                setIsLoading={setIsLoadingNewJob}
               />
               <ConfirmDeleteModal
                 ref={modalRef}
