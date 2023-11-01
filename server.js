@@ -1,3 +1,5 @@
+console.log("Hello!");
+
 import express from "express";
 import cors from "cors";
 import path from "path";
@@ -8,8 +10,6 @@ import scrapeRouter from "./server/routes/scrape.js";
 import applicationsRouter from "./server/routes/applications.js";
 import passUuidRouter from "./server/routes/passUuid.js"
 import opeanAIRouter from "./server/routes/openaiJobTrack.js"
-
-console.log("Hello!");
 
 export const openai = new OpenAI();
 
