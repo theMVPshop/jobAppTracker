@@ -10,17 +10,16 @@ import applicationsRouter from "./server/routes/applications.js";
 import passUuidRouter from "./server/routes/passUuid.js"
 import opeanAIRouter from "./server/routes/openaiJobTrack.js"
 
-const apiKey = process.env.OPENAI_API_KEY
+console.log("Hello!");
 
-export const openai = new OpenAI({
-  apiKey: apiKey, // Your OpenAI API key
-});
-
+export const openai = new OpenAI();
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+console.log("Setting up routes...");
 
 app.use("/api/categorize", opeanAIRouter)
 app.use("/api/resume", resumeRouter);
@@ -31,6 +30,8 @@ app.use("/api/uuid", passUuidRouter);
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+console.log("Setting up static files...");
+
 app.use(express.static(path.join(__dirname, './client/dist')));
 
 app.get('*', function (_req, res) {
@@ -40,6 +41,8 @@ app.get('*', function (_req, res) {
     }
   })
 });
+
+console.log("Starting server...");
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
