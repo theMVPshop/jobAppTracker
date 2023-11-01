@@ -1,6 +1,5 @@
 import express from "express";
 import cors from "cors";
-import 'dotenv/config';
 import path from "path";
 import url from "url";
 import OpenAI from "openai";
