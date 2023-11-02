@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 import path from "path";
 import url from "url";
+import "dotenv/config";
 import OpenAI from "openai";
 import resumeRouter from "./server/routes/resume.js";
 import scrapeRouter from "./server/routes/scrape.js";
